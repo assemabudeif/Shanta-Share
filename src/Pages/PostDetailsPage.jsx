@@ -120,6 +120,7 @@ function PostDetailsPage() {
                     <p className="mt-2">{travelPost.description}</p>
                 </div>
             </div>
+        </main>
     );
 }
 
