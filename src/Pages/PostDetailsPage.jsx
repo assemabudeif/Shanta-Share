@@ -4,6 +4,7 @@ import {PhoneIcon, StarIcon} from "@heroicons/react/24/solid";
 function PostDetailsPage() {
     const { id } = useParams();
     const navigator = useNavigate();
+  
     const travelPost = {
         id: id,
         driverName: "Ahmed Ali",
@@ -119,7 +120,6 @@ function PostDetailsPage() {
                     <p className="mt-2">{travelPost.description}</p>
                 </div>
             </div>
-        </main>
     );
 }
 
