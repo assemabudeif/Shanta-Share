@@ -1,0 +1,84 @@
+.driver-profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.driver-profile-header img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 3px solid #ccc;
+    margin-right:70px;
+    margin-left: 50px;
+}
+
+.driver-profile-header h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-right: 50px;
+    color: #333;
+}
+
+.rating{
+    font-size: xx-large;
+
+}
+.driver-profile-table {
+    width: 90%;
+    border-collapse: collapse;
+    margin-top: 30px;
+    margin-left: 30px;
+    border: 0;
+}
+
+.driver-profile-table th, 
+.driver-profile-table td {
+    padding: 0.75rem;
+    font-size: larger;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.driver-profile-table th {
+    background-color: #f9f9f9;
+    font-size: larger;
+    font-weight: bold;
+    color: #555;
+}
+
+.driver-profile-table td {
+    font-size: large;
+    color: #555;
+}
+
+.driver-profile-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.driver-profile-button {
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.driver-profile-button-save {
+    background-color: #45607c;
+    border: none;
+}
+
+.driver-profile-button-cancel {
+    background-color: #6c757d;
+    border: none;
+}
+
+.driver-profile-button-edit {
+    background-color: #45607c;
+    width: 100px;
+    border: none;
+}
+
+.driver-profile-button:hover {
+    opacity: 0.9;
+}

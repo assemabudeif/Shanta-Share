@@ -46,7 +46,7 @@ function PostDetailsPage() {
     }
 
     const showProfile = () => {
-        navigator(`/driver/${travelPost.id}`);
+        navigator(`/driverProfile/${travelPost.id}`);
     }
 
     return (
