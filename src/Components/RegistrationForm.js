@@ -16,7 +16,7 @@ const RegistrationForm = () => {
     government: '',
     mobile: '',
     gender: '',
-    vehicle: '', 
+    vehicle: '',
     idImage: null,
     personalImage: null,
     licenseImage: null,
@@ -36,7 +36,7 @@ const RegistrationForm = () => {
     address: /^[a-zA-Z0-9\s,'-]+$/,
     city: /^[a-zA-Z\s]+$/,
     mobile: /^[0-9]{10,15}$/,
-    government: /^[a-zA-Z\s]+$/, 
+    government: /^[a-zA-Z\s]+$/,
     vehicle: /^[a-zA-Z0-9\s,'-]+$/,
   };
 
@@ -79,13 +79,13 @@ const RegistrationForm = () => {
           error = 'Address is not valid.';
         }
         break;
-        case 'vehicle':
-          if (!value) {
-            error = 'Vehicle Informations is required.';
-          } else if (!regex.vehicle.test(value)) {
-            error = 'Vehicle Informations is not valid.';
-          }
-          break;
+      case 'vehicle':
+        if (!value) {
+          error = 'Vehicle Informations is required.';
+        } else if (!regex.vehicle.test(value)) {
+          error = 'Vehicle Informations is not valid.';
+        }
+        break;
       case 'city':
         if (!value) {
           error = 'City is required.';
@@ -107,7 +107,7 @@ const RegistrationForm = () => {
           error = 'Government name is not valid.';
         }
         break;
-    
+
       case 'idImage':
       case 'personalImage':
       case 'licenseImage':
@@ -127,12 +127,12 @@ const RegistrationForm = () => {
 
 
   const handleChange = (e) => {
-    const name = e.target.name; 
+    const name = e.target.name;
     const value = e.target.value;
     const type = e.target.type;
     const files = e.target.files;
     let error = '';
-  
+
     if (type === 'file') {
       setFormData({ ...formData, [name]: files[0] });
     } else {
@@ -143,17 +143,17 @@ const RegistrationForm = () => {
   };
 
 
-  
-// ================== Steps Validation ==========================
+
+  // ================== Steps Validation ==========================
 
 
   // Handle Step Navigation
   const handleNext = (e) => {
     e.preventDefault();
     let errorMessages = {};
-    
+
     if (!role) errorMessages.role = 'Role is required.';
-    
+
     if (step === 2) {
       errorMessages = {
         ...errorMessages,
@@ -194,16 +194,16 @@ const RegistrationForm = () => {
 
 
 
- // =======  handle back buttonon ======
-  
- const handlePrev = () => {
+  // =======  handle back buttonon ======
+
+  const handlePrev = () => {
     if (step > 1) {
       setStep(step - 1);
     }
   };
 
 
-   // =======  Submit button ======
+  // =======  Submit button ======
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -219,7 +219,7 @@ const RegistrationForm = () => {
   );
 
 
-// ============== Confirmation Before user submit    ================
+  // ============== Confirmation Before user submit    ================
 
   const renderConfirmation = () => (
     <div>
@@ -229,10 +229,10 @@ const RegistrationForm = () => {
           <strong>Email:</strong> {formData.email}
         </div>
         <div>
-          <strong>Name:</strong> {formData.firstName} {formData.lastName} {formData.age} 
+          <strong>Name:</strong> {formData.firstName} {formData.lastName} {formData.age}
         </div>
         <div>
-          <strong>Age:</strong>  {formData.age} 
+          <strong>Age:</strong>  {formData.age}
         </div>
         <div>
           <strong>Address:</strong> {formData.address}, {formData.city}, {formData.government}
@@ -296,41 +296,39 @@ const RegistrationForm = () => {
         ))}
       </div>
       {step === 1 && (
-  <div>
-    <h2 className="text-2xl font-bold mb-4">Select Your Role</h2>
-    <div className="flex flex-col items-center space-y-4">
-  <button
-    type="button"
-    onClick={() => setRole('client')}
-    className={`text-2xl px-4 py-2 rounded-lg ${
-      role === 'client' ? 'bg-blue-500 text-white' : 'bg-gray-200'
-    }`}
-  >
-    Client
-  </button>
-  <button
-    type="button"
-    onClick={() => setRole('driver')}
-    className={`text-2xl px-4 py-2 rounded-lg ${
-      role === 'driver' ? 'bg-blue-500 text-white' : 'bg-gray-200'
-    }`}
-  >
-    Driver
-  </button>
-  {renderAlert('role')}
-</div>
-<div className="flex justify-end mt-10">
-  <button
-    type="button"
-    onClick={handleNext}
-    className="bg-blue-500 text-white py-2 px-4 rounded-lg"
-  >
-    Next
-  </button>
-</div>
+        <div>
+          <h2 className="text-2xl font-bold mb-4">Select Your Role</h2>
+          <div className="flex flex-col items-center space-y-4">
+            <button
+              type="button"
+              onClick={() => setRole('client')}
+              className={`text-2xl px-4 py-2 rounded-lg ${role === 'client' ? 'bg-blue-500 text-white' : 'bg-gray-200'
+                }`}
+            >
+              Client
+            </button>
+            <button
+              type="button"
+              onClick={() => setRole('driver')}
+              className={`text-2xl px-4 py-2 rounded-lg ${role === 'driver' ? 'bg-blue-500 text-white' : 'bg-gray-200'
+                }`}
+            >
+              Driver
+            </button>
+            {renderAlert('role')}
+          </div>
+          <div className="flex justify-end mt-10">
+            <button
+              type="button"
+              onClick={handleNext}
+              className="bg-blue-500 text-white py-2 px-4 rounded-lg"
+            >
+              Next
+            </button>
+          </div>
 
-  </div>
-)}
+        </div>
+      )}
 
       {step === 2 && (
         <div>
@@ -418,7 +416,7 @@ const RegistrationForm = () => {
             <div className="space-y-4">
               {role === 'client' && (
                 <>
-                 <div>
+                  <div>
                     <label className="block text-gray-700 mb-2">Government</label>
                     <input
                       type="text"
@@ -452,7 +450,7 @@ const RegistrationForm = () => {
                     />
                     {renderAlert('address')}
                   </div>
-                 
+
                   <div>
                     <label className="block text-gray-700 mb-2">Age</label>
                     <input
