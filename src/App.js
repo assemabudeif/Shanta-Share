@@ -3,16 +3,17 @@ import React from 'react';
 import './App.css';
 import './index.css';
 // import DriverProfile from './components/driverProfile';
-import CustomerViewProfile from './components/customerViewProfile';
-import DriverViewProfile from './components/driverVeiwProfile';
+import CustomerViewProfile from './Components/customerViewProfile';
+import DriverViewProfile from './Components/driverVeiwProfile';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HomePage from "./Pages/HomePage";
 import PostDetailsPage from "./Pages/PostDetailsPage";
 import PageNotFound from "./Pages/PageNotFound";
-import DriverProfile from './components/driverProfile';
+import DriverProfile from './Components/driverProfile';
 // import ReviewCard from './components/Reviews/reviewCard';
-import ReviewsList from './components/Reviews/reviewList';
+import ReviewsList from './Components/Reviews/reviewList';
 import RegistrationForm from './Components/RegistrationForm';
+import NavBarComp from "./Components/NavBarComp";
 
 const handleSave = (updatedDriver) => {
   console.log('Saved Driver Data:', updatedDriver);
@@ -30,6 +31,8 @@ function App() {
   return (
     <>
       <BrowserRouter>
+        <NavBarComp />
+        <div className="bg-transparent h-20"></div>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path='/register' element={<RegistrationForm />} />
