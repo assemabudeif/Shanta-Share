@@ -82,3 +82,62 @@
 .driver-profile-button:hover {
     opacity: 0.9;
 }
+
+
+.tableLinces{
+    width: 230px;
+    height: 70px;
+    border-radius: 5px;
+}
+
+.tableLinces thead tr td{
+    height:20px;
+}
+
+.tableLinces tbody tr td{
+    height:50px;
+}
+
+.detailsInfo {
+    margin-left: 75px;
+}
+
+.titleInfo {
+    color: gray;
+}
+
+.valueInfo {
+    color: black;
+}
+
+.fontSize {
+    font-size: xx-large;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .detailsInfo {
+        margin-left: 20px;
+    }
+
+    .fontSize {
+        font-size: large;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .space-x-20 {
+        gap: 10px;
+    }
+
+    .ml-20 {
+        margin-left: 10px;
+    }
+
+    .gap-20 {
+        gap: 10px;
+    }
+}

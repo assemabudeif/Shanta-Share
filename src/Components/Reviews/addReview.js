@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import DriverData from '../../data/driverData.json'
+import TravelPost from '../../data/travelPost.json'
 
 const AddReview = ({ onSubmit }, review) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,7 +27,7 @@ const AddReview = ({ onSubmit }, review) => {
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-200"
+        className=" ml-70 mt-4 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-200"
       >
         Add Review
       </button>
