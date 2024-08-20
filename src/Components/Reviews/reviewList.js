@@ -58,7 +58,7 @@ const ReviewsList = () => {
         </button>
       </div>
 
-      <AddReview onSubmit={(newReview) => setReviews([...reviews, newReview])} />
+      {/* <AddReview onSubmit={(newReview) => setReviews([...reviews, newReview])} /> */}
     </div>
   );
 };
