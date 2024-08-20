@@ -1,20 +1,28 @@
-import {useNavigate, useParams} from "react-router-dom";
-import {PhoneIcon, StarIcon} from "@heroicons/react/24/solid";
+import {useParams} from "react-router-dom";
+import {StarIcon} from "@heroicons/react/24/solid";
+import DriverInfoComp from "../Components/DriverInfoComp";
+import "../CSS/PostDetailsPage.css"
+import CarPlateNumberComp from "../Components/CarPlateNumberComp";
+import motorcycleImage from "../assets/images/motorcycle.png";
+import weightImage from "../assets/images/weight.png";
+import areaImage from "../assets/images/area.png";
 
 function PostDetailsPage() {
-    const { id } = useParams();
-    const navigator = useNavigate();
-  
+    const {id} = useParams();
+
     const travelPost = {
         id: id,
         driverName: "Ahmed Ali",
         driverPhone: "01111111111",
         driverRating: 4.5,
         driverImage: "https://media.licdn.com/dms/image/v2/D4D12AQGsWiQQo-hEew/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1705940048112?e=2147483647&v=beta&t=sLhAjsrcMFywuGD8D0_5t6SuboPthNoVKHVbV87PmPo",
-        carModel: "Toyota Corolla",
-        carLicensePlate: "B 1234",
+        carModel: "Hilux",
+        carBrand: "Toyota",
+        carYear: 2010,
+        carLicensePlateNumber: "1234",
+        carLicensePlateChar: "ن د ر",
         carImage: "https://global.toyota/pages/news/images/2023/06/21/1330/20230621_01_kv_w1920.jpg",
-        description: "I'm going to Cairo from Minya and I have 50 kg of available weight. I can pick you up from any place in Minya and drop you off at any place in Cairo.",
+        description: "Lorem Ipsum is simply dummy text of the printing and  typesetting industry. Lorem Ipsum has been the industry's standard dummy  text ever since the 1500s, when an unknown printer took a galley of  type and scrambled it to make a type specimen book.",
         from: "Minya",
         to: "Cairo",
         date: "2022-08-20",
@@ -31,95 +39,123 @@ function PostDetailsPage() {
         const stars = [];
 
         for (let i = 0; i < fullStars; i++) {
-            stars.push(<StarIcon key={i} className="w-5 h-5 text-yellow-500" />);
+            stars.push(<StarIcon key={i} className="w-5 h-5 text-yellow-500"/>);
         }
 
         if (halfStar) {
-            stars.push(<StarIcon key="half" className="w-5 h-5 text-yellow-500 opacity-50" />);
+            stars.push(<StarIcon key="half" className="w-5 h-5 text-yellow-500 opacity-50"/>);
         }
 
         return stars;
     };
 
-    const callDriver = () => {
-        window.location.href = `tel:${travelPost.driverPhone}`;
-    }
-
-    const showProfile = () => {
-        navigator(`/driverProfile/${travelPost.id}`);
-    }
 
     return (
-        <main className="container mx-auto p-4">
-            <div className="bg-white shadow-2xl rounded-2xl p-8">
-                <div className="flex flex-col md:flex-row items-center mb-6">
-                    <img src={travelPost.driverImage} alt="Driver" className="w-32 h-32 rounded-full mr-5 shadow-lg" />
-                    <div className="text-center md:text-left">
-                        <h2 className="text-3xl font-bold text-blue-800">{travelPost.driverName}</h2>
-                        <div className="flex items-center justify-center md:justify-start mt-2">
-                            {renderStars(travelPost.driverRating)}
-                            <span className="ml-2 text-black-600 font-semibold">{travelPost.driverRating}</span>
-                        </div>
-                        <p className="text-gray-600 mt-2">{travelPost.driverPhone}</p>
-                        <div className="flex mt-4 space-x-4">
-                            <button className="bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600" onClick={callDriver}>
-                               <PhoneIcon className={"w-5 h-5"} />
-                            </button>
-                            <button className="bg-green-500 text-white px-4 py-2 rounded-lg shadow hover:bg-green-600" onClick={showProfile}>
-                                Show Profile
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div className="mb-6">
-                    <img src={travelPost.carImage} alt="Car" className="w-full object-cover rounded-lg shadow-lg" />
-                </div>
-                <div className="mb-6">
-                    <h3 className="text-xl font-bold text-blue-800">Car Details</h3>
-                    <p className="mt-2">
-                     <span className={"text-gray-600"}>Model: </span>
-                        {travelPost.carModel}
-                    </p>
-                    <p className="mt-1">
-                        <span className={"text-gray-600"}>License Plate: </span>
-                        {travelPost.carLicensePlate}
-                    </p>
-                </div>
-                <div className="mb-6">
-                    <h3 className="text-xl font-bold text-blue-800">Travel Details</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-                        <p className="text-black-600">
-                            <span className={"text-gray-600"}>From: </span>
-                            {travelPost.from}</p>
-                        <p className="text-black-600">
-                            <span className={"text-gray-600"}>To: </span>
-                            {travelPost.to}</p>
-                        <p className="text-black-600">
-                            <span className={"text-gray-600"}>Date: </span>
-                            {travelPost.date}</p>
-                        <p className="text-black-600">
-                            <span className={"text-gray-600"}>Time: </span>
-                            {travelPost.time}</p>
-                        <p className="text-black-600">
-                            <span className={"text-gray-600"}>Price: </span>
-                            {travelPost.price} EGP</p>
-                        <p className="text-black-600">
-                            <span className={"text-gray-600"}>Travel Time: </span>
-                            {travelPost.travelTime}</p>
-                        <p className="text-black-600">
-                            <span className={"text-gray-600"}>Available Weight: </span>
-                            {travelPost.availableWeight} kg</p>
-                        <p className="text-black-600">
-                            <span className={"text-gray-600"}>Travel Type: </span>
-                            {travelPost.travelType}</p>
+        <main className="container mx-20 lg:mx-auto my-16">
+            {/*Driver Info*/}
+            <DriverInfoComp travelPost={travelPost} hasChat={true}/>
 
-                    </div>
+
+            {/*vehicle Info*/}
+            <div className={"flex flex-wrap "}>
+                {/*   plate number*/}
+                <CarPlateNumberComp travelPost={travelPost}/>
+                {/*   car image*/}
+                <div className={"me-auto inline"}></div>
+                <div className={"bg-[#D9D9D9] w-90 lg:w-64 px-10 me-8 my-8 lg:my-0 rounded-2xl"}>
+                    <img src={motorcycleImage} width={"auto"} alt="car"/>
                 </div>
-                <div>
-                    <h3 className="text-xl font-bold text-blue-800">Description</h3>
-                    <p className="mt-2">{travelPost.description}</p>
+                <div className={"bg-[#D9D9D9] w-90 lg:w-64 px-10 me-8 my-8 lg:my-0 rounded-2xl"}>
+                    <img src={motorcycleImage} width={"auto"} alt="car"/>
+                </div>
+                <div className={"bg-[#D9D9D9]  w-90 lg:w-64 px-10 me-8 my-8 lg:my-0 rounded-2xl"}>
+                    <img src={motorcycleImage} width={"auto"} alt="car"/>
                 </div>
             </div>
+
+            {/*    Location Info    */}
+            <div className={"border-t-[1.5px] border-b-[1.5px] border-t-[#8B8B8B] border-b-[#8B8B8B] py-16 mt-8"}>
+
+                <div className={"flex flex-col lg:flex-row justify-evenly"}>
+                    <div>
+                        <span className={"text-3xl font-semibold"}>
+                            Minia, Minia gov.
+                            <span className={"text-2xl font-normal"}>
+                               <br/> Today 06:30 AM
+                            </span>
+                        </span>
+                    </div>
+
+                    <div>
+                        <svg width="50" height="52" viewBox="0 0 50 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g clip-path="url(#clip0_41_102)">
+                                <path
+                                    d="M46.0847 21.4929L25.5117 0.499984L22.5659 3.51323L43.1388 24.4976C43.5294 24.8961 43.7488 25.4365 43.7488 26C43.7488 26.5635 43.5294 27.1039 43.1388 27.5024L22.5388 48.525L25.4847 51.5297L46.0847 30.5177C47.2563 29.3222 47.9146 27.701 47.9146 26.0106C47.9146 24.3202 47.2563 22.699 46.0847 21.5035V21.4929Z"
+                                    fill="#374957"/>
+                                <path
+                                    d="M28.1972 24.4976L4.7118 0.540357L1.76388 3.54511L23.7785 26L1.74097 48.4782L4.6868 51.4851L28.1972 27.5024C28.5878 27.1039 28.8072 26.5635 28.8072 26C28.8072 25.4365 28.5878 24.8961 28.1972 24.4976Z"
+                                    fill="#374957"/>
+                            </g>
+                            <defs>
+                                <clipPath id="clip0_41_102">
+                                    <rect width="50" height="51" fill="white" transform="translate(0 0.5)"/>
+                                </clipPath>
+                            </defs>
+                        </svg>
+
+                    </div>
+
+                    <div>
+                        <span className={"text-3xl font-semibold"}>
+                            Ramses, Cairo gov.
+                            <span className={"text-2xl font-normal"}>
+                               <br/> Today 10:30 AM
+                            </span>
+                        </span>
+                    </div>
+
+                </div>
+
+            </div>
+
+            {/*    Description    */}
+            <div className={"flex justify-between"}>
+                <div className={"mt-8"}>
+                    <h2 className={"text-3xl font-semibold"}>Description</h2>
+                    <p className={"text-lg"}>{travelPost.description}</p>
+                    <div className={"flex w-auto text-center self-center content-center mt-8"}>
+                        <span>
+                            <img src={weightImage} className={"w-16"} />
+                        </span>
+                        <span className={"self-center text-xl font-semibold ms-2"}>
+                            15 kg
+                        </span>
+
+                        <span className={"ms-10"}>
+                            <img src={areaImage} className={"w-16"} />
+                        </span>
+                        <span className={"self-center text-xl font-semibold ms-2"}>
+                            0.5 msq
+                        </span>
+                    </div>
+                </div>
+                {/*     Price    */}
+                <div  >
+                    <div className={"m-20 bg-white shadow-xl rounded-2xl px-12 py-4"} style={{width: "25vw"}}>
+                        <div className={"flex justify-between"}>
+                            <span className={"text-3xl font-semibold "}>Total</span>
+                            <span className={"text-3xl font-semibold "}>{travelPost.price} L.E</span>
+                        </div>
+                        <hr className={"my-4 border-1 border-[#8B8B8B]"}/>
+
+                        <button className={"w-full py-4 bg-black text-white font-semibold text-2xl rounded-2xl shadow-lg hover:bg-black hover:bg-opacity-85"}>
+                            Request Delivery
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+
         </main>
     );
 }

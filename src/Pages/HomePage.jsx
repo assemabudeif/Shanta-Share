@@ -17,40 +17,40 @@ function HomePage() {
   return (
     <>
       {/*<------->*<------> Navbar <------->*<------>*/}
-      <div className="bg-black flex justify-center">
-        <div className='p-6 max-w-[1280px] w-full flex justify-between text-white'>
-          <div className='flex w-full items-center'>
-            <div>
-              <h1 className='text-2xl'>Shanta Share</h1>
-            </div>
-            {/*<div className='w-1/6'>*/}
+      {/*<div className="bg-black flex justify-center">*/}
+      {/*  <div className='p-6 max-w-[1280px] w-full flex justify-between text-white'>*/}
+      {/*    <div className='flex w-full items-center'>*/}
+      {/*      <div>*/}
+      {/*        <h1 className='text-2xl'>Shanta Share</h1>*/}
+      {/*      </div>*/}
+      {/*      /!*<div className='w-1/6'>*!/*/}
 
-            {/*</div>*/}
-            <div className='mx-4 w-1/2 flex justify-evenly'>
-              <div className='py-2 px-4 rounded-full cursor-pointer hover:bg-gray-500 hover:bg-opacity-40'>
-                <span className='text-sm'> Home </span>
-              </div>
-              <div className='py-2 px-4 rounded-full cursor-pointer hover:bg-gray-500 hover:bg-opacity-40'>
-                <span className='text-sm'> Reserve </span>
-              </div>
-              <div className='py-2 px-4 rounded-full cursor-pointer hover:bg-gray-500 hover:bg-opacity-40'>
-                <span className='text-sm'> Orders </span>
-              </div>
-              <div className='py-2 px-4 rounded-full cursor-pointer hover:bg-gray-500 hover:bg-opacity-40'>
-                <span className='text-sm'> About </span>
-              </div>
-            </div>
-          </div>
-          <div className='flex w-full justify-end'>
-            <div>
-              lang
-            </div>
-            <div>
-              user login
-            </div>
-          </div>
-        </div>
-      </div>
+      {/*      /!*</div>*!/*/}
+      {/*      <div className='mx-4 w-1/2 flex justify-evenly'>*/}
+      {/*        <div className='py-2 px-4 rounded-full cursor-pointer hover:bg-gray-500 hover:bg-opacity-40'>*/}
+      {/*          <span className='text-sm'> Home </span>*/}
+      {/*        </div>*/}
+      {/*        <div className='py-2 px-4 rounded-full cursor-pointer hover:bg-gray-500 hover:bg-opacity-40'>*/}
+      {/*          <span className='text-sm'> Reserve </span>*/}
+      {/*        </div>*/}
+      {/*        <div className='py-2 px-4 rounded-full cursor-pointer hover:bg-gray-500 hover:bg-opacity-40'>*/}
+      {/*          <span className='text-sm'> Orders </span>*/}
+      {/*        </div>*/}
+      {/*        <div className='py-2 px-4 rounded-full cursor-pointer hover:bg-gray-500 hover:bg-opacity-40'>*/}
+      {/*          <span className='text-sm'> About </span>*/}
+      {/*        </div>*/}
+      {/*      </div>*/}
+      {/*    </div>*/}
+      {/*    <div className='flex w-full justify-end'>*/}
+      {/*      <div>*/}
+      {/*        lang*/}
+      {/*      </div>*/}
+      {/*      <div>*/}
+      {/*        user login*/}
+      {/*      </div>*/}
+      {/*    </div>*/}
+      {/*  </div>*/}
+      {/*</div>*/}
 
 
       {/*<------>*<------> Hero Section <------->*<------>*/}

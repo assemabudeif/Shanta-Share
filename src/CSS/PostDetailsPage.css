@@ -1,0 +1,29 @@
+.plate-number {
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: #000;
+    letter-spacing: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1.2rem;
+}
+
+.plate-char{
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: #000;
+    letter-spacing: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0.5rem;
+    width: 7rem;
+}
+
+.vertical-line {
+    border-left: 2px solid #000;
+    position: absolute;
+    height: 100%;
+    left: 55%;
+}
