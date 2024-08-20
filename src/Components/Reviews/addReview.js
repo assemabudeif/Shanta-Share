@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import DriverData from '../../data/driverData.json'
+import TravelPost from '../../data/travelPost.json'
 
 const AddReview = ({ onSubmit }, review) => {
   const [isOpen, setIsOpen] = useState(false);

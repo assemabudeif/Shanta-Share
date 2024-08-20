@@ -1,41 +1,64 @@
-import React, { useState, useEffect } from 'react';
-import DriverData from '../../data/driverData.json';
+import React, { useState, useEffect, useRef } from 'react';
+import TravelPost from '../../data/travelPost.json';
 import ReviewCard from './reviewCard';
 import AddReview from './addReview';
-import '../../CSS/reviewCard.css'
+import '../../CSS/reviewCard.css';
+import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/20/solid';
 
 const ReviewsList = () => {
   const [reviews, setReviews] = useState([]);
-  const [showMore, setShowMore] = useState(false);
+  const sliderRef = useRef(null);
 
   useEffect(() => {
-    setReviews(DriverData.reviews); 
+    setReviews(TravelPost.reviews);
   }, []);
 
-  const handleAddReview = (newReview) => {
-    setReviews([...reviews, newReview]); 
+  const handleScrollLeft = () => {
+    if (sliderRef.current) {
+      sliderRef.current.scrollBy({ left: -300, behavior: 'smooth' });
+    }
   };
 
-  const handleShowMore = () => {
-    setShowMore(!showMore); 
+  const handleScrollRight = () => {
+    if (sliderRef.current) {
+      sliderRef.current.scrollBy({ left: 300, behavior: 'smooth' });
+    }
   };
 
   return (
-    <div className="p-4 flex flex-col">
-      {reviews.slice(0, showMore ? reviews.length : 1).map((review, index) => (
-        <ReviewCard key={index} review={review} />
-      ))}
-      <div className="mt-2 ml-20">
-        {reviews.length > 1 && (
-          <button
-            onClick={handleShowMore}
-            className=" ml-70 mt-4 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-200 btnShow"
-          >
-            {showMore ? 'Show Less' : 'Show More'}
-          </button>
-        )}
-        <AddReview onSubmit={handleAddReview} />
+    <div className="relative">
+      {/* Slider Container */}
+      <div
+        ref={sliderRef}
+        className="flex overflow-x-scroll scrollbar-hide space-x-4 p-4"
+      >
+        {reviews.map((review, index) => (
+          <div key={index} className="flex-shrink-0">
+            <ReviewCard review={review} />
+          </div>
+        ))}
       </div>
+
+      {/* Arrows Container */}
+      <div className="absolute right-4 top-[-50px] flex space-x-2 mr-20">
+        {/* Left Arrow */}
+        <button
+          className="bg-white text-black p-2 rounded-full shadow-md hover:bg-gray-200"
+          onClick={handleScrollLeft}
+        >
+          <ArrowLeftIcon className="w-6 h-6" />
+        </button>
+
+        {/* Right Arrow */}
+        <button
+          className="bg-white text-black p-2 rounded-full shadow-md hover:bg-gray-200"
+          onClick={handleScrollRight}
+        >
+          <ArrowRightIcon className="w-6 h-6" />
+        </button>
+      </div>
+
+      <AddReview onSubmit={(newReview) => setReviews([...reviews, newReview])} />
     </div>
   );
 };

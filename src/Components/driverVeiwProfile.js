@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import driverData from '../data/driverData.json';
+import TravelPost from '../data/travelPost.json';
 import '../CSS/driverProfile.css';
 
 const DriverViewProfile = ({ onSave }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [editedDriver, setEditedDriver] = useState(driverData);
-  const [imagePreview, setImagePreview] = useState(driverData.profilePicture);
+  const [editedDriver, setEditedDriver] = useState(TravelPost);
+  const [imagePreview, setImagePreview] = useState(TravelPost.driverImage);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19,7 +19,7 @@ const DriverViewProfile = ({ onSave }) => {
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result);
-        setEditedDriver(prevState => ({ ...prevState, profilePicture: reader.result }));
+        setEditedDriver(prevState => ({ ...prevState, driverImage: reader.result }));
       };
       reader.readAsDataURL(file);
     }
@@ -55,25 +55,25 @@ const DriverViewProfile = ({ onSave }) => {
             />
             <img 
               src={imagePreview} 
-              alt={`${editedDriver.fullName}'s profile`} 
+              alt={`${editedDriver.driverName}'s profile`} 
               className="w-24 h-24 rounded-full border-2 border-gray-300 mb-4 md:mb-0 md:mr-4" 
             />
             <input 
               type="text" 
               name="fullName" 
-              value={editedDriver.fullName} 
+              value={editedDriver.driverName} 
               onChange={handleChange} 
               className="text-2xl font-bold border-b border-gray-300"
             />
           </>
         ) : (
           <img 
-            src={editedDriver.profilePicture} 
-            alt={`${editedDriver.fullName}'s profile`} 
+            src={editedDriver.driverName} 
+            alt={`${editedDriver.driverName}'s profile`} 
             className="w-24 h-24 rounded-full border-2 border-gray-300 mb-4 md:mb-0 md:mr-4"
           />
         )}
-        {!isEditing && <h1 className="text-2xl font-bold">{editedDriver.fullName}</h1>}
+        {!isEditing && <h1 className="text-2xl font-bold">{editedDriver.driverName}</h1>}
       </header>
       <section className="space-y-4">
         {isEditing ? (
@@ -102,7 +102,7 @@ const DriverViewProfile = ({ onSave }) => {
                     <input 
                       type="text" 
                       name="phoneNumber" 
-                      value={editedDriver.phoneNumber} 
+                      value={editedDriver.driverPhone} 
                       onChange={handleChange} 
                       className="mt-1 block w-full border-gray-300 rounded-md shadow-sm mb-2"
                     />
@@ -120,7 +120,7 @@ const DriverViewProfile = ({ onSave }) => {
           </div>
         ) : (
           <>
-            <p className="py-2 text-center rating">{renderStars(editedDriver.averageRating)}</p>
+            <p className="py-2 text-center rating">{renderStars(editedDriver.driverRating)}</p>
             <table className="w-full text-left border-0 driver-profile-table">
               <thead>
                 <tr className="border-b text-center">
@@ -130,7 +130,7 @@ const DriverViewProfile = ({ onSave }) => {
               <tbody>
                 <tr className="border-0">
                   <td className="font-bold py-2">Phone Number</td>
-                  <td className="py-2">{editedDriver.phoneNumber}</td>
+                  <td className="py-2">{editedDriver.driverPhone}</td>
                   <td className="font-bold py-2">Email</td>
                   <td className="py-2">{editedDriver.email}</td>
                 </tr>
@@ -148,7 +148,7 @@ const DriverViewProfile = ({ onSave }) => {
                 </tr>
                 <tr>
                   <td className="font-bold py-2">License Number:</td>
-                  <td className="py-2">{editedDriver.licensePlate}</td>
+                  <td className="py-2">{editedDriver.licenseImage}</td>
                 </tr>
               </tbody>
             </table>

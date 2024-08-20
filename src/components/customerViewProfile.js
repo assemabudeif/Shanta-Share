@@ -1,9 +1,15 @@
 import React from 'react';
-import driverData from '../data/driverData.json';
+import {StarIcon} from "@heroicons/react/24/solid";
+import TravelPost from '../data/travelPost.json';
+import DriverInfoComp from './DriverInfoComp';
+import DriverDetailsInfo from './driverDetailsInfo.js';
+import CarPlateNumberComp from './CarPlateNumberComp.jsx';
 import '../CSS/driverProfile.css';
 
 function CustomerViewProfile() {
   const renderStars = (rating) => {
+    const fullStars = Math.floor(rating);
+    const halfStar = rating % 1 !== 0;
     const stars = [];
 
     for (let i = 0; i < fullStars; i++) {
@@ -13,35 +19,34 @@ function CustomerViewProfile() {
     if (halfStar) {
         stars.push(<StarIcon key="half" className="w-5 h-5 text-yellow-500 opacity-50"/>);
     }
-    return stars;
-  };
 
+    return stars;
+};
   return (
     <main className="container mx-auto p-4">
-      <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-2xl">
-        <header className="flex flex-col md:flex-row items-center mb-6">
-          <img 
-            src={driverData.profilePicture} 
-            alt={`${driverData.fullName}'s profile`} 
-            className="w-24 h-24 rounded-full border-2 border-gray-300 mb-4 md:mb-0 md:mr-4"
-          />
-          <div className="flex flex-col items-center md:items-start">
-            <h1 className="text-2xl font-bold">{driverData.fullName}</h1>
-            <p className="flex items-center mt-2">
-              {renderStars(Math.floor(driverData.averageRating))}
-              <span className="ml-2 text-gray-500">{driverData.averageRating} verified</span>
-            </p>
+      {/*Driver Info*/}
+       <DriverInfoComp travelPost={TravelPost} hasChat={false}/>
+       <DriverDetailsInfo/>
+       <div className="flex flex-col lg:flex-row flex-wrap gap-10 mt-10 ml-20">
+          <div className="mr-20 w-full lg:w-auto ml-10">
+              {/* Plate number */}
+              <CarPlateNumberComp travelPost={TravelPost} />
           </div>
-          <div className="ml-auto mt-2">
-            <a href={`tel:${driverData.phoneNumber}`} className="text-blue-500 text-2xl">
-              📞
-            </a>
+          {/* Car images */}
+          <div className="flex flex-wrap gap-2 w-full lg:w-auto">
+              {TravelPost.carImages.map((image, index) => (
+                  <div key={index} className="bg-[#D9D9D9] w-full lg:w-64 px-10 my-8 lg:my-0 rounded-2xl">
+                      <img src={image} width="auto" alt={`car-${index}`} />
+                  </div>
+              ))}
           </div>
-        </header>
-        <section className="space-y-4 mb-6">
+        </div>
+
+
+        {/* <section className="space-y-4 mb-6">
           <div className="grid grid-cols-3 gap-4 text-center">
-            <p className="text-gray-500 mt-2">From: <span className='text-black-500'>{driverData.address}</span></p>
-            <p className="text-gray-500 mt-1">Licence Type: {driverData.licenseType}</p>
+            <p className="text-gray-500 mt-2">From: <span className='text-black-500'>{TravelPost.address}</span></p>
+            <p className="text-gray-500 mt-1">Licence Type: {TravelPost.licenseType}</p>
             <div>
               <span className="block text-xl font-bold">{driverData.totalTrips}</span>
               <span className="text-gray-500">Trips</span>
@@ -55,7 +60,7 @@ function CustomerViewProfile() {
               <span className="text-gray-500">Years</span>
             </div>
           </div>
-          {/* <div className="flex justify-around items-center mt-4">
+          <div className="flex justify-around items-center mt-4">
             <div className="text-center">
               <span className="block font-bold text-lg">Toyota</span>
               <span className="text-gray-500">Hilux</span>
@@ -77,9 +82,8 @@ function CustomerViewProfile() {
               </tbody>
             </table>
           </div>
-          </div> */}
-        </section>
-      </div>
+          </div>
+        </section> */}
     </main>
   );
 }

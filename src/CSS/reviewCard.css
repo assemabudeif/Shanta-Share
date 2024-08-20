@@ -1,5 +1,8 @@
 .reviewCard{
-    width: 3000px;
+    margin-left: 70px;
+    width: 514px;
+    height: 298px;
+    box-shadow: 6px 10px 18px rgba(0, 0, 0, 0.1);
 }
 
 .btnShow{
@@ -8,3 +11,22 @@
     margin-top: 5px;
     
 }
+
+.reviewTitle{
+    margin-left: 100px;
+    font-size: xx-large;
+    font-weight: 500;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    /* text-shadow: ; */
+}
+
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+  }
