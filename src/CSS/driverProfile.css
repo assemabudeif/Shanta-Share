@@ -82,3 +82,18 @@
 .driver-profile-button:hover {
     opacity: 0.9;
 }
+
+
+.tableLinces{
+    width: 230px;
+    height: 70px;
+    border-radius: 5px;
+}
+
+.tableLinces thead tr td{
+    height:20px;
+}
+
+.tableLinces tbody tr td{
+    height:50px;
+}
