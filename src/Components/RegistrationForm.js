@@ -208,7 +208,7 @@ const RegistrationForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (step === 4) {
-      setSuccessMessage('Thank you, your request is under approval now!');
+      SetDataLocal(e); 
     }
   };
 
@@ -274,21 +274,46 @@ const RegistrationForm = () => {
           <button
             type="button"
             onClick={handleSubmit}
-            className="bg-blue-500 text-white py-2 px-4 rounded-lg"
+            className="bg-black text-white py-2 px-4 rounded-lg"
           >
             Confirm
           </button>
         </div>
       )}
     </div>
-  );
+
+    )
+
+    const SetDataLocal = (e) => {
+      e.preventDefault(); // Prevent form submission
+    
+      if (role) {
+        // Store only the specified fields in local storage
+        localStorage.setItem('email', formData.email);
+        localStorage.setItem('phone', formData.mobile); 
+        localStorage.setItem('password', formData.password);
+        localStorage.setItem('name', `${formData.firstName} ${formData.lastName}`);
+    
+        // Set success message
+        setSuccessMessage('Thank you! Your data is under approval now.');
+      } else {
+        // Set role error if not selected
+        setErrors((prevErrors) => ({ ...prevErrors, role: 'Role is required.' }));
+      }
+  
+    
+};
+
+
+
+
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">
+    <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg my-16">
       <div className="flex items-center mb-8">
         {['Role Selection', 'Login Info', role === 'client' ? 'Client Info' : 'Driver Info', 'Confirmation'].map((text, index) => (
           <React.Fragment key={index}>
-            <div className={`w-12 h-12 flex items-center justify-center rounded-full ${step >= index + 1 ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-700'}`}>
+            <div className={`w-12 h-12 flex items-center justify-center rounded-full ${step >= index + 1 ? 'bg-black text-white' : 'bg-gray-300 text-gray-700'}`}>
               {step > index + 1 ? <FaCheck /> : index + 1}
             </div>
             {index < 3 && <div className="w-1/4 h-1 bg-gray-300"></div>}
@@ -302,7 +327,7 @@ const RegistrationForm = () => {
             <button
               type="button"
               onClick={() => setRole('client')}
-              className={`text-2xl px-4 py-2 rounded-lg ${role === 'client' ? 'bg-blue-500 text-white' : 'bg-gray-200'
+              className={`text-2xl px-4 py-2 rounded-lg ${role === 'client' ? 'bg-black text-white' : 'bg-gray-200'
                 }`}
             >
               Client
@@ -310,7 +335,7 @@ const RegistrationForm = () => {
             <button
               type="button"
               onClick={() => setRole('driver')}
-              className={`text-2xl px-4 py-2 rounded-lg ${role === 'driver' ? 'bg-blue-500 text-white' : 'bg-gray-200'
+              className={`text-2xl px-4 py-2 rounded-lg ${role === 'driver' ? 'bg-black text-white' : 'bg-gray-200'
                 }`}
             >
               Driver
@@ -321,7 +346,7 @@ const RegistrationForm = () => {
             <button
               type="button"
               onClick={handleNext}
-              className="bg-blue-500 text-white py-2 px-4 rounded-lg"
+              className="bg-black text-white py-2 px-4 rounded-lg"
             >
               Next
             </button>
@@ -400,7 +425,7 @@ const RegistrationForm = () => {
                 </button>
                 <button
                   type="submit"
-                  className="bg-blue-500 text-white py-2 px-4 rounded-lg"
+                  className="bg-black text-white py-2 px-4 rounded-lg"
                 >
                   Next
                 </button>
@@ -583,14 +608,16 @@ const RegistrationForm = () => {
                 </button>
                 <button
                   type="submit"
-                  className="bg-blue-500 text-white py-2 px-4 rounded-lg"
+                  className="bg-black text-white py-2 px-4 rounded-lg"
                 >
                   Next
                 </button>
               </div>
+              
             </div>
           </form>
         </div>
+        
       )}
       {step === 4 && renderConfirmation()}
     </div>
