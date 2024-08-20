@@ -14,6 +14,10 @@ import DriverProfile from './Components/driverProfile';
 import ReviewsList from './Components/Reviews/reviewList';
 import RegistrationForm from './Components/RegistrationForm';
 import NavBarComp from "./Components/NavBarComp";
+import LoginStep1 from "./Components/LoginStep1"
+import LoginStep2 from "./Components/LoginStep2"
+
+
 
 const handleSave = (updatedDriver) => {
   console.log('Saved Driver Data:', updatedDriver);
@@ -28,14 +32,21 @@ const handleSave = (updatedDriver) => {
 
 
 function App() {
+
+  
   return (
     <>
+
       <BrowserRouter>
         <NavBarComp />
         <div className="bg-transparent h-20"></div>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path='/register' element={<RegistrationForm />} />
+          <Route path='/loginStep1' element={<LoginStep1 />} />
+          <Route path='/loginStep2' element={<LoginStep2 />} />
+
+
           {/* <Route path="/reviewCard" element={<ReviewCard />} /> */}
           <Route path="/reviewList" element={<ReviewsList />} />
           <Route path="/driverProfile/:id" element={<DriverProfile onSave={handleSave} />} />
@@ -45,6 +56,7 @@ function App() {
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </BrowserRouter>
+
     </>
   );
 }
