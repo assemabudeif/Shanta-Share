@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const LoginStep1 = () => {
@@ -7,21 +6,18 @@ const LoginStep1 = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  // Function to check if the input exists in localStorage
   const checkInLocalStorage = (input) => {
     const email = localStorage.getItem('email');
     const phone = localStorage.getItem('phone');
     
     const userData = input.trim().toLowerCase();
-  
-    // Check if the input matches either the email or the phone
+
     const emailInput = email ? email.toLowerCase() : '';
-    const phoneInput = phone ? phone.toLowerCase() : '';
+    const phoneInput = phone ? phone.replace(/\s+/g, '').toLowerCase() : '';
   
     return userData === emailInput || userData === phoneInput;
   };
 
-  // Function to validate input and navigate
   const handleLogin = (e) => {
     e.preventDefault();
     if (inputValue.trim() === '') {
@@ -30,12 +26,11 @@ const LoginStep1 = () => {
       setError('No account found with this phone number or email.');
     } else {
       setError('');
-      // Navigate to step 2 login if validation passes
+      localStorage.setItem('isLoggedIn', 'true');
       navigate('/loginStep2', { state: { inputValue } });
     }
   };
 
-  // Redirect to the registration page
   const handleRedirect = () => {
     navigate('/register');
   };
@@ -52,7 +47,6 @@ const LoginStep1 = () => {
             placeholder="Enter phone number or email"
             className="px-4 py-2 border rounded-md w-full mb-6 border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
             required
-            title="Please fill in this field."
           />
           {error && <div className="text-red-500 mb-4">{error}</div>}
           <button

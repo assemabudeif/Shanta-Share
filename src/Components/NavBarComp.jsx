@@ -16,10 +16,21 @@ function classNames(...classes) {
 
 export default function NavBarComp({ isLoggedIn, onLogout }) {
   const navigate = useNavigate();
+  const [isAuthenticated, setIsAuthenticated] = useState(isLoggedIn);
+
+  useEffect(() => {
+    const checkAuth = () => {
+      const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+      setIsAuthenticated(loggedIn);
+    };
+
+    checkAuth();
+  }, [isLoggedIn]);
 
   const handleLogout = () => {
     localStorage.clear();
-    onLogout(); // Notify parent component about logout
+    onLogout(); 
+    setIsAuthenticated(false);
     navigate('/loginStep1');
   };
 
@@ -28,7 +39,6 @@ export default function NavBarComp({ isLoggedIn, onLogout }) {
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div className="relative flex h-16 items-center justify-between">
           <div className="absolute inset-y-0 left-0 flex items-center md:hidden">
-            {/* Mobile menu button */}
             <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
               <span className="absolute -inset-0.5" />
               <span className="sr-only">Open main menu</span>
@@ -60,7 +70,7 @@ export default function NavBarComp({ isLoggedIn, onLogout }) {
           </div>
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             <button className="text-white font-semibold mr-3">AR</button>
-            {!isLoggedIn ? (
+            {!isAuthenticated ? (
               <Link to="/loginStep1" className="text-white font-semibold">Join</Link>
             ) : (
               <button
@@ -90,7 +100,7 @@ export default function NavBarComp({ isLoggedIn, onLogout }) {
               {item.name}
             </DisclosureButton>
           ))}
-          {isLoggedIn && (
+          {isAuthenticated && (
             <DisclosureButton
               onClick={handleLogout}
               className="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-gray-700"
