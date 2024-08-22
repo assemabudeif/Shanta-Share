@@ -1,3 +1,5 @@
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import {useParams} from "react-router-dom";
 import {StarIcon} from "@heroicons/react/24/solid";
 import DriverInfoComp from "../Components/DriverInfoComp";
@@ -8,10 +10,11 @@ import weightImage from "../assets/images/weight.png";
 import areaImage from "../assets/images/area.png";
 
 function PostDetailsPage() {
+    const [carData, setCardata] = useState([]);
     const {id} = useParams();
 
     const travelPost = {
-        id: id,
+        id: 1,
         driverName: "Ahmed Ali",
         driverPhone: "01111111111",
         driverRating: 4.5,
@@ -48,7 +51,15 @@ function PostDetailsPage() {
 
         return stars;
     };
-
+    useEffect(() => {
+        axios.get("https://retoolapi.dev/0JlabI/data/1")
+       .then((response) => {
+         setCardata(response.data);
+       })
+       .catch((error) => {
+         console.error("Error fetching data:", error);
+       });
+      }, []);
 
     return (
         <main className="container mx-20 lg:mx-auto my-16">
@@ -59,7 +70,7 @@ function PostDetailsPage() {
             {/*vehicle Info*/}
             <div className={"flex flex-wrap "}>
                 {/*   plate number*/}
-                <CarPlateNumberComp travelPost={travelPost}/>
+                <CarPlateNumberComp carData={carData}/>
                 {/*   car image*/}
                 <div className={"me-auto inline"}></div>
                 <div className={"bg-[#D9D9D9] w-90 lg:w-64 px-10 me-8 my-8 lg:my-0 rounded-2xl"}>
