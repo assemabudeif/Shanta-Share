@@ -14,8 +14,9 @@ import DriverProfile from './Components/driverProfile';
 import ReviewsList from './Components/Reviews/reviewList';
 import RegistrationForm from './Components/RegistrationForm';
 import NavBarComp from "./Components/NavBarComp";
-import LoginStep1 from "./Components/LoginStep1"
-import LoginStep2 from "./Components/LoginStep2"
+import LoginStep1 from "./Components/LoginStep1";
+import LoginStep2 from "./Components/LoginStep2";
+import DriverInfoComp from './Components/DriverInfoComp';
 
 
 
@@ -49,6 +50,7 @@ function App() {
 
           {/* <Route path="/reviewCard" element={<ReviewCard />} /> */}
           <Route path="/reviewList" element={<ReviewsList />} />
+          <Route path="/driverInfoComp" element={<DriverInfoComp />} />
           <Route path="/driverProfile/:id" element={<DriverProfile onSave={handleSave} />} />
           <Route path="/customerViewProfile/:id" element={<CustomerViewProfile />} />
           <Route path="/driverViewProfile" element={<DriverViewProfile onSave={handleSave} />} />

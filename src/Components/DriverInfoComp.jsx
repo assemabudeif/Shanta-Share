@@ -11,6 +11,8 @@ function DriverInfoComp(props){
     }
 
     const showProfile = () => {
+        console.log(props.travelPost)
+        console.log(props.travelPost.id)
         if(props.hasChat){
             navigator(`/driverProfile/${props.travelPost.id}`)
         }

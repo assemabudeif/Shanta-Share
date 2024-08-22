@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import TravelPost from '../../data/travelPost.json';
+import axios from "axios";
+// import Data from '../../data/data.json';
 import ReviewCard from './reviewCard';
-import AddReview from './addReview';
+// import AddReview from './addReview';
 import '../../CSS/reviewCard.css';
 import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/20/solid';
 
@@ -9,8 +10,17 @@ const ReviewsList = () => {
   const [reviews, setReviews] = useState([]);
   const sliderRef = useRef(null);
 
+  // useEffect(() => {
+  //   setReviews(Data.reviews);
+  // }, []);
   useEffect(() => {
-    setReviews(TravelPost.reviews);
+    axios.get("https://retoolapi.dev/YAtLCI/data")
+   .then((response) => {
+    setReviews(response.data);
+   })
+   .catch((error) => {
+     console.error("Error fetching data:", error);
+   });
   }, []);
 
   const handleScrollLeft = () => {

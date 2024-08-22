@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import TravelPost from '../../data/travelPost.json'
+import Data from '../../data/data.json'
 
 const AddReview = ({ onSubmit }, review) => {
   const [isOpen, setIsOpen] = useState(false);
