@@ -1,4 +1,5 @@
 import {useState} from "react";
+import {Link} from "react-router-dom";
 
 function HomePage() {
 
@@ -135,6 +136,9 @@ function HomePage() {
                   </div>
                 </div>
               </div>
+              <Link to={"/search"} className={"bg-white flex justify-center w-1/2 rounded-md border-0 py-3 text-gray-900 ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6 font-semibold text-xl hover:bg-gray-1000"}>
+                See Prices
+              </Link>
             </div>
           </div>
           <div className='w-full justify-end sm:hidden lg:flex'>

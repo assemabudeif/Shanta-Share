@@ -17,6 +17,7 @@ import NavBarComp from "./Components/NavBarComp";
 import LoginStep1 from "./Components/LoginStep1";
 import LoginStep2 from "./Components/LoginStep2";
 import DriverInfoComp from './Components/DriverInfoComp';
+import SearchPage from "./Pages/SearchPage";
 
 
 
@@ -43,6 +44,7 @@ function App() {
         <div className="bg-transparent h-20"></div>
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/search" element={<SearchPage />} />
           <Route path='/register' element={<RegistrationForm />} />
           <Route path='/loginStep1' element={<LoginStep1 />} />
           <Route path='/loginStep2' element={<LoginStep2 />} />
