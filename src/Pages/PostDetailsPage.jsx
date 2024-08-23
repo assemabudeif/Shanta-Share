@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import {useParams} from "react-router-dom";
+import {useLocation, useParams} from "react-router-dom";
 import {StarIcon} from "@heroicons/react/24/solid";
 import DriverInfoComp from "../Components/DriverInfoComp";
 import "../CSS/PostDetailsPage.css"
@@ -9,15 +9,16 @@ import motorcycleImage from "../assets/images/motorcycle.png";
 import weightImage from "../assets/images/weight.png";
 import areaImage from "../assets/images/area.png";
 
-function PostDetailsPage() {
+function PostDetailsPage(props) {
     const [carData, setCardata] = useState([]);
     const {id} = useParams();
+    const location = useLocation();
+    const post = location.state;
 
     const travelPost = {
         id: 1,
-        driverName: "Ahmed Ali",
-        driverPhone: "01111111111",
-        driverRating: 4.5,
+        driverName: post.name,
+        driverRating: post.rate.length,
         driverImage: "https://media.licdn.com/dms/image/v2/D4D12AQGsWiQQo-hEew/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1705940048112?e=2147483647&v=beta&t=sLhAjsrcMFywuGD8D0_5t6SuboPthNoVKHVbV87PmPo",
         carModel: "Hilux",
         carBrand: "Toyota",
@@ -25,32 +26,16 @@ function PostDetailsPage() {
         carLicensePlateNumber: "1234",
         carLicensePlateChar: "ن د ر",
         carImage: "https://global.toyota/pages/news/images/2023/06/21/1330/20230621_01_kv_w1920.jpg",
-        description: "Lorem Ipsum is simply dummy text of the printing and  typesetting industry. Lorem Ipsum has been the industry's standard dummy  text ever since the 1500s, when an unknown printer took a galley of  type and scrambled it to make a type specimen book.",
-        from: "Minya",
-        to: "Cairo",
-        date: "2022-08-20",
-        time: "10:00 AM",
-        price: 100,
+        description: post.description,
+        from: post.from,
+        to: post.to,
+        price: post.price,
         travelTime: "3 hours",
-        availableWeight: 50,
+        availableWeight: post.weight,
         travelType: "Car",
     };
 
-    const renderStars = (rating) => {
-        const fullStars = Math.floor(rating);
-        const halfStar = rating % 1 !== 0;
-        const stars = [];
 
-        for (let i = 0; i < fullStars; i++) {
-            stars.push(<StarIcon key={i} className="w-5 h-5 text-yellow-500"/>);
-        }
-
-        if (halfStar) {
-            stars.push(<StarIcon key="half" className="w-5 h-5 text-yellow-500 opacity-50"/>);
-        }
-
-        return stars;
-    };
     useEffect(() => {
         axios.get("https://retoolapi.dev/0JlabI/data/1")
        .then((response) => {
@@ -90,7 +75,7 @@ function PostDetailsPage() {
                 <div className={"flex flex-col lg:flex-row justify-evenly"}>
                     <div>
                         <span className={"text-3xl font-semibold"}>
-                            Minia, Minia gov.
+                            {travelPost.from}
                             <span className={"text-2xl font-normal"}>
                                <br/> Today 06:30 AM
                             </span>
@@ -118,7 +103,7 @@ function PostDetailsPage() {
 
                     <div>
                         <span className={"text-3xl font-semibold"}>
-                            Ramses, Cairo gov.
+                            {travelPost.to}
                             <span className={"text-2xl font-normal"}>
                                <br/> Today 10:30 AM
                             </span>
