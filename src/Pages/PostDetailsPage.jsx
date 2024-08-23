@@ -124,7 +124,7 @@ function PostDetailsPage(props) {
                             <img src={weightImage} className={"w-16"} />
                         </span>
                         <span className={"self-center text-xl font-semibold ms-2"}>
-                            15 kg
+                            {travelPost.availableWeight} kg
                         </span>
 
                         <span className={"ms-10"}>
