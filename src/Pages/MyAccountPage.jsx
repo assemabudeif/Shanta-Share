@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {NavLink} from "react-router-dom";
+import DriverPosts from '../Components/DriverPosts';
 
 export default function MyAccountPage() {
     const pages = [
@@ -9,17 +10,19 @@ export default function MyAccountPage() {
         "Account ",
         "Settings ",
     ];
+    const [posts, setPosts] = useState([]);
 
     const PagesComponent = [
-        <div>Summery</div>,
+        <div>Summary</div>,
         <div>Orders</div>,
-        <div>Posts</div>,
+        <DriverPosts posts={posts} setPosts={setPosts} />,
         <div>Account</div>,
         <div>Settings</div>,
     ];
-
+    
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const [selectedPage, setSelectedPage] = useState(0);
+
     const [selectedComponent, setSelectedComponent] = useState(PagesComponent[0]);
 
     const toggleSidebar = () => {
@@ -36,7 +39,16 @@ export default function MyAccountPage() {
         setSelectedComponent(PagesComponent[selectedPage]);
     }, [selectedPage]);
 
-
+    useEffect(() => {
+        fetch('https://retoolapi.dev/W1fCKB/data')
+            .then(response => response.json())
+            .then(data => {
+                console.log('Fetched data:', data);
+                setPosts(data);
+            })
+            .catch(error => console.error('Error fetching posts:', error));
+    }, []);
+   
     return (
         <>
             <div className="grid grid-cols-12 md:max-w-[1920px]">
