@@ -13,19 +13,15 @@ function CreatePostPage() {
   };
 
   const handlePreviewClick = () => {
-    // Navigate to the PostDetailsPage and pass formData as state
     navigate('/post/:id', { state: formData });
   };
   const handleSubmit = async () => {
     try {
       const response = await axios.post('https://retoolapi.dev/W1fCKB/data', formData);
       console.log('Form submitted successfully:', response.data);
-      // Clear the form and preview after successful submission
       setFormData({});
-      // Optionally, display a success message or redirect
     } catch (error) {
       console.error('Error submitting form:', error);
-      // Handle error notification here
     }
   };
 

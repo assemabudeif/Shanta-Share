@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import CreatePostPage from './Posts/createPostPage';
 
 function DriverPosts() {
     const [posts, setPosts] = useState([]);
@@ -74,7 +75,7 @@ function DriverPosts() {
     return (
         <div className="p-4 text-sm">
             <div className="flex items-center justify-between mb-4">
-                <h2 className="text-2xl font-semibold">My Posts</h2>
+                {/* <h2 className="text-2xl font-semibold">My Posts</h2> */}
                 <button
                     onClick={() => setIsFormVisible(!isFormVisible)}
                     className="py-2 px-4 bg-black text-white rounded-lg shadow-sm hover:bg-gray-800 text-lg"
@@ -95,16 +96,17 @@ function DriverPosts() {
             </div>
 
             {isFormVisible && (
-                <form onSubmit={handleFormSubmit} className="mb-4">
-                    <input type="text" name="from" value={form.from} onChange={handleFormChange} placeholder="From" required className="border px-2 py-1 rounded-md mb-2 w-full" />
-                    <input type="text" name="to" value={form.to} onChange={handleFormChange} placeholder="To" required className="border px-2 py-1 rounded-md mb-2 w-full" />
-                    <input type="text" name="name" value={form.name} onChange={handleFormChange} placeholder="Name" required className="border px-2 py-1 rounded-md mb-2 w-full" />
-                    <input type="text" name="rate" value={form.rate} onChange={handleFormChange} placeholder="Rate" required className="border px-2 py-1 rounded-md mb-2 w-full" />
-                    <input type="number" name="price" value={form.price} onChange={handleFormChange} placeholder="Price" required className="border px-2 py-1 rounded-md mb-2 w-full" />
-                    <input type="number" name="weight" value={form.weight} onChange={handleFormChange} placeholder="Weight" required className="border px-2 py-1 rounded-md mb-2 w-full" />
-                    <textarea name="description" value={form.description} onChange={handleFormChange} placeholder="Description" required className="border px-2 py-1 rounded-md mb-2 w-full" />
-                    <button type="submit" className="py-2 px-4 bg-black text-white rounded-lg">Submit</button>
-                </form>
+                <CreatePostPage/>
+                // <form onSubmit={handleFormSubmit} className="mb-4">
+                //     <input type="text" name="from" value={form.from} onChange={handleFormChange} placeholder="From" required className="border px-2 py-1 rounded-md mb-2 w-full" />
+                //     <input type="text" name="to" value={form.to} onChange={handleFormChange} placeholder="To" required className="border px-2 py-1 rounded-md mb-2 w-full" />
+                //     <input type="text" name="name" value={form.name} onChange={handleFormChange} placeholder="Name" required className="border px-2 py-1 rounded-md mb-2 w-full" />
+                //     <input type="text" name="rate" value={form.rate} onChange={handleFormChange} placeholder="Rate" required className="border px-2 py-1 rounded-md mb-2 w-full" />
+                //     <input type="number" name="price" value={form.price} onChange={handleFormChange} placeholder="Price" required className="border px-2 py-1 rounded-md mb-2 w-full" />
+                //     <input type="number" name="weight" value={form.weight} onChange={handleFormChange} placeholder="Weight" required className="border px-2 py-1 rounded-md mb-2 w-full" />
+                //     <textarea name="description" value={form.description} onChange={handleFormChange} placeholder="Description" required className="border px-2 py-1 rounded-md mb-2 w-full" />
+                //     <button type="submit" className="py-2 px-4 bg-black text-white rounded-lg">Submit</button>
+                // </form>
             )}
 
             {!isFormVisible && (
