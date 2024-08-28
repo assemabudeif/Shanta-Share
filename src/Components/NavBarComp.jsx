@@ -61,10 +61,10 @@ export default function NavBarComp({ isLoggedIn, onLogout }) {
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             <button className="text-white font-semibold mr-3">AR</button>
             {!isLoggedIn ? (
-              <Link to="/loginStep1" className="text-white font-semibold">Join</Link>
-              // <Link to="/myaccount" className="text-white font-semibold">
-              //   <div className='h-12 w-12 bg-white rounded-full'></div>
-              // </Link>
+              // <Link to="/loginStep1" className="text-white font-semibold">Join</Link>
+              <Link to="/myaccount" className="text-white font-semibold">
+                <div className='h-12 w-12 bg-white rounded-full'></div>
+              </Link>
             
             ) : (
               <button
