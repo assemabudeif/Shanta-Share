@@ -19,8 +19,8 @@ export default function NavBarComp({ isLoggedIn, onLogout }) {
 
   const handleLogout = () => {
     localStorage.clear();
-    onLogout(); // Notify parent component about logout
-    navigate('/loginStep1');
+    onLogout(); // Notify parent component about logoutep1
+    navigate('/loginSt');
   };
 
   return (
@@ -62,6 +62,10 @@ export default function NavBarComp({ isLoggedIn, onLogout }) {
             <button className="text-white font-semibold mr-3">AR</button>
             {!isLoggedIn ? (
               <Link to="/loginStep1" className="text-white font-semibold">Join</Link>
+              // <Link to="/myaccount" className="text-white font-semibold">
+              //   <div className='h-12 w-12 bg-white rounded-full'></div>
+              // </Link>
+            
             ) : (
               <button
                 onClick={handleLogout}
