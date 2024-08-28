@@ -22,6 +22,7 @@ import Store from "./Store/Store";
 import {Provider} from "react-redux";
 import MyAccountPage from "./Pages/MyAccountPage";
 import CreatePostPage from './Components/Posts/createPostPage';
+import DriverHomePage from "./Pages/DriverHomePage";
 
 
 const handleSave = (updatedDriver) => {
@@ -65,6 +66,7 @@ function App() {
                         <Route path="/myaccount" element={<MyAccountPage/>}/>
                         <Route path="/CreatePostPage" element={<CreatePostPage/>}/>
                         <Route path="/driverProfile/:id" element={<DriverProfile onSave={handleSave}/>}/>
+                        <Route path="/driver_home" element={<DriverHomePage onSave={handleSave}/>}/>
                         <Route path="/customerViewProfile/:id" element={<CustomerViewProfile/>}/>
                         <Route path="/driverViewProfile" element={<DriverViewProfile onSave={handleSave}/>}/>
                         <Route path={"/post/:id"} element={<PostDetailsPage/>}/>
