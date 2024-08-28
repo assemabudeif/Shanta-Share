@@ -14,11 +14,12 @@ function PostDetailsPage(props) {
     const {id} = useParams();
     const location = useLocation();
     const post = location.state;
+    console.log("post:",post)
 
     const travelPost = {
         id: 1,
-        driverName: post.name,
-        driverRating: post.rate.length,
+        driverName: post?.name || "Ahmed",
+        driverRating: post?.rate?.length || 0,
         driverImage: "https://media.licdn.com/dms/image/v2/D4D12AQGsWiQQo-hEew/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1705940048112?e=2147483647&v=beta&t=sLhAjsrcMFywuGD8D0_5t6SuboPthNoVKHVbV87PmPo",
         carModel: "Hilux",
         carBrand: "Toyota",
@@ -26,14 +27,15 @@ function PostDetailsPage(props) {
         carLicensePlateNumber: "1234",
         carLicensePlateChar: "ن د ر",
         carImage: "https://global.toyota/pages/news/images/2023/06/21/1330/20230621_01_kv_w1920.jpg",
-        description: post.description,
-        from: post.from,
-        to: post.to,
-        price: post.price,
+        description: post?.description,
+        from: post?.from,
+        to: post?.to,
+        price: post?.price,
         travelTime: "3 hours",
-        availableWeight: post.weight,
+        availableWeight: post?.weight,
         travelType: "Car",
-    };
+      };
+    
 
 
     useEffect(() => {
