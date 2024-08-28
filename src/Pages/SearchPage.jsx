@@ -7,11 +7,14 @@ import {useSelector} from "react-redux";
 export default function SearchPage() {
     const [posts, setPosts] = useState([]);
     const [postError, setPostError] = useState("");
-    const loading = useSelector(state => state.loader.loader);
+    const [loading, setLoading] = useState(true);
+    // const loading = useSelector(state => state.loader.loader);
 
     const GetPosts = () => {
-        AxiosInstance.get("data").then((response) => {
+        AxiosInstance.get("https://retoolapi.dev/W1fCKB/data").then((response) => {
+            console.log(response.data);
             setPosts(response.data);
+            setLoading(false)
         }).catch((error) => {
             setPostError(error);
             console.error("Error fetching data:", error);
@@ -200,7 +203,7 @@ export default function SearchPage() {
                                             </svg>
 
                                             <span
-                                                className="ms-2 text-black-600 font-semibold me-8">{post.rate.length}</span>
+                                                className="ms-2 text-black-600 font-semibold me-8">{String(post.rate).length / 2}</span>
                                             {
                                                 post.verified && (
                                                     <>
