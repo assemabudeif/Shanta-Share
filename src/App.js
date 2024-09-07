@@ -20,6 +20,9 @@ import DriverInfoComp from './Components/DriverInfoComp';
 import SearchPage from "./Pages/SearchPage";
 import Store from "./Store/Store";
 import {Provider} from "react-redux";
+import MyAccountPage from "./Pages/MyAccountPage";
+import CreatePostPage from './Components/Posts/createPostPage';
+import DriverHomePage from "./Pages/DriverHomePage";
 
 
 const handleSave = (updatedDriver) => {
@@ -35,6 +38,8 @@ const handleSave = (updatedDriver) => {
 
 
 function App() {
+    const location = window.location.pathname;
+    console.log(location);
 
 
     return (
@@ -42,20 +47,26 @@ function App() {
             <Provider store={Store}>
 
                 <BrowserRouter>
-                    <NavBarComp/>
-                    <div className="bg-transparent h-20"></div>
+                    {
+                        location !== "/myaccount" &&
+                        <>
+                            <NavBarComp/>
+                            <div className="bg-transparent h-20"></div>
+                        </>
+                    }
                     <Routes>
                         <Route path="/" element={<HomePage/>}/>
                         <Route path="/search" element={<SearchPage/>}/>
                         <Route path='/register' element={<RegistrationForm/>}/>
                         <Route path='/loginStep1' element={<LoginStep1/>}/>
-                        <Route path='/loginStep2' element={<LoginStep2/>}/>
-
-
-                        {/* <Route path="/reviewCard" element={<ReviewCard />} /> */}
+                        <Route path='/loginStep2'
+                               element={<LoginStep2/>}/>{/* <Route path="/reviewCard" element={<ReviewCard />} /> */}
                         <Route path="/reviewList" element={<ReviewsList/>}/>
                         <Route path="/driverInfoComp" element={<DriverInfoComp/>}/>
+                        <Route path="/myaccount" element={<MyAccountPage/>}/>
+                        <Route path="/CreatePostPage" element={<CreatePostPage/>}/>
                         <Route path="/driverProfile/:id" element={<DriverProfile onSave={handleSave}/>}/>
+                        <Route path="/driver_home" element={<DriverHomePage onSave={handleSave}/>}/>
                         <Route path="/customerViewProfile/:id" element={<CustomerViewProfile/>}/>
                         <Route path="/driverViewProfile" element={<DriverViewProfile onSave={handleSave}/>}/>
                         <Route path={"/post/:id"} element={<PostDetailsPage/>}/>

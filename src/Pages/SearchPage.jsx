@@ -7,11 +7,14 @@ import {useSelector} from "react-redux";
 export default function SearchPage() {
     const [posts, setPosts] = useState([]);
     const [postError, setPostError] = useState("");
-    const loading = useSelector(state => state.loader.loader);
+    const [loading, setLoading] = useState(true);
+    // const loading = useSelector(state => state.loader.loader);
 
     const GetPosts = () => {
-        AxiosInstance.get("data").then((response) => {
+        AxiosInstance.get("https://retoolapi.dev/W1fCKB/data").then((response) => {
+            console.log(response.data);
             setPosts(response.data);
+            setLoading(false)
         }).catch((error) => {
             setPostError(error);
             console.error("Error fetching data:", error);
@@ -138,6 +141,7 @@ export default function SearchPage() {
                     {
                         posts.map((post, index) => (
                             <div className={"border-2 border-black rounded-2xl grid grid-cols-4 py-8"}>
+                                { console.log(typeof(post.rate))}
                                 <div className={"w-90 lg:w-64 px-10 me-8 my-8 lg:my-0 rounded-2xl"}>
                                     <img src={motorcycleImage} width={"auto"} alt="car" className={"col-span-1"}/>
                                 </div>
@@ -200,7 +204,7 @@ export default function SearchPage() {
                                             </svg>
 
                                             <span
-                                                className="ms-2 text-black-600 font-semibold me-8">{post.rate.length}</span>
+                                                className="ms-2 text-black-600 font-semibold me-8">{(typeof(post.rate) === "string" && post.rate.length)}</span>
                                             {
                                                 post.verified && (
                                                     <>
