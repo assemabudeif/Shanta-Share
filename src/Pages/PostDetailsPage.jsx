@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from "react";
 import axios from "axios";
 import {useLocation, useParams} from "react-router-dom";
-import {StarIcon} from "@heroicons/react/24/solid";
 import DriverInfoComp from "../Components/DriverInfoComp";
 import "../CSS/PostDetailsPage.css"
 import CarPlateNumberComp from "../Components/CarPlateNumberComp";
@@ -11,10 +10,11 @@ import areaImage from "../assets/images/area.png";
 
 function PostDetailsPage(props) {
     const [carData, setCardata] = useState([]);
-    const {id} = useParams();
+    // const {id} = useParams();
     const location = useLocation();
     const post = location.state;
-    console.log("post:",post)
+    const [requestEnabled, setRequestEnabled] = useState(false);
+    console.log("post:", post)
 
     const travelPost = {
         id: 1,
@@ -34,128 +34,138 @@ function PostDetailsPage(props) {
         travelTime: "3 hours",
         availableWeight: post?.weight,
         travelType: "Car",
-      };
-    
+    };
 
+    const handleRequest = () => {
+        setRequestEnabled(!requestEnabled);
+        console.log(requestEnabled, "requestEnabled");
+    }
 
     useEffect(() => {
         axios.get("https://retoolapi.dev/0JlabI/data/1")
-       .then((response) => {
-         setCardata(response.data);
-       })
-       .catch((error) => {
-         console.error("Error fetching data:", error);
-       });
-      }, []);
+            .then((response) => {
+                setCardata(response.data);
+            })
+            .catch((error) => {
+                console.error("Error fetching data:", error);
+            });
+    }, []);
 
-    return (
-        <main className="container mx-20 lg:mx-auto my-16">
-            {/*Driver Info*/}
-            <DriverInfoComp travelPost={travelPost} hasChat={true}/>
+    useEffect(() => {
+
+    }, [requestEnabled]);
+
+    return (<main className="container mx-20 lg:mx-auto my-16">
+        {/*Driver Info*/}
+        <DriverInfoComp travelPost={travelPost} hasChat={true}/>
 
 
-            {/*vehicle Info*/}
-            <div className={"flex flex-wrap "}>
-                {/*   plate number*/}
-                <CarPlateNumberComp carData={carData}/>
-                {/*   car image*/}
-                <div className={"me-auto inline"}></div>
-                <div className={"bg-[#D9D9D9] w-90 lg:w-64 px-10 me-8 my-8 lg:my-0 rounded-2xl"}>
-                    <img src={motorcycleImage} width={"auto"} alt="car"/>
-                </div>
-                <div className={"bg-[#D9D9D9] w-90 lg:w-64 px-10 me-8 my-8 lg:my-0 rounded-2xl"}>
-                    <img src={motorcycleImage} width={"auto"} alt="car"/>
-                </div>
-                <div className={"bg-[#D9D9D9]  w-90 lg:w-64 px-10 me-8 my-8 lg:my-0 rounded-2xl"}>
-                    <img src={motorcycleImage} width={"auto"} alt="car"/>
-                </div>
+        {/*vehicle Info*/}
+        <div className={"flex flex-wrap "}>
+            {/*   plate number*/}
+            <CarPlateNumberComp carData={carData}/>
+            {/*   car image*/}
+            <div className={"me-auto inline"}></div>
+            <div className={"bg-[#D9D9D9] w-90 lg:w-64 px-10 me-8 my-8 lg:my-0 rounded-2xl"}>
+                <img src={motorcycleImage} width={"auto"} alt="car"/>
             </div>
+            <div className={"bg-[#D9D9D9] w-90 lg:w-64 px-10 me-8 my-8 lg:my-0 rounded-2xl"}>
+                <img src={motorcycleImage} width={"auto"} alt="car"/>
+            </div>
+            <div className={"bg-[#D9D9D9]  w-90 lg:w-64 px-10 me-8 my-8 lg:my-0 rounded-2xl"}>
+                <img src={motorcycleImage} width={"auto"} alt="car"/>
+            </div>
+        </div>
 
-            {/*    Location Info    */}
-            <div className={"border-t-[1.5px] border-b-[1.5px] border-t-[#8B8B8B] border-b-[#8B8B8B] py-16 mt-8"}>
+        {/*    Location Info    */}
+        <div className={"border-t-[1.5px] border-b-[1.5px] border-t-[#8B8B8B] border-b-[#8B8B8B] py-16 mt-8"}>
 
-                <div className={"flex flex-col lg:flex-row justify-evenly"}>
-                    <div>
+            <div className={"flex flex-col lg:flex-row justify-evenly"}>
+                <div>
                         <span className={"text-3xl font-semibold"}>
                             {travelPost.from}
                             <span className={"text-2xl font-normal"}>
-                               <br/> Today 06:30 AM
+                                <br/> Today 06:30 AM
                             </span>
                         </span>
-                    </div>
+                </div>
 
-                    <div>
-                        <svg width="50" height="52" viewBox="0 0 50 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <g clip-path="url(#clip0_41_102)">
-                                <path
-                                    d="M46.0847 21.4929L25.5117 0.499984L22.5659 3.51323L43.1388 24.4976C43.5294 24.8961 43.7488 25.4365 43.7488 26C43.7488 26.5635 43.5294 27.1039 43.1388 27.5024L22.5388 48.525L25.4847 51.5297L46.0847 30.5177C47.2563 29.3222 47.9146 27.701 47.9146 26.0106C47.9146 24.3202 47.2563 22.699 46.0847 21.5035V21.4929Z"
-                                    fill="#374957"/>
-                                <path
-                                    d="M28.1972 24.4976L4.7118 0.540357L1.76388 3.54511L23.7785 26L1.74097 48.4782L4.6868 51.4851L28.1972 27.5024C28.5878 27.1039 28.8072 26.5635 28.8072 26C28.8072 25.4365 28.5878 24.8961 28.1972 24.4976Z"
-                                    fill="#374957"/>
-                            </g>
-                            <defs>
-                                <clipPath id="clip0_41_102">
-                                    <rect width="50" height="51" fill="white" transform="translate(0 0.5)"/>
-                                </clipPath>
-                            </defs>
-                        </svg>
+                <div>
+                    <svg width="50" height="52" viewBox="0 0 50 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g clip-path="url(#clip0_41_102)">
+                            <path
+                                d="M46.0847 21.4929L25.5117 0.499984L22.5659 3.51323L43.1388 24.4976C43.5294 24.8961 43.7488 25.4365 43.7488 26C43.7488 26.5635 43.5294 27.1039 43.1388 27.5024L22.5388 48.525L25.4847 51.5297L46.0847 30.5177C47.2563 29.3222 47.9146 27.701 47.9146 26.0106C47.9146 24.3202 47.2563 22.699 46.0847 21.5035V21.4929Z"
+                                fill="#374957"/>
+                            <path
+                                d="M28.1972 24.4976L4.7118 0.540357L1.76388 3.54511L23.7785 26L1.74097 48.4782L4.6868 51.4851L28.1972 27.5024C28.5878 27.1039 28.8072 26.5635 28.8072 26C28.8072 25.4365 28.5878 24.8961 28.1972 24.4976Z"
+                                fill="#374957"/>
+                        </g>
+                        <defs>
+                            <clipPath id="clip0_41_102">
+                                <rect width="50" height="51" fill="white" transform="translate(0 0.5)"/>
+                            </clipPath>
+                        </defs>
+                    </svg>
 
-                    </div>
+                </div>
 
-                    <div>
+                <div>
                         <span className={"text-3xl font-semibold"}>
                             {travelPost.to}
                             <span className={"text-2xl font-normal"}>
-                               <br/> Today 10:30 AM
+                                <br/> Today 10:30 AM
                             </span>
                         </span>
-                    </div>
-
                 </div>
 
             </div>
 
-            {/*    Description    */}
-            <div className={"flex justify-between"}>
-                <div className={"mt-8"}>
-                    <h2 className={"text-3xl font-semibold"}>Description</h2>
-                    <p className={"text-lg"}>{travelPost.description}</p>
-                    <div className={"flex w-auto text-center self-center content-center mt-8"}>
+        </div>
+
+        {/*    Description    */}
+        <div className={"flex justify-between"}>
+            {!requestEnabled && <div className={"mt-8"}>
+                <h2 className={"text-3xl font-semibold"}>Description</h2>
+                <p className={"text-lg"}>{travelPost.description}</p>
+                <div className={"flex w-auto text-center self-center content-center mt-8"}>
                         <span>
-                            <img src={weightImage} className={"w-16"} />
+                            <img src={weightImage} className={"w-16"}/>
                         </span>
-                        <span className={"self-center text-xl font-semibold ms-2"}>
+                    <span className={"self-center text-xl font-semibold ms-2"}>
                             {travelPost.availableWeight} kg
                         </span>
 
-                        <span className={"ms-10"}>
-                            <img src={areaImage} className={"w-16"} />
+                    <span className={"ms-10"}>
+                            <img src={areaImage} className={"w-16"}/>
                         </span>
-                        <span className={"self-center text-xl font-semibold ms-2"}>
+                    <span className={"self-center text-xl font-semibold ms-2"}>
                             0.5 msq
                         </span>
-                    </div>
                 </div>
-                {/*     Price    */}
-                <div  >
-                    <div className={"m-20 bg-white shadow-xl rounded-2xl px-12 py-4"} style={{width: "25vw"}}>
-                        <div className={"flex justify-between"}>
-                            <span className={"text-3xl font-semibold "}>Total</span>
-                            <span className={"text-3xl font-semibold "}>{travelPost.price} L.E</span>
-                        </div>
-                        <hr className={"my-4 border-1 border-[#8B8B8B]"}/>
-
-                        <button className={"w-full py-4 bg-black text-white font-semibold text-2xl rounded-2xl shadow-lg hover:bg-black hover:bg-opacity-85"}>
-                            Request Delivery
-                        </button>
+            </div>}
+            {/*     Price    */}
+            <div
+                className={`${requestEnabled && "position-fixed bottom-0 right-0 bg-white shadow-xl rounded-3xl "} transition-all duration-1000`}
+                style={{width: requestEnabled && "100vw"}}>
+                <div className={`m-20 bg-white ${!requestEnabled && "shadow-xl rounded-2xl"} px-12 py-4`}
+                     style={{width: "25vw"}}>
+                    <div className={"flex justify-between"}>
+                        <span className={"text-3xl font-semibold "}>Total</span>
+                        <span className={"text-3xl font-semibold "}>{travelPost.price} L.E</span>
                     </div>
+                    <hr className={"my-4 border-1 border-[#8B8B8B]"}/>
+
+                    <button
+                        onClick={() => handleRequest()}
+                        className={"w-full py-4 bg-black text-white font-semibold text-2xl rounded-2xl shadow-lg hover:bg-black hover:bg-opacity-85"}>
+                        Request Delivery
+                    </button>
                 </div>
             </div>
+        </div>
 
 
-        </main>
-    );
+    </main>);
 }
 
 export default PostDetailsPage;
