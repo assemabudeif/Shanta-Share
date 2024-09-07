@@ -14,6 +14,51 @@ function PostDetailsPage(props) {
     const location = useLocation();
     const post = location.state;
     const [requestEnabled, setRequestEnabled] = useState(false);
+    const [selectedImages, setSelectedImages] = useState([]);
+    const [formData, setFormData] = useState({
+        from: '',
+        pickupCity: '',
+        pickupTime: '',
+        to: '',
+        destinationCity: '',
+        arrivalTime: '',
+        weight: '10.0 Kg',
+        size: '2.0 msq',
+        description: ''
+    });
+
+    const [errors, setErrors] = useState({});
+
+    const validate = (name, value) => {
+        let error = '';
+        if (!value) {
+            error = `${name} is required`;
+        } else if ((name === 'from' || name === 'to') && value.length < 2) {
+            error = `${name} must be at least 2 characters long`;
+        } else if ((name === 'weight' || name === 'size') && isNaN(value)) {
+            error = `${name} must be a number`;
+        }
+        return error;
+    };
+
+    const handleChange = (e) => {
+        const {name, value} = e.target;
+
+        // Validate the input
+        const error = validate(name, value);
+
+        // Update form data and errors
+        setFormData({
+            ...formData,
+            [name]: value
+        });
+        setErrors({
+            ...errors,
+            [name]: error
+        });
+
+        // onFormChange({...formData, [name]: value});
+    };
     console.log("post:", post)
 
     const travelPost = {
@@ -54,6 +99,12 @@ function PostDetailsPage(props) {
     useEffect(() => {
 
     }, [requestEnabled]);
+
+
+    function handleMultiImageChange(e) {
+        const files = e.target.files;
+        setSelectedImages([...files]);
+    }
 
     return (<main className="container mx-20 lg:mx-auto my-16">
         {/*Driver Info*/}
@@ -123,7 +174,7 @@ function PostDetailsPage(props) {
         </div>
 
         {/*    Description    */}
-        <div className={"flex justify-between"}>
+        <div className={"flex"}>
             {!requestEnabled && <div className={"mt-8"}>
                 <h2 className={"text-3xl font-semibold"}>Description</h2>
                 <p className={"text-lg"}>{travelPost.description}</p>
@@ -145,21 +196,187 @@ function PostDetailsPage(props) {
             </div>}
             {/*     Price    */}
             <div
-                className={`${requestEnabled && "position-fixed bottom-0 right-0 bg-white shadow-xl rounded-3xl "} transition-all duration-1000`}
-                style={{width: requestEnabled && "100vw"}}>
-                <div className={`m-20 bg-white ${!requestEnabled && "shadow-xl rounded-2xl"} px-12 py-4`}
-                     style={{width: "25vw"}}>
-                    <div className={"flex justify-between"}>
-                        <span className={"text-3xl font-semibold "}>Total</span>
-                        <span className={"text-3xl font-semibold "}>{travelPost.price} L.E</span>
-                    </div>
-                    <hr className={"my-4 border-1 border-[#8B8B8B]"}/>
+                className={` ${requestEnabled && "position-fixed bottom-0 right-0 bg-white shadow-xl rounded-3xl "} transition-all duration-1000`}
+                style={{width: requestEnabled ? "100vw" : 0}}>
 
-                    <button
-                        onClick={() => handleRequest()}
-                        className={"w-full py-4 bg-black text-white font-semibold text-2xl rounded-2xl shadow-lg hover:bg-black hover:bg-opacity-85"}>
-                        Request Delivery
-                    </button>
+                <div className={'flex flex-col '}>
+                    {
+                        requestEnabled && <div className="p-6 rounded-lg space-y-4">
+                            <div className="flex flex-row w-full">
+                                <div className={'w-1/2'}>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-medium titleLocation">Pickup Location</label>
+                                        <div className="flex space-x-2">
+                                            <input
+                                                type="text"
+                                                name="from"
+                                                value={formData.from}
+                                                onChange={handleChange}
+                                                placeholder="Government"
+                                                className={`background w-1/2 p-2 border border-gray-300 rounded ${errors.from ? 'border-red-500' : ''}`}
+                                            />
+                                            <input
+                                                type="text"
+                                                name="pickupCity"
+                                                value={formData.pickupCity}
+                                                onChange={handleChange}
+                                                placeholder="City"
+                                                className={`background w-1/2 p-2 border border-gray-300 rounded ${errors.pickupCity ? 'border-red-500' : ''}`}
+                                            />
+                                        </div>
+                                        {errors.from && <p className="text-red-500 text-sm">{errors.from}</p>}
+                                        <input
+                                            type="text"
+                                            name="pickupAddress"
+                                            value={formData.pickupAddress}
+                                            onChange={handleChange}
+                                            placeholder="Address line"
+                                            className={`background w-full p-2 border border-gray-300 rounded ${errors.pickupAddress ? 'border-red-500' : ''}`}
+                                        />
+                                        {errors.pickupAddress &&
+                                            <p className="text-red-500 text-sm">{errors.pickupAddress}</p>}
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <label className="flex text-sm font-medium titleLocation w-1/2">Pickup Time</label>
+                                        <input
+                                            type="datetime-local"
+                                            name="pickupTime"
+                                            value={formData.pickupTime}
+                                            onChange={handleChange}
+                                            className={`background w-1/2 p-2 border border-gray-300 rounded ${errors.pickupTime ? 'border-red-500' : ''}`}
+                                        />
+                                        {errors.pickupTime && <p className="text-red-500 text-sm">{errors.pickupTime}</p>}
+                                    </div>
+                                </div>
+                                <div className={'w-1/2 px-4'}>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-medium titleLocation">Arrival Location</label>
+                                        <div className="flex space-x-2">
+                                            <input
+                                                type="text"
+                                                name="to"
+                                                value={formData.to}
+                                                onChange={handleChange}
+                                                placeholder="Government"
+                                                className={`background w-1/2 p-2 border border-gray-300 rounded ${errors.to ? 'border-red-500' : ''}`}
+                                            />
+                                            <input
+                                                type="text"
+                                                name="destinationCity"
+                                                value={formData.destinationCity}
+                                                onChange={handleChange}
+                                                placeholder="City"
+                                                className={`background w-1/2 p-2 border border-gray-300 rounded ${errors.destinationCity ? 'border-red-500' : ''}`}
+                                            />
+                                        </div>
+                                        {errors.to && <p className="text-red-500 text-sm">{errors.to}</p>}
+                                        <input
+                                            type="text"
+                                            name="destinationAddress"
+                                            value={formData.destinationAddress}
+                                            onChange={handleChange}
+                                            placeholder="Address line"
+                                            className={`background w-full p-2 border border-gray-300 rounded ${errors.destinationAddress ? 'border-red-500' : ''}`}
+                                        />
+                                        {errors.destinationAddress &&
+                                            <p className="text-red-500 text-sm">{errors.destinationAddress}</p>}
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <label className="flex w-1/2 text-sm font-medium titleLocation">Arrival Time</label>
+                                        <input
+                                            type="datetime-local"
+                                            name="arrivalTime"
+                                            value={formData.arrivalTime}
+                                            onChange={handleChange}
+                                            className={`background w-1/2 p-2 border border-gray-300 rounded ${errors.arrivalTime ? 'border-red-500' : ''}`}
+                                        />
+                                        {errors.arrivalTime && <p className="text-red-500 text-sm">{errors.arrivalTime}</p>}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="flex flex-row w-full">
+                                <div className="space-y-2 w-1/2">
+                                    <label className="text-sm font-medium titleLocation">Description</label>
+                                    <textarea
+                                        name="description"
+                                        value={formData.description}
+                                        onChange={handleChange}
+                                        placeholder="Write notes for clients..."
+                                        className={`background w-full p-2 border border-gray-300 rounded ${errors.description ? 'border-red-500' : ''}`}
+                                        style={{
+                                            height: "80%",
+                                        }}
+                                    />
+                                    {errors.description && <p className="text-red-500 text-sm">{errors.description}</p>}
+                                </div>
+                                <div>
+                                    <div className="flex flex-col space-y-2 ms-3">
+                                        <label className="text-sm font-medium titleLocation">Cargo Image</label>
+                                        <div className="flex flex-col space-x-2 justify-between w-full">
+
+                                            <input
+                                                className={"mt-2 block w-full text-sm file:mr-4 file:rounded-md file:border-0 file:bg-black file:py-2 file:px-4 file:text-sm file:font-semibold file:text-white hover:file:bg-black focus:outline-none disabled:pointer-events-none disabled:opacity-60"}
+                                                type="file"
+                                                name="images"
+                                                accept=".jpg, .jpeg, .png"
+                                                multiple
+                                                onChange={handleMultiImageChange}
+                                            />
+                                            <p className="text-xs text-gray-500 text-start mb-5">PNG, JPG, JPEG</p>
+                                            {selectedImages.length > 0 && (
+                                                <div className="flex flex-wrap">
+                                                    {selectedImages.map((image, index) => (
+                                                        <div key={index} className="w-20 h-20 mr-2 mb-2">
+                                                            <img src={URL.createObjectURL(image)} alt=""
+                                                                 className="w-full h-full object-cover rounded"/>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
+                                        {errors.images && <p className="text-red-500 text-sm">{errors.images}</p>}
+                                    </div>
+
+                                </div>
+
+                                <div className={`m-20 bg-white ${!requestEnabled && "shadow-xl rounded-2xl"} px-12 py-4`}
+                                     style={{width: "25vw"}}>
+                                    <div className={"flex justify-between"}>
+                                        <span className={"text-3xl font-semibold "}>Total</span>
+                                        <span className={"text-3xl font-semibold "}>{travelPost.price} L.E</span>
+                                    </div>
+                                    <hr className={"my-4 border-1 border-[#8B8B8B]"}/>
+
+
+                                    <button
+                                        onClick={() => handleRequest()}
+                                        className={"w-full py-4 bg-black text-white font-semibold text-2xl rounded-2xl shadow-lg hover:bg-black hover:bg-opacity-85"}>
+                                        Request Delivery
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    {
+                        !requestEnabled &&
+                        <div className={`m-20 bg-white ${!requestEnabled && "shadow-xl rounded-2xl"} px-12 py-4`}
+                             style={{width: "25vw"}}>
+                            <div className={"flex justify-between"}>
+                                <span className={"text-3xl font-semibold "}>Total</span>
+                                <span className={"text-3xl font-semibold "}>{travelPost.price} L.E</span>
+                            </div>
+                            <hr className={"my-4 border-1 border-[#8B8B8B]"}/>
+
+
+                            <button
+                                onClick={() => handleRequest()}
+                                className={"w-full py-4 bg-black text-white font-semibold text-2xl rounded-2xl shadow-lg hover:bg-black hover:bg-opacity-85"}>
+                                Request Delivery
+                            </button>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
