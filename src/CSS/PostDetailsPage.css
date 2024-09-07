@@ -9,7 +9,7 @@
     margin: 1.2rem;
 }
 
-.plate-char{
+.plate-char {
     font-size: 2.2rem;
     font-weight: bold;
     color: #000;
@@ -26,4 +26,11 @@
     position: absolute;
     height: 100%;
     left: 55%;
+}
+
+.width-animation {
+    -webkit-transition: width 1s ease-in-out !important;
+    -moz-transition: width 1s ease-in-out !important;
+    -o-transition: width 1s ease-in-out !important;
+    transition: width 1s ease-in-out !important;
 }
