@@ -24,6 +24,7 @@ import MyAccountPage from "./Pages/MyAccountPage";
 import CreatePostPage from './Components/Posts/createPostPage';
 import DriverHomePage from "./Pages/DriverHomePage";
 import ClientDashboardMain from "./Pages/ClientDashboardMain";
+import OrdersHistory from "./Pages/OrdersHistory"
 
 
 const handleSave = (updatedDriver) => {
@@ -73,6 +74,7 @@ function App() {
                         <Route path="/customerViewProfile/:id" element={<CustomerViewProfile/>}/>
                         <Route path="/driverViewProfile" element={<DriverViewProfile onSave={handleSave}/>}/>
                         <Route path={"/post/:id"} element={<PostDetailsPage/>}/>
+                        <Route path="/ordershistory" element={<OrdersHistory/>}/>
                         <Route path="*" element={<PageNotFound/>}/>
                     </Routes>
                 </BrowserRouter>
