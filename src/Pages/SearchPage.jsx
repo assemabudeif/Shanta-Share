@@ -7,21 +7,70 @@ import {useSelector} from "react-redux";
 export default function SearchPage() {
     const [posts, setPosts] = useState([]);
     const [postError, setPostError] = useState("");
-    const [loading, setLoading] = useState(true);
-    // const loading = useSelector(state => state.loader.loader);
+    const loading = useSelector(state => state.loader.loader);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+        GetPosts();
+    }
 
     const GetPosts = () => {
-        AxiosInstance.get("https://retoolapi.dev/W1fCKB/data").then((response) => {
-            console.log(response.data);
-            setPosts(response.data);
-            setLoading(false)
+        // setPosts([]);
+        try {
+            AxiosInstance.get(
+                "data",
+                {
+                    params: {
+                        limit: 10,
+                        offset: 0,
+                        _page: currentPage,
+                    }
+                }
+            ).then((response) => {
+                setPosts(response.data || []);
+            }).catch((error) => {
+                setPosts([]);
+                setPostError(error);
+                console.error("Error fetching data:", error);
+            });
+        } catch (error) {
+            setPosts([]);
+            setPostError(error);
+            console.error("Error fetching data:", error);
+        }
+    }
+
+    function GetTotalPages() {
+        AxiosInstance.get("data").then((response) => {
+            setTotalPages(Math.ceil(response.data.length / 10));
         }).catch((error) => {
             setPostError(error);
             console.error("Error fetching data:", error);
         });
     }
 
+    const GoToPage = (pageNumber) => {
+        handlePageChange(pageNumber);
+    }
+
+
+    const GoToPreviousPage = () => {
+        if (currentPage > 1) {
+            handlePageChange(currentPage - 1);
+        }
+    }
+
+    const GoToNextPage = () => {
+        if (currentPage < totalPages && totalPages > 1) {
+            handlePageChange(currentPage + 1);
+        }
+    }
+
     useEffect(() => {
+        GetTotalPages();
+
         GetPosts();
 
     }, []);
@@ -137,11 +186,11 @@ export default function SearchPage() {
             </div>
 
             <div className={"col-span-3 lg:col-span-2 mt-16"}>
-                <ul className={"grid grid-cols-1 gap-8"}>
+                <div className={"grid grid-cols-1 gap-8"}>
                     {
+                        // posts.length > 0 &&
                         posts.map((post, index) => (
                             <div className={"border-2 border-black rounded-2xl grid grid-cols-4 py-8"}>
-                                { console.log(typeof(post.rate))}
                                 <div className={"w-90 lg:w-64 px-10 me-8 my-8 lg:my-0 rounded-2xl"}>
                                     <img src={motorcycleImage} width={"auto"} alt="car" className={"col-span-1"}/>
                                 </div>
@@ -204,7 +253,7 @@ export default function SearchPage() {
                                             </svg>
 
                                             <span
-                                                className="ms-2 text-black-600 font-semibold me-8">{(typeof(post.rate) === "string" && post.rate.length)}</span>
+                                                className="ms-2 text-black-600 font-semibold me-8">{post && typeof (post.rate) === "string" && post.rate.length}</span>
                                             {
                                                 post.verified && (
                                                     <>
@@ -221,7 +270,7 @@ export default function SearchPage() {
                                             {post.weight}kg max 0.5 msq
                                         </h3>
                                         <div className={"flex  justify-between"}>
-                                        <h3 className={"text-xl font-semibold mt-2"}>
+                                            <h3 className={"text-xl font-semibold mt-2"}>
                                                 Truck
                                             </h3>
                                             <div className={"flex  justify-between"}>
@@ -245,7 +294,57 @@ export default function SearchPage() {
                             </div>
                         ))
                     }
-                </ul>
+                </div>
+                {/* Pagination */}
+                <div className="mt-4 flex justify-center">
+                    {/*<button*/}
+                    {/*    className={'py-1 px-3 mx-1 bg-black bg-opacity-90 text-white rounded-md disabled:opacity-50 disabled:cursor-not-allowed'}*/}
+                    {/*    onClick={() => GoToPage(1)}*/}
+                    {/*    disabled={currentPage === 1}>*/}
+                    {/*    First Page*/}
+                    {/*</button>*/}
+                    <button
+                        onClick={GoToPreviousPage}
+                        disabled={currentPage === 1}
+                        className="py-1 px-3 mx-1 bg-black bg-opacity-90 text-white rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        Prev
+                    </button>
+
+                    {/*<select className={'py-1 px-3 bg-gray-200 bg-opacity-90 text-black rounded-md mx-5'}*/}
+                    {/*        value={currentPage} onChange={(e) => handlePageChange(e.target.value)}>*/}
+
+                    {/*    {[...Array(totalPages).keys()].map((pageNumber) => (*/}
+                    {/*        <option*/}
+                    {/*            key={pageNumber}*/}
+                    {/*            value={pageNumber + 1}*/}
+                    {/*            onClick={() => handlePageChange(pageNumber + 1)}*/}
+                    {/*            selected={pageNumber + 1 === currentPage}*/}
+                    {/*        >*/}
+                    {/*            {pageNumber + 1}*/}
+                    {/*        </option>*/}
+                    {/*    ))}*/}
+                    {/*</select>*/}
+
+                    <span
+                        className={'py-1 px-3 mx-1 text-black text-opacity-70 font-bold'}>Page {currentPage} of {totalPages}</span>
+
+                    <button
+                        onClick={GoToNextPage}
+                        disabled={currentPage === totalPages}
+                        className="py-1 px-3 mx-1 bg-black bg-opacity-90 text-white rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        Next
+                    </button>
+
+                    {/*<button*/}
+                    {/*    onClick={() => GoToPage(totalPages)}*/}
+                    {/*    disabled={currentPage === totalPages}*/}
+                    {/*    className={'py-1 px-3 mx-1 bg-black bg-opacity-90 text-white rounded-md disabled:opacity-50 disabled:cursor-not-allowed'}*/}
+                    {/*>*/}
+                    {/*    Last Page*/}
+                    {/*</button>*/}
+                </div>
             </div>
 
 
