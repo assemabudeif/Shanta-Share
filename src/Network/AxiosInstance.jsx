@@ -1,10 +1,10 @@
 import axios from "axios";
 import Store from "../Store/Store";
-import { setLoader } from "../Store/Actions/LoaderAction ";
-export const AxiosInstance = axios.create({
-    baseURL: "https://retoolapi.dev/W1fCKB/",
-});
+import {setLoader} from "../Store/Actions/LoaderAction ";
 
+export const AxiosInstance = axios.create({
+    baseURL: "http://127.0.0.1:8000",
+});
 
 
 AxiosInstance.interceptors.request.use(function (config) {

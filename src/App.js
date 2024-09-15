@@ -14,7 +14,7 @@ import DriverProfile from './Components/driverProfile';
 import ReviewsList from './Components/Reviews/reviewList';
 import RegistrationForm from './Components/RegistrationForm';
 import NavBarComp from "./Components/NavBarComp";
-import LoginStep1 from "./Components/LoginStep1";
+import Login from "./Components/Login";
 import LoginStep2 from "./Components/LoginStep2";
 import DriverInfoComp from './Components/DriverInfoComp';
 import SearchPage from "./Pages/SearchPage";
@@ -61,13 +61,13 @@ function App() {
                         <Route path="/" element={<HomePage/>}/>
                         <Route path="/search" element={<SearchPage/>}/>
                         <Route path='/register' element={<RegistrationForm/>}/>
-                        <Route path='/loginStep1' element={<LoginStep1/>}/>
-                        <Route path='/loginStep2'
-                               element={<LoginStep2/>}/>{/* <Route path="/reviewCard" element={<ReviewCard />} /> */}
+                        <Route path='/login' element={<Login/>}/>
+                        {/*<Route path='/loginStep2'*/}
+                        {/*       element={<LoginStep2/>}/>/!* <Route path="/reviewCard" element={<ReviewCard />} /> *!/*/}
                         <Route path="/reviewList" element={<ReviewsList/>}/>
                         <Route path="/driverInfoComp" element={<DriverInfoComp/>}/>
                         <Route path="/myaccount" element={<MyAccountPage/>}/>
-                        <Route path="/client-dashboard" element={<ClientDashboardMain/>} />
+                        <Route path="/client-dashboard" element={<ClientDashboardMain/>}/>
                         <Route path="/CreatePostPage" element={<CreatePostPage/>}/>
                         <Route path="/driverProfile/:id" element={<DriverProfile onSave={handleSave}/>}/>
                         <Route path="/driver_home" element={<DriverHomePage onSave={handleSave}/>}/>
