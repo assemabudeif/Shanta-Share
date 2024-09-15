@@ -52,6 +52,8 @@ function App() {
                     {
                         location !== "/myaccount" &&
                         location !== "/client-dashboard" &&
+                        // location !== "/ordershistory" &&
+
                         <>
                             <NavBarComp/>
                             <div className="bg-transparent h-20"></div>

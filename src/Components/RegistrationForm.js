@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { FaCheck } from 'react-icons/fa';
 
 const RegistrationForm = () => {
-  const [step, setStep] = useState(1);
-  const [role, setRole] = useState('');
+  const [step, setStep] = useState(3);
+  const [role, setRole] = useState('driver');
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -23,8 +23,35 @@ const RegistrationForm = () => {
   });
   const [errors, setErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState('');
+  const [governments, setGovernments] = useState([]);
+  const [cities, setCities] = useState([]);
 
 
+  //------------------------------------------------------------
+  const fetchGovernments = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/governments/');
+      const data = await response.json();
+      setGovernments(data);
+      console.log(data)
+    } catch (error) {
+      console.error('Error fetching governments:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchGovernments();
+  }, []);
+  useEffect(() => {
+    if (formData.government) {
+      // Fetch cities based on the selected government
+      fetch(`http://localhost:8000/cities?government_id=${formData.government}`)
+        .then(response => response.json())
+        .then(data => setCities(data))
+        .catch(error => console.error('Error fetching cities:', error));
+    }
+  }, [formData.government]);
+  //------------------------------------------------------------
 
   // ========   Regular Expression and Data Validation   ==========
 
@@ -34,9 +61,9 @@ const RegistrationForm = () => {
     password: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/,
     name: /^[a-zA-Z]+$/,
     address: /^[a-zA-Z0-9\s,'-]+$/,
-    city: /^[a-zA-Z\s]+$/,
+    city: /^[a-zA-Z0-9\s]+$/,
     mobile: /^[0-9]{10,15}$/,
-    government: /^[a-zA-Z\s]+$/,
+    government: /^[a-zA-Z0-9\s]+$/,
     vehicle: /^[a-zA-Z0-9\s,'-]+$/,
   };
 
@@ -144,6 +171,7 @@ const RegistrationForm = () => {
 
 
 
+
   // ================== Steps Validation ==========================
 
 
@@ -208,7 +236,11 @@ const RegistrationForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (step === 4) {
-      SetDataLocal(e); 
+      SetDataLocal(e);
+      //TODO: register user
+      for (const formDataKey in formData) {
+        console.log(formData[formDataKey]);
+      }
     }
   };
 
@@ -503,24 +535,51 @@ const RegistrationForm = () => {
                 <>
                   <div>
                     <label className="block text-gray-700 mb-2">Government</label>
-                    <input
-                      type="text"
+                    {/*<input*/}
+                    {/*  type="text"*/}
+                    {/*  name="government"*/}
+                    {/*  value={formData.government}*/}
+                    {/*  onChange={handleChange}*/}
+                    {/*  className="border rounded-lg py-2 px-4 w-full"*/}
+                    {/*/>*/}
+                    <select
                       name="government"
                       value={formData.government}
                       onChange={handleChange}
                       className="border rounded-lg py-2 px-4 w-full"
-                    />
+                    >
+                      <option value="">Select a Government</option>
+                      {governments.map((gov) => (
+                        <option key={gov.id} value={gov.id}>
+                          {gov.name}
+                        </option>
+                      ))}
+                    </select>
                     {renderAlert('government')}
                   </div>
                   <div>
                     <label className="block text-gray-700 mb-2">City</label>
-                    <input
-                      type="text"
+                    {/*<input*/}
+                    {/*  type="text"*/}
+                    {/*  name="city"*/}
+                    {/*  value={formData.city}*/}
+                    {/*  onChange={handleChange}*/}
+                    {/*  className="border rounded-lg py-2 px-4 w-full"*/}
+                    {/*/>*/}
+                    <select
                       name="city"
                       value={formData.city}
                       onChange={handleChange}
                       className="border rounded-lg py-2 px-4 w-full"
-                    />
+                      disabled={!formData.government} // Disable if no government is selected
+                    >
+                      <option value="">Select a city</option>
+                      {cities.map(city => (
+                        <option key={city.id} value={city.id}>
+                          {city.name}
+                        </option>
+                      ))}
+                    </select>
                     {renderAlert('city')}
                   </div>
                   <div>
