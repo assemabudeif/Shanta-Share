@@ -34,3 +34,23 @@
     -o-transition: width 1s ease-in-out !important;
     transition: width 1s ease-in-out !important;
 }
+
+/*#request-form {*/
+/*    display: none;*/
+/*    opacity: 0;*/
+/*    transition: opacity 1s,*/
+/*    display 1s ease-in-out;*/
+/*}*/
+
+/*.show {*/
+/*    display: block;*/
+
+/*    @keyframes fadeIn {*/
+/*        from {*/
+/*            opacity: 0;*/
+/*        }*/
+/*        to {*/
+/*            opacity: 1;*/
+/*        }*/
+/*    }*/
+/*}*/
