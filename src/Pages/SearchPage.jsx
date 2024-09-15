@@ -61,7 +61,7 @@ export default function SearchPage() {
   const GetPosts = (params) => {
     try {
       AxiosInstance.get(
-        "posts/",
+        "/posts/",
         {
           params: params
         }
