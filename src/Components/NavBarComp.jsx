@@ -17,10 +17,13 @@ function classNames(...classes) {
 export default function NavBarComp({isLoggedIn, onLogout}) {
     const navigate = useNavigate();
 
+    const isLogin = localStorage.getItem('token') !== null;
+    const user_type = localStorage.getItem('user_type') || '';
+
     const handleLogout = () => {
         localStorage.clear();
-        onLogout(); // Notify parent component about logoutep1
-        navigate('/loginSt');
+        // onLogout(); // Notify parent component about logoutep1
+        navigate('/login');
     };
     return (
         <Disclosure as="nav" className="bg-black fixed top-0 z-50 w-full h-20">
@@ -61,19 +64,23 @@ export default function NavBarComp({isLoggedIn, onLogout}) {
                     <div
                         className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                         <button className="text-white font-semibold mr-3">AR</button>
-                        {!isLoggedIn ? (
-                            // <Link to="/loginStep1" className="text-white font-semibold">Join</Link>
-                            <Link to="/myaccount" className="text-white font-semibold">
-                                <div className='h-12 w-12 bg-white rounded-full'></div>
-                            </Link>
+                        {!isLogin ? (
+                            <Link to="/login" className="text-white font-semibold">Join</Link>
+
 
                         ) : (
-                            <button
-                                onClick={handleLogout}
-                                className="text-white font-semibold ml-4"
-                            >
-                                Logout
-                            </button>
+                            <>
+                                <Link to={`${user_type === 'DRIVER' ? '/driverViewProfile' : '/myaccount'}`}
+                                      className="text-white font-semibold">
+                                    <div className='h-12 w-12 bg-white rounded-full'></div>
+                                </Link>
+                                <button
+                                    onClick={handleLogout}
+                                    className="text-white font-semibold ml-4"
+                                >
+                                    Logout
+                                </button>
+                            </>
                         )}
                     </div>
                 </div>
@@ -95,7 +102,7 @@ export default function NavBarComp({isLoggedIn, onLogout}) {
                             {item.name}
                         </DisclosureButton>
                     ))}
-                    {isLoggedIn && (
+                    {isLogin && (
                         <DisclosureButton
                             onClick={handleLogout}
                             className="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-gray-700"
