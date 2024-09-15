@@ -2,7 +2,7 @@ import axios from "axios";
 import Store from "../Store/Store";
 import { setLoader } from "../Store/Actions/LoaderAction ";
 export const AxiosInstance = axios.create({
-    baseURL: "https://retoolapi.dev/W1fCKB/",
+    baseURL: "http://localhost:8000/",
 });
 
 
