@@ -23,6 +23,8 @@ import {Provider} from "react-redux";
 import MyAccountPage from "./Pages/MyAccountPage";
 import CreatePostPage from './Components/Posts/createPostPage';
 import DriverHomePage from "./Pages/DriverHomePage";
+import ClientDashboardMain from "./Pages/ClientDashboardMain";
+import OrdersHistory from "./Pages/OrdersHistory"
 
 
 const handleSave = (updatedDriver) => {
@@ -49,6 +51,7 @@ function App() {
                 <BrowserRouter>
                     {
                         location !== "/myaccount" &&
+                        location !== "/client-dashboard" &&
                         <>
                             <NavBarComp/>
                             <div className="bg-transparent h-20"></div>
@@ -64,12 +67,14 @@ function App() {
                         <Route path="/reviewList" element={<ReviewsList/>}/>
                         <Route path="/driverInfoComp" element={<DriverInfoComp/>}/>
                         <Route path="/myaccount" element={<MyAccountPage/>}/>
+                        <Route path="/client-dashboard" element={<ClientDashboardMain/>} />
                         <Route path="/CreatePostPage" element={<CreatePostPage/>}/>
                         <Route path="/driverProfile/:id" element={<DriverProfile onSave={handleSave}/>}/>
                         <Route path="/driver_home" element={<DriverHomePage onSave={handleSave}/>}/>
                         <Route path="/customerViewProfile/:id" element={<CustomerViewProfile/>}/>
                         <Route path="/driverViewProfile" element={<DriverViewProfile onSave={handleSave}/>}/>
                         <Route path={"/post/:id"} element={<PostDetailsPage/>}/>
+                        <Route path="/ordershistory" element={<OrdersHistory/>}/>
                         <Route path="*" element={<PageNotFound/>}/>
                     </Routes>
                 </BrowserRouter>

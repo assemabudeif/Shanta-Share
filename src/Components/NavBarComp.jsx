@@ -22,7 +22,6 @@ export default function NavBarComp({isLoggedIn, onLogout}) {
         onLogout(); // Notify parent component about logoutep1
         navigate('/loginSt');
     };
-
     return (
         <Disclosure as="nav" className="bg-black fixed top-0 z-50 w-full h-20">
             <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
