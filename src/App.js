@@ -42,6 +42,8 @@ const handleSave = (updatedDriver) => {
 function App() {
     const location = window.location.pathname;
     console.log(location);
+    const user_type = localStorage.getItem('user_type') || '';
+
 
 
     return (
@@ -60,7 +62,7 @@ function App() {
                         </>
                     }
                     <Routes>
-                        <Route path="/" element={<HomePage/>}/>
+                        <Route path="/" element={user_type === 'DRIVER' ? <DriverHomePage/> : <HomePage/>}/>
                         <Route path="/search" element={<SearchPage/>}/>
                         <Route path='/register' element={<RegistrationForm/>}/>
                         <Route path='/login' element={<Login/>}/>
