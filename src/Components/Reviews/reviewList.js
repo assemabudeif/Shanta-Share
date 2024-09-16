@@ -14,8 +14,9 @@ const ReviewsList = () => {
   //   setReviews(Data.reviews);
   // }, []);
   useEffect(() => {
-    axios.get("https://retoolapi.dev/YAtLCI/data")
+    axios.get("http://localhost:8000/reviews/reviews/")
    .then((response) => {
+    console.log(response.data);
     setReviews(response.data);
    })
    .catch((error) => {

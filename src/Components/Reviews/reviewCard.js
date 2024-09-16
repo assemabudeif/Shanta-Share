@@ -10,14 +10,14 @@ const ReviewCard = ({ review }) => {
           {/* صورة الشخص على اليسار */}
           <img 
             src={review.reviewerPicture} 
-            alt={`${review.reviewerName}'s profile`} 
+            alt={`${review.client}'s profile`} 
             className="w-24 h-24 rounded-full border-2 border-gray-300 mr-4"
           />
           {/* الاسم بجانب الصورة */}
-          <span className="text-lg font-semibold text-gray-800">{review.reviewerName}</span>
+          <span className="text-lg font-semibold text-gray-800">{review.client}</span>
         </div>
         {/* تاريخ المراجعة على اليمين */}
-        <span className="text-sm text-gray-500">{review.date}</span>
+        <span className="text-sm text-gray-500">{review.review_date}</span>
       </div>
       
       {/* التقييم والتعليق تحت الاسم */}
@@ -27,7 +27,7 @@ const ReviewCard = ({ review }) => {
             <span key={i} className="text-yellow-500 text-lg">⭐</span>
           ))}
         </div>
-        <p className="text-gray-700 text-sm sm:text-base">{review.text}</p>
+        <p className="text-gray-700 text-sm sm:text-base">{review.review_text}</p>
       </div>
     </div>
   );
