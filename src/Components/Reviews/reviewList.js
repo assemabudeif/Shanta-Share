@@ -14,16 +14,21 @@ const ReviewsList = () => {
   //   setReviews(Data.reviews);
   // }, []);
   useEffect(() => {
-    axios.get("http://localhost:8000/reviews/reviews/")
-   .then((response) => {
-    console.log(response.data);
-    setReviews(response.data);
-   })
-   .catch((error) => {
-     console.error("Error fetching data:", error);
-   });
-  }, []);
+    const token = localStorage.getItem("token"); 
 
+    axios.get("http://localhost:8000/reviews/reviews/", {
+      headers: {
+        Authorization: `Bearer ${token}`, 
+      }
+    })
+    .then((response) => {
+      console.log(response.data);
+      setReviews(response.data);
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+    });
+  }, []);
   const handleScrollLeft = () => {
     if (sliderRef.current) {
       sliderRef.current.scrollBy({ left: -300, behavior: 'smooth' });
