@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import CreatePostPage from './Posts/createPostPage';
+import {useNavigate, useNavigation} from "react-router-dom";
 
 function DriverPosts() {
+
+    const navigate = useNavigate();
+
     const [posts, setPosts] = useState([]);
     const [isFormVisible, setIsFormVisible] = useState(false);
     const [form, setForm] = useState({
@@ -128,7 +132,10 @@ function DriverPosts() {
                                 </thead>
                                 <tbody className="divide-y divide-gray-200">
                                     {currentPosts.map(post => (
-                                        <tr key={post.id}>
+                                        <tr key={post.id}
+                                            className='cursor-pointer'
+                                            onClick={()=> navigate('/client-dashboard', {state: {postId: post.id}})}
+                                        >
                                             <td className="px-4 py-2 text-sm text-gray-800">{post.id}</td>
                                             <td className="px-4 py-2 text-sm text-gray-800">{post.from}</td>
                                             <td className="px-4 py-2 text-sm text-gray-800">{post.to}</td>

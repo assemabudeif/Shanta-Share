@@ -9,7 +9,7 @@
     margin: 1.2rem;
 }
 
-.plate-char{
+.plate-char {
     font-size: 2.2rem;
     font-weight: bold;
     color: #000;
@@ -27,3 +27,30 @@
     height: 100%;
     left: 55%;
 }
+
+.width-animation {
+    -webkit-transition: width 1s ease-in-out !important;
+    -moz-transition: width 1s ease-in-out !important;
+    -o-transition: width 1s ease-in-out !important;
+    transition: width 1s ease-in-out !important;
+}
+
+/*#request-form {*/
+/*    display: none;*/
+/*    opacity: 0;*/
+/*    transition: opacity 1s,*/
+/*    display 1s ease-in-out;*/
+/*}*/
+
+/*.show {*/
+/*    display: block;*/
+
+/*    @keyframes fadeIn {*/
+/*        from {*/
+/*            opacity: 0;*/
+/*        }*/
+/*        to {*/
+/*            opacity: 1;*/
+/*        }*/
+/*    }*/
+/*}*/
