@@ -55,7 +55,7 @@ function DriverPosts() {
             name: '',
             rate: '',
             price: '',
-            weight: '',
+            max_weight: '',
             description: ''
         });
     };
