@@ -54,7 +54,7 @@ export default function ClientDashboardMain() {
           <div className="flex flex-col items-start w-full cursor-pointer">
             <div className={"w-full "}>
               {pages.map((page, index) => (
-                <div className={"flex flex-wrap"}>
+                <div className={"flex flex-wrap"} key={index}>
                   <div
                     className={`${selectedPage === index ? "bg-white" : "ps-5"} h-20 w-full text-black font-semibold text-xl flex flex-row items-center`}
                     onClick={() => ChangePage(index)}>
