@@ -78,7 +78,6 @@ function PostDetailsPage(props) {
 
         // onFormChange({...formData, [name]: value});
     };
-    console.log("post:", post)
 
     // const travelPost = {
     //     id: 1,
@@ -124,7 +123,10 @@ function PostDetailsPage(props) {
             });
 
         AxiosInstance.get(`/posts/${id}`)
-          .then((response) => setPost(response.data))
+          .then((response) => {
+              console.log(response.data)
+              setPost(response.data);
+          })
     }, []);
 
     useEffect(() => {
@@ -288,7 +290,7 @@ function PostDetailsPage(props) {
                              style={{width: "25vw"}}>
                             <div className={"flex justify-between"}>
                                 <span className={"text-3xl font-semibold "}>Total</span>
-                                <span className={"text-3xl font-semibold "}>{post.price} L.E</span>
+                                <span className={"text-3xl font-semibold "}>{post.delivery_fee?.toFixed(2) ?? '--'} L.E</span>
                             </div>
                             <hr className={"my-4 border-1 border-[#8B8B8B]"}/>
 
@@ -458,7 +460,7 @@ function PostDetailsPage(props) {
                                  style={{width: "25vw"}}>
                                 <div className={"flex justify-between"}>
                                     <span className={"text-3xl font-semibold "}>Total</span>
-                                    <span className={"text-3xl font-semibold "}>{post.price} L.E</span>
+                                    <span className={"text-3xl font-semibold "}>{post.delivery_fee?.toFixed(2) ?? '--'} L.E</span>
                                 </div>
                                 <hr className={"my-4 border-1 border-[#8B8B8B]"}/>
 
