@@ -25,6 +25,7 @@ import CreatePostPage from './Components/Posts/createPostPage';
 import DriverHomePage from "./Pages/DriverHomePage";
 import ClientDashboardMain from "./Pages/ClientDashboardMain";
 import OrdersHistory from "./Pages/OrdersHistory"
+import Dashboard from "./Pages/Dashboard"
 
 
 const handleSave = (updatedDriver) => {
@@ -79,6 +80,7 @@ function App() {
                         <Route path="/driverViewProfile" element={<DriverViewProfile onSave={handleSave}/>}/>
                         <Route path={"/post/:id"} element={<PostDetailsPage/>}/>
                         <Route path="/ordershistory" element={<OrdersHistory/>}/>
+                        <Route path="/dashboard" element={<Dashboard/>}/>
                         <Route path="*" element={<PageNotFound/>}/>
                     </Routes>
                 </BrowserRouter>
