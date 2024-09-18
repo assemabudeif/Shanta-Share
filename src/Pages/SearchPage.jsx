@@ -472,7 +472,7 @@ export default function SearchPage() {
                     </h3>
                     <div className={"flex  justify-between"}>
                                             <span className={"text-4xl font-semibold"}>
-                                                {post.price}.00 L.E
+                                                {post.delivery_fee?.toFixed(2) ?? '--'} L.E
                                             </span>
                       <Link to={`/post/${post.id}`} state={post} className={"mx-8"}>
                         <svg width="16" height="28" viewBox="0 0 16 28" fill="none"
