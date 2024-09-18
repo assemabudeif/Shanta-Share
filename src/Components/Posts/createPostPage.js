@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
 import Form from './postForm';
 import Preview from './preview';
@@ -36,7 +35,7 @@ function CreatePostPage() {
     } else if ((name === 'max_weight' || name === 'max_size') && isNaN(value)) {
       error = `${name} must be a number`;
     } else if (
-      (name==='from_government' || name==='to_government' || name==='from_city' || name==='to_city') &&
+      (name === 'from_government' || name === 'to_government' || name === 'from_city' || name === 'to_city') &&
       (!value['id'])
     )
       return `select ${name}`
@@ -52,7 +51,7 @@ function CreatePostPage() {
   //
   // }
   const handlePreviewClick = () => {
-    navigate('/post/:id', { state: formData });
+    navigate('/post/:id', {state: formData});
   };
 
   const handleCalculateFEEs = () => {
@@ -61,8 +60,8 @@ function CreatePostPage() {
     let isFormValid = true;
     for (const key in formData) {
       let error = validate(key, formData[key]);
-      if (error.length>0){
-        console.log('form is not valid',key , error)
+      if (error.length > 0) {
+        console.log('form is not valid', key, error)
         isFormValid = false;
       }
       tempErrors[key] = error;
@@ -94,6 +93,34 @@ function CreatePostPage() {
     // } catch (error) {
     //   console.error('Error submitting form:', error);
     // }
+    const url = `/posts/create/`;
+    const body = {
+      ...formData,
+      from_city: formData.from_city.id,
+      to_city: formData.to_city.id,
+    };
+    const params = {
+      city1_id: formData.from_city.id,
+      city2_id: formData.to_city.id,
+      max_weight: formData.max_weight,
+      max_size: formData.max_size,
+    };
+    console.log(body)
+    AxiosInstance.post(
+      url,
+      body,
+      {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'application/json',
+          }
+      }
+    )
+      .then(response => {
+        //TODO: navigate to post preview
+        navigate(`/post/${response.data.data.id}`)
+
+      })
 
     console.log('submit')
   };
@@ -109,8 +136,11 @@ function CreatePostPage() {
         <Form formData={formData} setFormData={setFormData} errors={errors} setErrors={setErrors} validate={validate}/>
       </div>
       <div className="w-1/3">
-        <button className="rounded-full py-1 bg-black text-white w-1/3 btn bs-tooltip-end" onClick={handlePreviewClick}>Preview</button>
-        <Preview formData={formData} onSubmit={handleSubmit} handleCalculateFEEs={handleCalculateFEEs} isFormReady={isFormReady} deliveryFEEs={deliveryFEEs} />
+        <button className="rounded-full py-1 bg-black text-white w-1/3 btn bs-tooltip-end"
+                onClick={handlePreviewClick}>Preview
+        </button>
+        <Preview formData={formData} onSubmit={handleSubmit} handleCalculateFEEs={handleCalculateFEEs}
+                 isFormReady={isFormReady} deliveryFEEs={deliveryFEEs}/>
       </div>
     </div>
   );
