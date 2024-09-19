@@ -13,13 +13,11 @@ export default function OrderHistory() {
   const GetPosts = () => {
     AxiosInstance.get("https://retoolapi.dev/W1fCKB/data")
       .then((response) => {
-        console.log(response.data);
         setPosts(response.data);
         setLoading(false);
       })
       .catch((error) => {
         setPostError(error);
-        console.error("Error fetching data:", error);
       });
   };
 
@@ -48,27 +46,28 @@ export default function OrderHistory() {
             {paginatedPosts.map((post, index) => (
               <div
                 key={index}
-                className="border border-black rounded-lg grid grid-cols-1 lg:grid-cols-5 p-4 relative"
+                className="border border-black rounded-lg grid grid-cols-1 lg:grid-cols-5 p-2 relative" // Reduced padding
+                style={{ fontSize: "0.85rem" }} // Decreased font size
               >
-                <div className="w-full lg:col-span-2 px-4 lg:px-4 lg:me-4 lg:my-0 rounded-lg">
+                <div className="w-full lg:col-span-2 px-2 lg:px-2 lg:me-2 lg:my-0 rounded-lg">
                   <img
                     src={order_img}
                     alt="order"
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain max-h-70" // Reduced image size
                   />
                 </div>
-                <div className="lg:col-span-3 flex flex-col justify-between px-2 lg:px-4 py-2">
+                <div className="lg:col-span-3 flex flex-col justify-between px-2 lg:px-2 py-2">
                   <div className="flex flex-col lg:flex-row justify-between mb-2">
                     <div>
-                      <span className="text-xl font-semibold">
+                      <span className="text-md font-semibold"> {/* Decreased text size */}
                         {post.from}
-                        <span className="text-lg font-normal">
+                        <span className="text-sm font-normal">
                           <br /> Today 06:30 AM
                         </span>
                       </span>
                     </div>
-                    <div className="w-24 h-24">
-                      <svg width="40" height="42" viewBox="0 0 50 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <div className="w-16 h-16"> {/* Reduced icon size */}
+                      <svg width="30" height="32" viewBox="0 0 50 52" fill="none">
                         <g clipPath="url(#clip0_41_102)">
                           <path
                             d="M46.0847 21.4929L25.5117 0.499984L22.5659 3.51323L43.1388 24.4976C43.5294 24.8961 43.7488 25.4365 43.7488 26C43.7488 26.5635 43.5294 27.1039 43.1388 27.5024L22.5388 48.525L25.4847 51.5297L46.0847 30.5177C47.2563 29.3222 47.9146 27.701 47.9146 26.0106C47.9146 24.3202 47.2563 22.699 46.0847 21.5035V21.4929Z"
@@ -93,41 +92,41 @@ export default function OrderHistory() {
                     </div>
 
                     <div>
-                      <span className="text-xl font-semibold">
+                      <span className="text-md font-semibold"> {/* Decreased text size */}
                         {post.to}
-                        <span className="text-lg font-normal">
+                        <span className="text-sm font-normal">
                           <br /> Today 10:30 AM
                         </span>
                       </span>
                     </div>
                   </div>
                   <div>
-                    <h3 className="text-lg mt-2">
+                    <h3 className="text-sm mt-2"> {/* Decreased text size */}
                       Description here and shipping note or address notes 
                     </h3>
 
                     <div className="flex flex-col items-end mt-2">
-                      <div className="text-lg font-semibold mb-1">
+                      <div className="text-md font-semibold mb-1"> {/* Decreased text size */}
                         {post.status}
                       </div>
 
                       <div className="flex flex-col items-end mb-4">
-                        <span className="text-xl font-semibold text-black mb-2 mr-6 mt">
+                        <span className="text-lg font-semibold text-black mb-2 mr-6 mt">
                           In Progress
                         </span>
-                        <span className="text-2xl font-semibold mt-6 mr-5">
+                        <span className="text-xl font-semibold mt-6 mr-5">
                           {post.price}.00 L.E
                         </span>
                       </div>
 
-                      <button className="bg-black text-white text-lg px-14 py-1 rounded-lg mt-6">
+                      <button className="bg-black text-white text-md px-10 py-1 rounded-lg mt-6"> {/* Reduced button padding */}
                         Details
                       </button>
                     </div>
                   </div>
 
                   <div className="flex items-center mt-4">
-                    <span className="text-lg font-semibold">
+                    <span className="text-md font-semibold"> {/* Decreased text size */}
                       Driver Name
                     </span>
                   </div>
