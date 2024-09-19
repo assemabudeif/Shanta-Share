@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import DashboardPosts  from '../Components/DashboardPosts';
 import DashBoardOrders  from '../Components/DashboardOrders';
-
-
+import UsersInDashbourd from '../Components/usersInDashbpurd';
+import '../CSS/users.css'
 
 export default function Dashboard() {
     const pages = [
         "Sumary",
-        "Posts",
         "Orders",
+        "Posts",
         "Users",
 
     ];
@@ -19,7 +19,10 @@ export default function Dashboard() {
         <div>Summary </div>, 
         <DashboardPosts posts={posts} setPosts={setPosts} />, 
         <DashBoardOrders posts={orders} setOrders={setOrders}/>, 
-        <div>Users Page Content</div>, 
+        <>
+        <div className='title'>Users</div>
+        <UsersInDashbourd/>
+        </>
     ];
     
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
