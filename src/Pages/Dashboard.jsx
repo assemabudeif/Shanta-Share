@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import UsersInDashbourd from '../Components/usersInDashbpurd';
+import '../CSS/users.css'
 
 export default function Dashboard() {
     const pages = [
@@ -11,6 +13,13 @@ export default function Dashboard() {
     const [posts, setPosts] = useState([]);
 
     const PagesComponent = [
+        <div>Summary</div>,
+        <div>Orders</div>,
+        <div>posts</div>,
+        <>
+        <div className='title'>Users</div>
+        <UsersInDashbourd/>
+        </>
     ];
     
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
