@@ -24,11 +24,11 @@ function DriverPosts() {
 
     
     useEffect(() => {
-        fetch('https://retoolapi.dev/W1fCKB/data')
+        fetch('http://127.0.0.1:8000/posts/')
             .then(response => response.json())
             .then(data => {
-             
-                setPosts(data);
+            console.log(data.results)
+                setPosts(data.results);
             })
             .catch(error => console.error('Error fetching posts:', error));
     }, []);
@@ -128,6 +128,8 @@ function DriverPosts() {
                                         <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Price</th>
                                         <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Weight</th>
                                         <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Description</th>
+                                        <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Pick Time</th>
+
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-gray-200">
@@ -137,14 +139,16 @@ function DriverPosts() {
                                             onClick={()=> navigate('/client-dashboard', {state: {postId: post.id}})}
                                         >
                                             <td className="px-4 py-2 text-sm text-gray-800">{post.id}</td>
-                                            <td className="px-4 py-2 text-sm text-gray-800">{post.from}</td>
-                                            <td className="px-4 py-2 text-sm text-gray-800">{post.to}</td>
-                                            <td className="px-4 py-2 text-sm text-gray-800">{post.name}</td>
-                                            <td className="px-4 py-2 text-sm text-gray-800">{post.rate}</td>
+                                            <td className="px-4 py-2 text-sm text-gray-800">{post.from_city ? post.from_city.name : 'Unknown'}</td>
+                                            <td className="px-4 py-2 text-sm text-gray-800">{post.to_city ? post.to_city.name : 'Unknown'}</td>
+                                            <td className="px-4 py-2 text-sm text-gray-800">{post.created_by.name}</td>
+                                            <td className="px-4 py-2 text-sm text-gray-800">{post.created_by.average_rate}</td>
                                             <td className="px-4 py-2 text-sm text-gray-800">${post.price}</td>
-                                            <td className="px-4 py-2 text-sm text-gray-800">{post.weight} kg</td>
+                                            <td className="px-4 py-2 text-sm text-gray-800">{post.max_weight} kg</td>
                                             <td className="px-4 py-2 text-sm text-gray-800">{post.description}</td>
-                                        </tr>
+                                            <td className="px-4 py-2 text-sm text-gray-800">{post.pickup_time}</td>
+ 
+</tr>
                                     ))}
                                 </tbody>
                             </table>
