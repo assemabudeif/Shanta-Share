@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import DashboardPosts  from '../Components/DashboardPosts';
+import DashBoardOrders  from '../Components/DashboardOrders';
+
+
 
 export default function Dashboard() {
     const pages = [
@@ -10,11 +13,12 @@ export default function Dashboard() {
 
     ];
     const [posts, setPosts] = useState([]);
+    const [orders, setOrders] = useState([]);
 
     const PagesComponent = [
         <div>Summary </div>, 
         <DashboardPosts posts={posts} setPosts={setPosts} />, 
-        <div>Posts Page Content</div>, 
+        <DashBoardOrders posts={orders} setOrders={setOrders}/>, 
         <div>Users Page Content</div>, 
     ];
     
