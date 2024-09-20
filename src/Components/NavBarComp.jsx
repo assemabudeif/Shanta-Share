@@ -1,20 +1,20 @@
-import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import { Link, useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import {Disclosure, DisclosureButton, DisclosurePanel} from '@headlessui/react';
+import {Bars3Icon, XMarkIcon} from '@heroicons/react/24/outline';
+import {Link, useNavigate} from 'react-router-dom';
+import {useState, useEffect} from 'react';
 
 const navigation = [
-    { name: 'Discover', href: '/', current: true },
-    { name: 'Search', href: '/search', current: false },
-    { name: 'Contact Us', href: '/contact-us', current: false },
-    { name: 'About', href: '/about', current: false },
+    {name: 'Discover', href: '/', current: true},
+    {name: 'Search', href: '/search', current: false},
+    {name: 'Contact Us', href: '/contact-us', current: false},
+    {name: 'About', href: '/about', current: false},
 ];
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ');
 }
 
-export default function NavBarComp({ isLoggedIn, onLogout }) {
+export default function NavBarComp({isLoggedIn, onLogout}) {
     const navigate = useNavigate();
 
     const isLogin = localStorage.getItem('token') !== null;
@@ -33,10 +33,10 @@ export default function NavBarComp({ isLoggedIn, onLogout }) {
                         {/* Mobile menu button */}
                         <DisclosureButton
                             className="group relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
-                            <span className="absolute -inset-0.5" />
+                            <span className="absolute -inset-0.5"/>
                             <span className="sr-only">Open main menu</span>
-                            <Bars3Icon aria-hidden="true" className="block h-6 w-6 group-data-[open]:hidden" />
-                            <XMarkIcon aria-hidden="true" className="hidden h-6 w-6 group-data-[open]:block" />
+                            <Bars3Icon aria-hidden="true" className="block h-6 w-6 group-data-[open]:hidden"/>
+                            <XMarkIcon aria-hidden="true" className="hidden h-6 w-6 group-data-[open]:block"/>
                         </DisclosureButton>
                     </div>
                     <div className="flex flex-1 items-center justify-center md:items-stretch md:justify-start">
@@ -70,7 +70,8 @@ export default function NavBarComp({ isLoggedIn, onLogout }) {
 
                         ) : (
                             <>
-                                <Link to={`${user_type === 'DRIVER' ? '/myaccount' : '/ordershistory'}`}
+                                <Link
+                                    to={`${user_type === 'DRIVER' ? '/myaccount' : user_type === 'CLIENT' ? '/ordershistory' : '/dashboard'}`}
                                     className="text-white font-semibold">
                                     <div className='h-12 w-12 bg-white rounded-full'></div>
                                 </Link>

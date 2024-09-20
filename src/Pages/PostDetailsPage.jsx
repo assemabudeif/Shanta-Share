@@ -10,6 +10,7 @@ import areaImage from "../assets/images/area.png";
 import {BiExit} from "react-icons/bi";
 import {format, parseISO} from "date-fns";
 import {AxiosInstance} from "../Network/AxiosInstance";
+import {logDOM} from "@testing-library/react";
 
 function PostDetailsPage(props) {
     const [carData, setCardata] = useState({
@@ -35,6 +36,7 @@ function PostDetailsPage(props) {
     const [post, setPost] = useState({});
     const [requestEnabled, setRequestEnabled] = useState(false);
     const [selectedImages, setSelectedImages] = useState([]);
+    const [convertedImages, setConvertedImages] = useState([])
     const [formData, setFormData] = useState({
         from: '',
         pickupCity: '',
@@ -46,6 +48,18 @@ function PostDetailsPage(props) {
         size: '2.0 msq',
         description: ''
     });
+    const [isRequestLoading, setIsRequestLoading] = useState(false)
+
+
+    /**
+     *     "post": 8,
+     *     "pickup_time": "2024-09-19T19:27:00",
+     *     "pickup_address_line": "Malawi",
+     *     "arrival_time": "2024-09-19T19:27:00",
+     *     "delivery_address_line": "Minia",
+     *     "client_notes": "Nothing",
+     *     "cargo_image": "data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/
+     * */
     const [showForm, setShowForm] = useState(false);
 
     const [errors, setErrors] = useState({});
@@ -62,22 +76,63 @@ function PostDetailsPage(props) {
         return error;
     };
 
-    const handleChange = (e) => {
-        const {name, value} = e.target;
-
+    const handleChange = async  (e) => {
+        const {name, value, type, files} = e.target;
         // Validate the input
         const error = validate(name, value);
+        if (type === 'file') {
+            console.log('File:', convertImageToBase64(files[0]));
 
+            setFormData({...formData, [name]: await convertImageToBase64(files[0])});
+        } else {
+            setFormData({
+                ...formData, [name]: value
+            });
+            setErrors({
+                ...errors, [name]: error
+            });
+        }
         // Update form data and errors
-        setFormData({
-            ...formData, [name]: value
-        });
-        setErrors({
-            ...errors, [name]: error
-        });
+
 
         // onFormChange({...formData, [name]: value});
     };
+
+    const convertImageToBase64 = (image) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(image);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+    };
+
+    const handelApplyRequest = () => {
+        setIsRequestLoading(true);
+        const body = {
+            post: post.id,
+            pickup_time: formData.pickupTime,
+            pickup_address_line: formData.pickupAddress,
+            arrival_time: formData.arrivalTime,
+            delivery_address_line: formData.arrivalAddress,
+            client_notes: formData.description,
+            cargo_image: convertedImages[0]
+        };
+        console.log(body)
+        AxiosInstance.post(
+          '/orders/client/',
+          body,
+        {
+              headers: {
+                  'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                  'Content-Type': 'application/json',
+              }
+          }
+        ).then((response) => {
+            setIsRequestLoading(false);
+            console.log(response);
+        })
+    }
 
     // const travelPost = {
     //     id: 1,
@@ -181,8 +236,16 @@ function PostDetailsPage(props) {
     // }, [requestEnabled]);
 
 
-    function handleMultiImageChange(e) {
+
+    async function handleMultiImageChange(e) {
         const files = e.target.files;
+        let converted_files = [];
+        for (let i = 0; i < files.length; i++) {
+            const image64 = await convertImageToBase64(files[i]);
+            converted_files.push(image64);
+        }
+        console.log(converted_files)
+        setConvertedImages(converted_files)
         setSelectedImages([...files]);
     }
 
@@ -314,25 +377,25 @@ function PostDetailsPage(props) {
                             <div className={'w-1/2'}>
                                 <div className="space-y-2">
                                     <label className="text-sm font-medium titleLocation">Pickup Location</label>
-                                    <div className="flex space-x-2">
-                                        <input
-                                          type="text"
-                                          name="from"
-                                          value={formData.from}
-                                          onChange={handleChange}
-                                          placeholder="Government"
-                                          className={`background w-1/2 p-2 border border-gray-300 rounded ${errors.from ? 'border-red-500' : ''}`}
-                                        />
-                                        <input
-                                          type="text"
-                                          name="pickupCity"
-                                          value={formData.pickupCity}
-                                          onChange={handleChange}
-                                          placeholder="City"
-                                          className={`background w-1/2 p-2 border border-gray-300 rounded ${errors.pickupCity ? 'border-red-500' : ''}`}
-                                        />
-                                    </div>
-                                    {errors.from && <p className="text-red-500 text-sm">{errors.from}</p>}
+                                    {/*<div className="flex space-x-2">*/}
+                                    {/*    <input*/}
+                                    {/*      type="text"*/}
+                                    {/*      name="from"*/}
+                                    {/*      value={formData.from}*/}
+                                    {/*      onChange={handleChange}*/}
+                                    {/*      placeholder="Government"*/}
+                                    {/*      className={`background w-1/2 p-2 border border-gray-300 rounded ${errors.from ? 'border-red-500' : ''}`}*/}
+                                    {/*    />*/}
+                                    {/*    <input*/}
+                                    {/*      type="text"*/}
+                                    {/*      name="pickupCity"*/}
+                                    {/*      value={formData.pickupCity}*/}
+                                    {/*      onChange={handleChange}*/}
+                                    {/*      placeholder="City"*/}
+                                    {/*      className={`background w-1/2 p-2 border border-gray-300 rounded ${errors.pickupCity ? 'border-red-500' : ''}`}*/}
+                                    {/*    />*/}
+                                    {/*</div>*/}
+                                    {/*{errors.from && <p className="text-red-500 text-sm">{errors.from}</p>}*/}
                                     <input
                                       type="text"
                                       name="pickupAddress"
@@ -360,25 +423,25 @@ function PostDetailsPage(props) {
                             <div className={'w-1/2 px-4'}>
                                 <div className="space-y-2">
                                     <label className="text-sm font-medium titleLocation">Arrival Location</label>
-                                    <div className="flex space-x-2">
-                                        <input
-                                          type="text"
-                                          name="to"
-                                          value={formData.to}
-                                          onChange={handleChange}
-                                          placeholder="Government"
-                                          className={`background w-1/2 p-2 border border-gray-300 rounded ${errors.to ? 'border-red-500' : ''}`}
-                                        />
-                                        <input
-                                          type="text"
-                                          name="destinationCity"
-                                          value={formData.destinationCity}
-                                          onChange={handleChange}
-                                          placeholder="City"
-                                          className={`background w-1/2 p-2 border border-gray-300 rounded ${errors.destinationCity ? 'border-red-500' : ''}`}
-                                        />
-                                    </div>
-                                    {errors.to && <p className="text-red-500 text-sm">{errors.to}</p>}
+                                    {/*<div className="flex space-x-2">*/}
+                                    {/*    <input*/}
+                                    {/*      type="text"*/}
+                                    {/*      name="to"*/}
+                                    {/*      value={formData.to}*/}
+                                    {/*      onChange={handleChange}*/}
+                                    {/*      placeholder="Government"*/}
+                                    {/*      className={`background w-1/2 p-2 border border-gray-300 rounded ${errors.to ? 'border-red-500' : ''}`}*/}
+                                    {/*    />*/}
+                                    {/*    <input*/}
+                                    {/*      type="text"*/}
+                                    {/*      name="destinationCity"*/}
+                                    {/*      value={formData.destinationCity}*/}
+                                    {/*      onChange={handleChange}*/}
+                                    {/*      placeholder="City"*/}
+                                    {/*      className={`background w-1/2 p-2 border border-gray-300 rounded ${errors.destinationCity ? 'border-red-500' : ''}`}*/}
+                                    {/*    />*/}
+                                    {/*</div>*/}
+                                    {/*{errors.to && <p className="text-red-500 text-sm">{errors.to}</p>}*/}
                                     <input
                                       type="text"
                                       name="destinationAddress"
@@ -422,9 +485,9 @@ function PostDetailsPage(props) {
                                   value={formData.description}
                                   onChange={handleChange}
                                   placeholder="Write notes for clients..."
-                                  className={`background w-full p-2 border border-gray-300 rounded ${errors.description ? 'border-red-500' : ''}`}
+                                  className={` max-h-32 line-clamp-2 background h-max w-full p-2 border border-gray-300 rounded ${errors.description ? 'border-red-500' : ''}`}
                                   style={{
-                                      height: "80%",
+                                      height:"max-content"
                                   }}
                                 />
                                 {errors.description && <p className="text-red-500 text-sm">{errors.description}</p>}
@@ -466,9 +529,22 @@ function PostDetailsPage(props) {
 
 
                                 <button
-                                  onClick={() => handleRequest()}
-                                  className={"w-full py-4 bg-black text-white font-semibold text-2xl rounded-2xl shadow-lg hover:bg-black hover:bg-opacity-85"}>
-                                    Apply
+                                  onClick={() => {
+                                      handelApplyRequest()
+                                  }}
+                                  className={"w-full py-4 bg-black text-white font-semibold text-2xl rounded-2xl shadow-lg hover:bg-black hover:bg-opacity-85 "}>
+
+
+                                        {isRequestLoading ?
+                                          <div
+                                            className='flex items-center justify-center w-full'
+                                          >
+                                              <div
+                                                className="animate-spin rounded-full h-8 w-8 border-b-4 border-white"/>
+                                          </div> : 'Apply'
+                                        }
+
+
                                 </button>
                             </div>
                         </div>
