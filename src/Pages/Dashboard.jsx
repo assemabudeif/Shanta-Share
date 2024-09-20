@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import DashboardPosts  from '../Components/DashboardPosts';
 import DashBoardOrders  from '../Components/DashboardOrders';
+import {Outlet, useNavigate} from "react-router-dom";
 
 
 
 export default function Dashboard() {
     const pages = [
         "Sumary",
-        "Posts",
-        "Orders",
+        "posts",
+        "orders",
         "Users",
 
     ];
@@ -25,13 +26,14 @@ export default function Dashboard() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const [selectedPage, setSelectedPage] = useState(0);
     const [selectedComponent, setSelectedComponent] = useState(PagesComponent[0]);
-
+    const navigate = useNavigate()
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
     };
 
     const ChangePage = (index) => {
         setSelectedPage(index);
+        navigate(pages[index]);
         console.log(index);
         console.log(selectedPage === index);
     }
@@ -54,9 +56,11 @@ export default function Dashboard() {
                                         className={`${selectedPage === index ? "bg-white" : "ps-5"} h-20 w-full text-black font-semibold text-xl flex flex-row items-center`}
                                         onClick={() => ChangePage(index)}>
                                         {
+
                                             index === selectedPage && (
                                                 <div className={"h-full w-5 border-l-8 border-black"}/>
                                             )
+
                                         }
                                         <span> {page}</span>
                                     </div>
@@ -77,7 +81,7 @@ export default function Dashboard() {
                         </div>
                     </div>
                     <div className="p-4">
-                        {selectedComponent}
+                        <Outlet/>
                     </div>
                 </div>
             </div>
