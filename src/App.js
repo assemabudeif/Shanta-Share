@@ -48,7 +48,6 @@ function App() {
     const user_type = localStorage.getItem('user_type') || '';
 
 
-
     return (
         <>
             <Provider store={Store}>
@@ -65,7 +64,8 @@ function App() {
                         </>
                     }
                     <Routes>
-                        <Route path="/" element={user_type === 'DRIVER' ? <DriverHomePage/> : <HomePage/>}/>
+                        <Route path="/" element={user_type === 'DRIVER' ? <DriverHomePage/> : user_type === 'ADMIN' ?
+                            <Dashboard/> : <HomePage/>}/>
                         <Route path="/search" element={<SearchPage/>}/>
                         <Route path='/register' element={<RegistrationForm/>}/>
                         <Route path='/login' element={<Login/>}/>
