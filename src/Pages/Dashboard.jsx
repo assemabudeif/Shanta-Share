@@ -3,6 +3,7 @@ import DashboardPosts  from '../Components/DashboardPosts';
 import DashBoardOrders  from '../Components/DashboardOrders';
 import UsersInDashbourd from '../Components/usersInDashbpurd';
 import '../CSS/users.css'
+import DashboardSummary from '../Components/dashboardSummery';
 
 export default function Dashboard() {
     const pages = [
@@ -16,7 +17,10 @@ export default function Dashboard() {
     const [orders, setOrders] = useState([]);
 
     const PagesComponent = [
-        <div>Summary </div>, 
+        <>
+        <div className='title'>Summary </div>
+        <DashboardSummary/>
+        </>, 
         <DashboardPosts posts={posts} setPosts={setPosts} />, 
         <DashBoardOrders posts={orders} setOrders={setOrders}/>, 
         <>
