@@ -118,7 +118,7 @@ function CreatePostPage() {
     )
       .then(response => {
         //TODO: navigate to post preview
-        navigate(`/post/${response.data.data.id}`)
+        navigate(`/dashboard/posts/${response.data.data.id}`)
 
       })
 

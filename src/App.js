@@ -28,6 +28,7 @@ import OrdersHistory from "./Pages/OrdersHistory"
 import Dashboard from "./Pages/Dashboard"
 import DashBoardOrders from "./Components/DashboardOrders";
 import PostsPage from "./Pages/DriverDashboardPages/PostsPage";
+import OrdersPage from "./Pages/ClientDashboardPages/OrdersPage";
 
 
 const handleSave = (updatedDriver) => {
@@ -83,10 +84,14 @@ function App() {
                         <Route path={"/post/:id"} element={<PostDetailsPage/>}/>
                         <Route path="/ordershistory" element={<OrdersHistory/>}/>
                         <Route path="/dashboard" element={<Dashboard/>}>
-                            <Route path={"posts"} element={<PostsPage/>}/>
+                            <Route path={'summary'} element={<div>Summary</div>}/>
+                            <Route path={"posts"} element={<PostsPage/>} />
+                            {/*<Route path={"posts/:id"} element={<PostDetailsPage/>}/>*/}
+                            <Route path={"posts/:id"} element={<OrdersPage/>}/>
                             <Route path={"posts/create"} element={<CreatePostPage/>}/>
-                            <Route path={"posts/:id"} element={<PostDetailsPage/>}/>
+
                             <Route path={'orders'} element={<DashBoardOrders/>}/>
+                            <Route path={'settings'} element={<div>Settings</div>}/>
                         </Route>
                         <Route path="*" element={<PageNotFound/>}/>
                     </Routes>

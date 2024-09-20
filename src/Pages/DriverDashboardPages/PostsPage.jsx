@@ -16,20 +16,52 @@ function PostsPage() {
     weight: '',
     description: ''
   });
+  const [pageCount, setPageCount] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
-  const postsPerPage = 5;
+
 
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/posts/')
+    //TODO: Data loading
+    const params = {
+      page: currentPage,
+    }
+    const config = {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      }
+    }
+    const queryString = new URLSearchParams(params).toString();
+    fetch(`http://127.0.0.1:8000/posts/driver-posts/?${queryString}`, config)
       .then(response => response.json())
       .then(data => {
-        console.log(data.results)
+        console.log(data)
         setPosts(data.results);
+        setPageCount(data.page_count)
       })
       .catch(error => console.error('Error fetching posts:', error));
   }, []);
+
+  useEffect(() => {
+    const params = {
+      page: currentPage,
+    }
+    const config = {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      }
+    }
+    const queryString = new URLSearchParams(params).toString();
+    fetch(`http://127.0.0.1:8000/posts/driver-posts/?${queryString}`, config)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data)
+        setPosts(data.results);
+        setPageCount(data.page_count)
+      })
+      .catch(error => console.error('Error fetching posts:', error));
+  }, [currentPage]);
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
@@ -61,16 +93,16 @@ function PostsPage() {
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
   // Pagination logic
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = posts
-    .filter(post =>
-      Object.values(post).some(value =>
-        value.toString().toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    )
-    .slice(indexOfFirstPost, indexOfLastPost);
-  const totalPages = Math.ceil(posts.length / postsPerPage);
+  // const indexOfLastPost = currentPage * 5;
+  // const indexOfFirstPost = indexOfLastPost - 5;
+  // const currentPosts = posts
+  //   .filter(post =>
+  //     Object.values(post).some(value =>
+  //       value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+  //     )
+  //   )
+  //   .slice(indexOfFirstPost, indexOfLastPost);
+  // const totalPages = Math.ceil(posts.length / 5);
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -79,7 +111,8 @@ function PostsPage() {
       <div className="flex items-center justify-between mb-4">
         {/* <h2 className="text-2xl font-semibold">My Posts</h2> */}
         <button
-          onClick={() => setIsFormVisible(!isFormVisible)}
+          // onClick={() => setIsFormVisible(!isFormVisible)}
+          onClick={()=>{navigate('create')}}
           className="py-2 px-4 bg-black text-white rounded-lg shadow-sm hover:bg-gray-800 text-lg"
         >
           {isFormVisible ? 'Cancel' : 'Create Post'}
@@ -113,7 +146,7 @@ function PostsPage() {
 
       {!isFormVisible && (
         <div>
-          {currentPosts.length > 0 ? (
+          {posts.length > 0 ? (
             <>
               <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
                 <thead className="bg-gray-100">
@@ -131,17 +164,17 @@ function PostsPage() {
                 </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
-                {currentPosts.map(post => (
+                {posts.map(post => (
                   <tr key={post.id}
                       className='cursor-pointer'
-                      onClick={()=> navigate('/client-dashboard', {state: {postId: post.id}})}
+                      onClick={()=> navigate(`${post.id}`, {state: {postId: post.id}})}
                   >
                     <td className="px-4 py-2 text-sm text-gray-800">{post.id}</td>
                     <td className="px-4 py-2 text-sm text-gray-800">{post.from_city ? post.from_city.name : 'Unknown'}</td>
                     <td className="px-4 py-2 text-sm text-gray-800">{post.to_city ? post.to_city.name : 'Unknown'}</td>
                     <td className="px-4 py-2 text-sm text-gray-800">{post.created_by.name}</td>
                     <td className="px-4 py-2 text-sm text-gray-800">{post.created_by.average_rate}</td>
-                    <td className="px-4 py-2 text-sm text-gray-800">${post.price}</td>
+                    <td className="px-4 py-2 text-sm text-gray-800">${post.delivery_fee}</td>
                     <td className="px-4 py-2 text-sm text-gray-800">{post.max_weight} kg</td>
                     <td className="px-4 py-2 text-sm text-gray-800">{post.description}</td>
                     <td className="px-4 py-2 text-sm text-gray-800">{post.pickup_time}</td>
@@ -160,7 +193,7 @@ function PostsPage() {
                 >
                   Prev
                 </button>
-                {[...Array(totalPages).keys()].map(pageNumber => (
+                {[...Array(pageCount).keys()].map(pageNumber => (
                   <button
                     key={pageNumber + 1}
                     onClick={() => paginate(pageNumber + 1)}
@@ -171,7 +204,7 @@ function PostsPage() {
                 ))}
                 <button
                   onClick={() => paginate(currentPage + 1)}
-                  disabled={currentPage === totalPages}
+                  disabled={currentPage === pageCount}
                   className="py-1 px-3 mx-1 bg-gray-200 text-gray-700 rounded-md"
                 >
                   Next

@@ -7,25 +7,30 @@ import {Outlet, useNavigate} from "react-router-dom";
 
 export default function Dashboard() {
     const pages = [
-        "Sumary",
-        "posts",
-        "orders",
-        "Users",
+        {page: "summary", title: "Summary"},
+        {page: "posts", title: "Posts"},
+        {page: "orders", title: "Orders"},
+        {page: "settings", title: "Settings"},
 
     ];
     const [posts, setPosts] = useState([]);
     const [orders, setOrders] = useState([]);
 
-    const PagesComponent = [
-        <div>Summary </div>, 
-        <DashboardPosts posts={posts} setPosts={setPosts} />, 
-        <DashBoardOrders posts={orders} setOrders={setOrders}/>, 
-        <div>Users Page Content</div>, 
-    ];
+    // const PagesComponent = [
+    //     <div>Summary </div>,
+    //     <DashboardPosts posts={posts} setPosts={setPosts} />,
+    //     <DashBoardOrders posts={orders} setOrders={setOrders}/>,
+    //     <div>Users Page Content</div>,
+    // ];
     
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-    const [selectedPage, setSelectedPage] = useState(0);
-    const [selectedComponent, setSelectedComponent] = useState(PagesComponent[0]);
+    const [selectedPage, setSelectedPage] = useState(
+      pages.findIndex(function (page) {
+          // console.log(window.location.pathname.includes(page.page));
+          return window.location.pathname.includes(page.page);
+      })
+    );
+    // const [selectedComponent, setSelectedComponent] = useState(PagesComponent[0]);
     const navigate = useNavigate()
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
@@ -33,13 +38,15 @@ export default function Dashboard() {
 
     const ChangePage = (index) => {
         setSelectedPage(index);
-        navigate(pages[index]);
+        navigate(pages[index].page);
         console.log(index);
         console.log(selectedPage === index);
     }
-
     useEffect(() => {
-        setSelectedComponent(PagesComponent[selectedPage]);
+
+    }, []);
+    useEffect(() => {
+        // setSelectedComponent(PagesComponent[selectedPage]);
     }, [selectedPage]);
 
    
@@ -54,7 +61,10 @@ export default function Dashboard() {
                                 <div className={"flex flex-wrap"} key={index}>
                                     <div
                                         className={`${selectedPage === index ? "bg-white" : "ps-5"} h-20 w-full text-black font-semibold text-xl flex flex-row items-center`}
-                                        onClick={() => ChangePage(index)}>
+                                        onClick={() => {
+                                            navigate(page.page);
+                                            ChangePage(index)
+                                        }}>
                                         {
 
                                             index === selectedPage && (
@@ -62,10 +72,11 @@ export default function Dashboard() {
                                             )
 
                                         }
-                                        <span> {page}</span>
+                                        <span> {page.title}</span>
                                     </div>
                                 </div>
                             ))}
+
                         </div>
                     </div>
                 </div>

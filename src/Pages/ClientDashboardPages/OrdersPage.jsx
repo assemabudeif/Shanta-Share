@@ -4,6 +4,7 @@ import Preview from "../../Components/Posts/preview";
 import React, {useEffect, useState} from "react";
 import {AxiosInstance} from "../../Network/AxiosInstance";
 import order_img from "../../assets/images/order_img.png";
+import axios, {Axios} from "axios";
 
 function OrdersPage() {
   const location = useLocation();
@@ -46,19 +47,29 @@ function OrdersPage() {
   const [error, setError] = useState("");
 
   const getPosts = () => {
-    AxiosInstance.get("https://retoolapi.dev/W1fCKB/data").then((response) => {
-      console.log(response.data);
-      setPosts(response.data);
-      setLoading(false)
-    }).catch((error) => {
-      setError(error);
-      console.error("Error fetching data:", error);
-    });
+
+    const params = {
+      post_id:id
+    }
+    const config = {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      }
+    }
+    const queryString = new URLSearchParams(params).toString();
+    fetch(`http://127.0.0.1:8000/orders/post-orders/?${queryString}`, config)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data)
+        setPosts(data.data);
+        setLoading(false)
+      })
+      .catch(error => console.error('Error fetching posts:', error));
   }
 
   useEffect(() => {
     AxiosInstance.get(
-      `/posts/${28}`
+      `/posts/${id}`
     ).then((response) => setFormData(response.data))
     getPosts()
   }, []);
@@ -76,7 +87,7 @@ function OrdersPage() {
               </div>
               <div className="flex ">
                 <div className="flex flex-col">
-                  {currentPosts.map((post, index) => {
+                  {posts.map((post, index) => {
                     return (
                       <div className="my-2">
                         {OrderItem(post)}
@@ -166,7 +177,7 @@ function OrderItem(post) {
     <>
       <div className="bg-gray-100 border-2 border-black rounded-2xl grid grid-cols-12 ">
 
-        <img src={order_img} className="col-span-4 h-[100%] rounded-l-2xl object-cover"/>
+        <img src={'http://localhost:8000' + post.cargo_image} className="col-span-4 h-[100%] rounded-l-2xl object-cover"/>
 
         <div className="col-span-8 p-4  flex flex-col justify-between">
           <div className={"bg-gray-300 w-full flex flex-col justify-between "}>
@@ -175,10 +186,10 @@ function OrderItem(post) {
                 Pickup
 
                 <span className={"text-xl font-semibold"}>
-                      <br/> {post.from}
+                      <br/> {post.pickup_address_line}
                 </span>
                 <span className={"text-xl font-normal"}>
-                      <br/> Today 06:30 AM
+                      <br/> {post.pickup_time}
                 </span>
               </span>
             </div>
@@ -188,24 +199,23 @@ function OrderItem(post) {
                  Destination
 
                 <span className={"text-xl font-semibold"}>
-                      <br/> {post.to}
+                      <br/> {post.delivery_address_line}
                 </span>
                 <span className="text-xl font-normal">
-                     <br/> Today 10:30 AM
+                     <br/> {post.arrival_time}
                   </span>
               </span>
             </div>
           </div>
 
           <div className="bg-pink-200 w-full h-full my-4">
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
-            the industry's standard dummy text ever since the 1500s, when an unknown printer took
+            {post.client_notes}
           </div>
 
 
           <div className={"bg-green-200 flex  justify-between"}>
             <div className="w flex items-center">
-              <span className="font-bold text-lg">Mr.Amr El-Saady</span>
+              <span className="font-bold text-lg">{post.client.name}</span>
               <svg className="w-6 h-6 ms-8" viewBox="0 0 32 32" fill="none"
                    xmlns="http://www.w3.org/2000/svg">
                 <g clipPath="url(#clip0_37_379)">
