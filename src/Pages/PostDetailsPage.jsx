@@ -10,6 +10,7 @@ import areaImage from "../assets/images/area.png";
 import {BiExit} from "react-icons/bi";
 import {format, parseISO} from "date-fns";
 import {AxiosInstance} from "../Network/AxiosInstance";
+import {logDOM} from "@testing-library/react";
 
 function PostDetailsPage(props) {
     const [carData, setCardata] = useState({
@@ -35,6 +36,7 @@ function PostDetailsPage(props) {
     const [post, setPost] = useState({});
     const [requestEnabled, setRequestEnabled] = useState(false);
     const [selectedImages, setSelectedImages] = useState([]);
+    const [convertedImages, setConvertedImages] = useState([])
     const [formData, setFormData] = useState({
         from: '',
         pickupCity: '',
@@ -74,38 +76,53 @@ function PostDetailsPage(props) {
         return error;
     };
 
-    const handleChange = (e) => {
-        const {name, value} = e.target;
-
+    const handleChange = async  (e) => {
+        const {name, value, type, files} = e.target;
         // Validate the input
         const error = validate(name, value);
+        if (type === 'file') {
+            console.log('File:', convertImageToBase64(files[0]));
 
+            setFormData({...formData, [name]: await convertImageToBase64(files[0])});
+        } else {
+            setFormData({
+                ...formData, [name]: value
+            });
+            setErrors({
+                ...errors, [name]: error
+            });
+        }
         // Update form data and errors
-        setFormData({
-            ...formData, [name]: value
-        });
-        setErrors({
-            ...errors, [name]: error
-        });
+
 
         // onFormChange({...formData, [name]: value});
+    };
+
+    const convertImageToBase64 = (image) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(image);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
     };
 
     const handelApplyRequest = () => {
         setIsRequestLoading(true);
         const body = {
-            "post": post.id,
-            "pickup_time": formData.pickupTime,
-            "pickup_address_line": formData.from,
-            "arrival_time": formData.arrivalTime,
-            "delivery_address_line": formData.to,
-            "client_notes": formData.description,
-            "cargo_image": "data:image/png;base64,/9j/"
+            post: post.id,
+            pickup_time: formData.pickupTime,
+            pickup_address_line: formData.pickupAddress,
+            arrival_time: formData.arrivalTime,
+            delivery_address_line: formData.arrivalAddress,
+            client_notes: formData.description,
+            cargo_image: convertedImages[0]
         };
+        console.log(body)
         AxiosInstance.post(
           '/orders/client/',
           body,
-          {
+        {
               headers: {
                   'Authorization': `Bearer ${localStorage.getItem('token')}`,
                   'Content-Type': 'application/json',
@@ -139,18 +156,17 @@ function PostDetailsPage(props) {
 
 
     const handleRequest = () => {
-        // setRequestEnabled(!requestEnabled);
-        // if (!requestEnabled) {
-        //     window.setTimeout(
-        //         () => {
-        //             setShowForm(true);
-        //         },
-        //         10
-        //     )
-        // }
-        //
-        // console.log(requestEnabled, "requestEnabled");
-        handelApplyRequest()
+        setRequestEnabled(!requestEnabled);
+        if (!requestEnabled) {
+            window.setTimeout(
+                () => {
+                    setShowForm(true);
+                },
+                10
+            )
+        }
+
+        console.log(requestEnabled, "requestEnabled");
     }
     useEffect(() => {
         axios.get("https://retoolapi.dev/0JlabI/data/1")
@@ -221,8 +237,15 @@ function PostDetailsPage(props) {
 
 
 
-    function handleMultiImageChange(e) {
+    async function handleMultiImageChange(e) {
         const files = e.target.files;
+        let converted_files = [];
+        for (let i = 0; i < files.length; i++) {
+            const image64 = await convertImageToBase64(files[i]);
+            converted_files.push(image64);
+        }
+        console.log(converted_files)
+        setConvertedImages(converted_files)
         setSelectedImages([...files]);
     }
 
@@ -506,9 +529,22 @@ function PostDetailsPage(props) {
 
 
                                 <button
-                                  onClick={() => handleRequest()}
-                                  className={"w-full py-4 bg-black text-white font-semibold text-2xl rounded-2xl shadow-lg hover:bg-black hover:bg-opacity-85"}>
-                                    Apply
+                                  onClick={() => {
+                                      handelApplyRequest()
+                                  }}
+                                  className={"w-full py-4 bg-black text-white font-semibold text-2xl rounded-2xl shadow-lg hover:bg-black hover:bg-opacity-85 "}>
+
+
+                                        {isRequestLoading ?
+                                          <div
+                                            className='flex items-center justify-center w-full'
+                                          >
+                                              <div
+                                                className="animate-spin rounded-full h-8 w-8 border-b-4 border-white"/>
+                                          </div> : 'Apply'
+                                        }
+
+
                                 </button>
                             </div>
                         </div>
