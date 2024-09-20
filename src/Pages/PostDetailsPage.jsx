@@ -46,6 +46,18 @@ function PostDetailsPage(props) {
         size: '2.0 msq',
         description: ''
     });
+    const [isRequestLoading, setIsRequestLoading] = useState(false)
+
+
+    /**
+     *     "post": 8,
+     *     "pickup_time": "2024-09-19T19:27:00",
+     *     "pickup_address_line": "Malawi",
+     *     "arrival_time": "2024-09-19T19:27:00",
+     *     "delivery_address_line": "Minia",
+     *     "client_notes": "Nothing",
+     *     "cargo_image": "data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/
+     * */
     const [showForm, setShowForm] = useState(false);
 
     const [errors, setErrors] = useState({});
@@ -79,6 +91,32 @@ function PostDetailsPage(props) {
         // onFormChange({...formData, [name]: value});
     };
 
+    const handelApplyRequest = () => {
+        setIsRequestLoading(true);
+        const body = {
+            "post": post.id,
+            "pickup_time": formData.pickupTime,
+            "pickup_address_line": formData.from,
+            "arrival_time": formData.arrivalTime,
+            "delivery_address_line": formData.to,
+            "client_notes": formData.description,
+            "cargo_image": "data:image/png;base64,/9j/"
+        };
+        AxiosInstance.post(
+          '/orders/client/',
+          body,
+          {
+              headers: {
+                  'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                  'Content-Type': 'application/json',
+              }
+          }
+        ).then((response) => {
+            setIsRequestLoading(false);
+            console.log(response);
+        })
+    }
+
     // const travelPost = {
     //     id: 1,
     //     driverName: post?.name || "Ahmed",
@@ -101,17 +139,18 @@ function PostDetailsPage(props) {
 
 
     const handleRequest = () => {
-        setRequestEnabled(!requestEnabled);
-        if (!requestEnabled) {
-            window.setTimeout(
-                () => {
-                    setShowForm(true);
-                },
-                10
-            )
-        }
-
-        console.log(requestEnabled, "requestEnabled");
+        // setRequestEnabled(!requestEnabled);
+        // if (!requestEnabled) {
+        //     window.setTimeout(
+        //         () => {
+        //             setShowForm(true);
+        //         },
+        //         10
+        //     )
+        // }
+        //
+        // console.log(requestEnabled, "requestEnabled");
+        handelApplyRequest()
     }
     useEffect(() => {
         axios.get("https://retoolapi.dev/0JlabI/data/1")
@@ -179,6 +218,7 @@ function PostDetailsPage(props) {
     //     }
     //
     // }, [requestEnabled]);
+
 
 
     function handleMultiImageChange(e) {
@@ -314,25 +354,25 @@ function PostDetailsPage(props) {
                             <div className={'w-1/2'}>
                                 <div className="space-y-2">
                                     <label className="text-sm font-medium titleLocation">Pickup Location</label>
-                                    <div className="flex space-x-2">
-                                        <input
-                                          type="text"
-                                          name="from"
-                                          value={formData.from}
-                                          onChange={handleChange}
-                                          placeholder="Government"
-                                          className={`background w-1/2 p-2 border border-gray-300 rounded ${errors.from ? 'border-red-500' : ''}`}
-                                        />
-                                        <input
-                                          type="text"
-                                          name="pickupCity"
-                                          value={formData.pickupCity}
-                                          onChange={handleChange}
-                                          placeholder="City"
-                                          className={`background w-1/2 p-2 border border-gray-300 rounded ${errors.pickupCity ? 'border-red-500' : ''}`}
-                                        />
-                                    </div>
-                                    {errors.from && <p className="text-red-500 text-sm">{errors.from}</p>}
+                                    {/*<div className="flex space-x-2">*/}
+                                    {/*    <input*/}
+                                    {/*      type="text"*/}
+                                    {/*      name="from"*/}
+                                    {/*      value={formData.from}*/}
+                                    {/*      onChange={handleChange}*/}
+                                    {/*      placeholder="Government"*/}
+                                    {/*      className={`background w-1/2 p-2 border border-gray-300 rounded ${errors.from ? 'border-red-500' : ''}`}*/}
+                                    {/*    />*/}
+                                    {/*    <input*/}
+                                    {/*      type="text"*/}
+                                    {/*      name="pickupCity"*/}
+                                    {/*      value={formData.pickupCity}*/}
+                                    {/*      onChange={handleChange}*/}
+                                    {/*      placeholder="City"*/}
+                                    {/*      className={`background w-1/2 p-2 border border-gray-300 rounded ${errors.pickupCity ? 'border-red-500' : ''}`}*/}
+                                    {/*    />*/}
+                                    {/*</div>*/}
+                                    {/*{errors.from && <p className="text-red-500 text-sm">{errors.from}</p>}*/}
                                     <input
                                       type="text"
                                       name="pickupAddress"
@@ -360,25 +400,25 @@ function PostDetailsPage(props) {
                             <div className={'w-1/2 px-4'}>
                                 <div className="space-y-2">
                                     <label className="text-sm font-medium titleLocation">Arrival Location</label>
-                                    <div className="flex space-x-2">
-                                        <input
-                                          type="text"
-                                          name="to"
-                                          value={formData.to}
-                                          onChange={handleChange}
-                                          placeholder="Government"
-                                          className={`background w-1/2 p-2 border border-gray-300 rounded ${errors.to ? 'border-red-500' : ''}`}
-                                        />
-                                        <input
-                                          type="text"
-                                          name="destinationCity"
-                                          value={formData.destinationCity}
-                                          onChange={handleChange}
-                                          placeholder="City"
-                                          className={`background w-1/2 p-2 border border-gray-300 rounded ${errors.destinationCity ? 'border-red-500' : ''}`}
-                                        />
-                                    </div>
-                                    {errors.to && <p className="text-red-500 text-sm">{errors.to}</p>}
+                                    {/*<div className="flex space-x-2">*/}
+                                    {/*    <input*/}
+                                    {/*      type="text"*/}
+                                    {/*      name="to"*/}
+                                    {/*      value={formData.to}*/}
+                                    {/*      onChange={handleChange}*/}
+                                    {/*      placeholder="Government"*/}
+                                    {/*      className={`background w-1/2 p-2 border border-gray-300 rounded ${errors.to ? 'border-red-500' : ''}`}*/}
+                                    {/*    />*/}
+                                    {/*    <input*/}
+                                    {/*      type="text"*/}
+                                    {/*      name="destinationCity"*/}
+                                    {/*      value={formData.destinationCity}*/}
+                                    {/*      onChange={handleChange}*/}
+                                    {/*      placeholder="City"*/}
+                                    {/*      className={`background w-1/2 p-2 border border-gray-300 rounded ${errors.destinationCity ? 'border-red-500' : ''}`}*/}
+                                    {/*    />*/}
+                                    {/*</div>*/}
+                                    {/*{errors.to && <p className="text-red-500 text-sm">{errors.to}</p>}*/}
                                     <input
                                       type="text"
                                       name="destinationAddress"
@@ -422,9 +462,9 @@ function PostDetailsPage(props) {
                                   value={formData.description}
                                   onChange={handleChange}
                                   placeholder="Write notes for clients..."
-                                  className={`background w-full p-2 border border-gray-300 rounded ${errors.description ? 'border-red-500' : ''}`}
+                                  className={` max-h-32 line-clamp-2 background h-max w-full p-2 border border-gray-300 rounded ${errors.description ? 'border-red-500' : ''}`}
                                   style={{
-                                      height: "80%",
+                                      height:"max-content"
                                   }}
                                 />
                                 {errors.description && <p className="text-red-500 text-sm">{errors.description}</p>}
