@@ -151,7 +151,7 @@ function DashBoardOrders() {
     return (
         <div className="p-4 text-sm">
             {alert.message && (
-                <div className={`alert ${alert.type === 'success' ? 'bg-green-200' : 'bg-red-200'} p-2 mb-4 rounded-md`}>
+                <div className={`p-4 mb-4 text-sm text-white ${alert.type === 'success' ? 'bg-green-500' : 'bg-red-500'} rounded`} role="alert">
                     {alert.message}
                 </div>
             )}
@@ -185,7 +185,7 @@ function DashBoardOrders() {
                                                     e.stopPropagation();
                                                     handleEdit(order);
                                                 }}
-                                                className="bg-blue-500 text-white px-2 py-1 rounded-md"
+                                                className="bg-black text-white px-2 py-1 rounded-md"
                                             >
                                                 Edit
                                             </button>
@@ -194,7 +194,7 @@ function DashBoardOrders() {
                                                     e.stopPropagation();
                                                     openDeleteModal(order.id);
                                                 }}
-                                                className="bg-red-500 text-white px-2 py-1 rounded-md"
+                                                className="bg-black text-white px-2 py-1 rounded-md"
                                             >
                                                 Delete
                                             </button>
