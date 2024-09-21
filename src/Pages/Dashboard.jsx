@@ -8,8 +8,8 @@ import DashboardSummary from '../Components/dashboardSummery';
 export default function Dashboard() {
     const pages = [
         "Sumary",
-        "Orders",
         "Posts",
+        "Orders",
         "Users",
 
     ];
