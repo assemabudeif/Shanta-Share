@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { AxiosInstance } from '../Network/AxiosInstance';
+import LoadingComp from './LoadingComp';
 function DashBoardPosts() {
     const navigate = useNavigate();
 
@@ -14,21 +15,44 @@ function DashBoardPosts() {
     const [alert, setAlert] = useState({ message: '', type: '', visible: false });
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [postIdToDelete, setPostIdToDelete] = useState(null);
+    const [loading, setLoading] = useState(true); 
 
-    useEffect(() => {
-        fetchPosts();
-    }, [currentPage]);
+    // useEffect(() => {
+    //     fetchPosts();
+    // }, [currentPage]);
+
+    // const fetchPosts = () => {
+    //     fetch(`http://127.0.0.1:8000/posts/`)
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             setPosts(data.results);
+    //             setTotalPages(Math.ceil(data.count / postsPerPage));
+    //         })
+    //         .catch(error => console.error('Error fetching posts:', error));
+    // };
 
     const fetchPosts = () => {
-        fetch(`http://127.0.0.1:8000/posts/`)
-            .then(response => response.json())
-            .then(data => {
+        setLoading(true); 
+        AxiosInstance.get('http://127.0.0.1:8000/posts/')
+            .then(response => {
+                const data = response.data;
                 setPosts(data.results);
                 setTotalPages(Math.ceil(data.count / postsPerPage));
             })
-            .catch(error => console.error('Error fetching posts:', error));
+            .catch(error => console.error('Error fetching data:', error))
+            .finally(() => {
+                setLoading(false); 
+            });
     };
 
+    useEffect(() => {
+        fetchPosts();
+    }, []); // 
+    if (loading) {
+        return <LoadingComp />; 
+    }
+
+    
 
     //====== Search & paginatation =====
 
@@ -62,29 +86,28 @@ function DashBoardPosts() {
 // ========== Handling Delete ==========
 
 
-    const handleDelete = () => {
-        const token = localStorage.getItem("token");
+const handleDelete = () => {
+    const token = localStorage.getItem("token");
 
-        fetch(`http://127.0.0.1:8000/posts/details/${postIdToDelete}`, {
-            method: 'DELETE',
-            headers: {
-                Authorization: `Bearer ${token}`,
-            }
-        })
-        .then(response => {
-            if (response.ok) {
-                showAlert('Post deleted successfully', 'success');
-                fetchPosts();
-            } else {
-                showAlert('Failed to delete post', 'error');
-            }
-        })
-        .catch(error => console.error('Error deleting post:', error))
-        .finally(() => {
-            setIsModalOpen(false);
-            setPostIdToDelete(null);
-        });
-    };
+    fetch(`http://127.0.0.1:8000/posts/details/${postIdToDelete}`, {
+        method: 'DELETE',
+        headers: {
+            Authorization: `Bearer ${token}`,
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            showAlert('Post deleted successfully', 'success');
+        } else {
+            showAlert('Failed to delete post', 'error');
+        }
+    })
+    .catch(error => console.error('Error deleting post:', error))
+    .finally(() => {
+        setIsModalOpen(false);
+        setPostIdToDelete(null);
+    });
+};
 
 
 
@@ -277,17 +300,31 @@ function DashBoardPosts() {
                         )}
 
                         {/* Pagination */}
-                        <div className="flex justify-between mt-4">
-                            {Array.from({ length: totalPages }, (_, index) => (
+                        <div className="mt-4 flex justify-center">
                                 <button
-                                    key={index}
-                                    onClick={() => paginate(index + 1)}
-                                    className={`px-4 py-2 rounded-md ${currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'}`}
+                                    onClick={() => paginate(currentPage - 1)}
+                                    disabled={currentPage === 1}
+                                    className="py-1 px-3 mx-1 bg-gray-200 text-gray-700 rounded-md"
                                 >
-                                    {index + 1}
+                                    Prev
                                 </button>
-                            ))}
-                        </div>
+                                {[...Array(totalPages).keys()].map(pageNumber => (
+                                    <button
+                                        key={pageNumber + 1}
+                                        onClick={() => paginate(pageNumber + 1)}
+                                        className={`py-1 px-3 mx-1 ${currentPage === pageNumber + 1 ? 'bg-black text-white' : 'bg-gray-200 text-gray-700'} rounded-md`}
+                                    >
+                                        {pageNumber + 1}
+                                    </button>
+                                ))}
+                                <button
+                                    onClick={() => paginate(currentPage + 1)}
+                                    disabled={currentPage === totalPages}
+                                    className="py-1 px-3 mx-1 bg-gray-200 text-gray-700 rounded-md"
+                                >
+                                    Next
+                                </button>
+                            </div>
                     </>
                 ) : (
                     <p>No posts found.</p>
