@@ -3,8 +3,11 @@ import {useNavigate} from 'react-router-dom';
 import Form from './postForm';
 import Preview from './preview';
 import {AxiosInstance} from "../../Network/AxiosInstance";
+import { useTranslation } from 'react-i18next';
+
 
 function CreatePostPage() {
+  const { t, i18n } = useTranslation();
   const [formData, setFormData] = useState({
     from_government: {},
     from_city: {},
@@ -137,7 +140,7 @@ function CreatePostPage() {
       </div>
       <div className="w-1/3">
         <button className="rounded-full py-1 bg-black text-white w-1/3 btn bs-tooltip-end"
-                onClick={handlePreviewClick}>Preview
+                onClick={handlePreviewClick}>{t("page.Preview")}
         </button>
         <Preview formData={formData} onSubmit={handleSubmit} handleCalculateFEEs={handleCalculateFEEs}
                  isFormReady={isFormReady} deliveryFEEs={deliveryFEEs}/>

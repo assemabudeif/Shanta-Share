@@ -163,7 +163,7 @@ function Form({setFormData, formData, errors, setErrors, validate}) {
               name="from_address_line"
               value={formData.from_address_line}
               onChange={handleChange}
-              placeholder="Address line"
+              placeholder={ t("createPostPage.Addressline")}
               className={`background w-full p-2 border rounded ${errors.from_address_line ? 'border-red-500' : 'border-gray-300'}`}
             />
             {errors.from_address_line && <p className="text-red-500 text-sm">{errors.from_address_line}</p>}
@@ -207,7 +207,7 @@ function Form({setFormData, formData, errors, setErrors, validate}) {
                 onChange={handleChangeObject}
                 className={`background w-1/2 p-2 border rounded ${errors.to_government ? 'border-red-500' : 'border-gray-300'}`}
               >
-                <option value={JSON.stringify({})}>{('createPostPage.selectGovernment')}</option>
+                <option value={JSON.stringify({})}>{t('createPostPage.selectGovernment')}</option>
                 {arrivalGovernments.map((gov, index) => (<option key={gov.id} value={JSON.stringify(gov)}>
                   {gov.name}
                 </option>))}
@@ -220,7 +220,7 @@ function Form({setFormData, formData, errors, setErrors, validate}) {
                 className={`background w-1/2 p-2 border rounded ${errors.to_city ? 'border-red-500' : 'border-gray-300'}`}
                 disabled={!formData.to_government} // Disable if no government is selected
               >
-                <option value={JSON.stringify({})}>{('createPostPage.selectcity')}</option>
+                <option value={JSON.stringify({})}>{t('createPostPage.selectcity')}</option>
                 {arrivalCities.map((city) => (<option key={city.id} value={JSON.stringify(city)}>
                   {city.name}
                 </option>))}
@@ -234,14 +234,14 @@ function Form({setFormData, formData, errors, setErrors, validate}) {
               name="to_address_line"
               value={formData.to_address_line}
               onChange={handleChange}
-              placeholder="Address line"
+              placeholder={ t("createPostPage.Addressline")}
               className={`background w-full p-2 border rounded ${errors.to_address_line ? 'border-red-500' : 'border-gray-300'}`}
             />
             {errors.to_address_line && <p className="text-red-500 text-sm">{errors.to_address_line}</p>}
           </div>
 
           <div className="space-y-2">
-            <label className="flex w-1/2 text-sm font-medium titleLocation">{('createPostPage.arrivalTime')}</label>
+            <label className="flex w-1/2 text-sm font-medium titleLocation">{t('createPostPage.arrivalTime')}</label>
             <input
               type="datetime-local"
               name="arrival_time"
@@ -283,7 +283,7 @@ function Form({setFormData, formData, errors, setErrors, validate}) {
             name="description"
             value={formData.description}
             onChange={handleChange}
-            placeholder="Write notes for clients..."
+            placeholder={t("createPostPage.Writenotesforclients")}
             className={`decription background w-full p-2 border rounded ${errors.description ? 'border-red-500' : 'border-gray-300 '}`}
           />
           {errors.description && <p className="text-red-500 text-sm">{errors.description}</p>}
