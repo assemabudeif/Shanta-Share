@@ -4,6 +4,7 @@ import {Link} from "react-router-dom";
 import {AxiosInstance} from "../Network/AxiosInstance";
 import {useSelector} from "react-redux";
 import {format, parseISO} from 'date-fns';
+import { useTranslation } from 'react-i18next';
 
 
 export default function SearchPage() {
@@ -16,6 +17,7 @@ export default function SearchPage() {
   const [pickupCities, setPickupCities] = useState([]);
   const [arrivalGovernments, setArrivalGovernments] = useState([]);
   const [arrivalCities, setArrivalCities] = useState([]);
+  const { t, i18n } = useTranslation();
 
   const [searchForm, setSearchForm] = useState({
     to_government: '', to_city: "", from_government: '', from_city: '', max_height: 0, max_width: 0, max_depth: 0,
@@ -132,10 +134,10 @@ export default function SearchPage() {
   return (<div className={"container mx-auto grid grid-cols-3 gap-16 my-8"}>
     <div className={"col-span-3 lg:col-span-1"}>
       <div className={"border-2 border-black rounded-2xl p-8"}>
-        <h3 className={"text-2xl font-semibold mb-8"}>Find your Courier</h3>
+        <h3 className={"text-2xl font-semibold mb-8"}>{t('find_your_courier')}</h3>
 
         <div>
-          <label className="block text-gray-700 mb-2">Pickup Location </label>
+          <label className="block text-gray-700 mb-2">{t('pickup_location')} </label>
           {/*<input*/}
           {/*  type="text"*/}
           {/*  name="government"*/}
@@ -159,7 +161,7 @@ export default function SearchPage() {
                           mb-4
                           "
           >
-            <option value="">Select a Government</option>
+            <option value="">{t('select_government')}</option>
             {pickupGovernments.map((gov) => (<option key={gov.id} value={gov.id}>
                 {gov.name}
               </option>))}
@@ -193,7 +195,7 @@ export default function SearchPage() {
                           "
             disabled={!searchForm.from_government} // Disable if no government is selected
           >
-            <option value="">Select a city</option>
+            <option value="">{t('select_city')}</option>
             {pickupCities.map(city => (<option key={city.id} value={city.id}>
                 {city.name}
               </option>))}
@@ -202,7 +204,7 @@ export default function SearchPage() {
         </div>
 
         <div>
-          <label className="block text-gray-700 mb-2">Arrival Location </label>
+          <label className="block text-gray-700 mb-2">{t('arrival_location')} </label>
           {/*<input*/}
           {/*  type="text"*/}
           {/*  name="government"*/}
@@ -226,7 +228,7 @@ export default function SearchPage() {
                           mb-4
                           "
           >
-            <option value="">Select a Government</option>
+            <option value="">{t('select_government')}</option>
             {arrivalGovernments.map((gov) => (<option key={gov.id} value={gov.id}>
                 {gov.name}
               </option>))}
@@ -260,7 +262,7 @@ export default function SearchPage() {
                           "
             disabled={!searchForm.to_government} // Disable if no government is selected
           >
-            <option value="">Select a city</option>
+            <option value="">{t('select_city')}</option>
             {arrivalCities.map(city => (<option key={city.id} value={city.id}>
                 {city.name}
               </option>))}
@@ -320,7 +322,7 @@ export default function SearchPage() {
                 sm:text-sm sm:leading-6
                 mb-4
             '
-          placeholder={"Cargo Weight"}
+          placeholder={t('cargo_weight')}
         />
 
         <div className={"flex justify-between"}>
@@ -338,7 +340,7 @@ export default function SearchPage() {
                   focus:ring-gray-950
                   sm:text-sm sm:leading-6
                   mb-4 text-center
-                ' placeholder={"W cm"}/>
+                ' placeholder={t('width_placeholder')} />
 
           <input
             type='number'
@@ -354,7 +356,7 @@ export default function SearchPage() {
                   focus:ring-gray-950
                   sm:text-sm sm:leading-6
                   mb-4 text-center
-                ' placeholder={"H cm"}/>
+                ' placeholder={t('height_placeholder')}/>
 
           <input
             type='number'
@@ -370,7 +372,7 @@ export default function SearchPage() {
                   focus:ring-gray-950
                   sm:text-sm sm:leading-6
                   mb-4 text-center
-                ' placeholder={"D cm"}/>
+                ' placeholder={t('depth_placeholder')}/>
 
         </div>
 
@@ -379,8 +381,8 @@ export default function SearchPage() {
             {"w-full py-4 bg-black text-white font-semibold text-2xl rounded-2xl shadow-lg hover:bg-black hover:bg-opacity-85"}
           onClick={handleSubmit}
         >
-          Search
-        </button>
+            {t('search')}
+            </button>
       </div>
 
     </div>
@@ -503,7 +505,7 @@ export default function SearchPage() {
           disabled={currentPage === 1}
           className="py-1 px-3 mx-1 bg-black bg-opacity-90 text-white rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          Prev
+           {t('prev_button')}
         </button>
 
         {/*<select className={'py-1 px-3 bg-gray-200 bg-opacity-90 text-black rounded-md mx-5'}*/}
@@ -522,14 +524,14 @@ export default function SearchPage() {
         {/*</select>*/}
 
         <span
-          className={'py-1 px-3 mx-1 text-black text-opacity-70 font-bold'}>Page {currentPage} of {totalPages}</span>
+          className={'py-1 px-3 mx-1 text-black text-opacity-70 font-bold'}>  {t('page_info', { currentPage, totalPages })}</span>
 
         <button
           onClick={GoToNextPage}
           disabled={currentPage === totalPages}
           className="py-1 px-3 mx-1 bg-black bg-opacity-90 text-white rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          Next
+             {t('next_button')}
         </button>
 
         {/*<button*/}
