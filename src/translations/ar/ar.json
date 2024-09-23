@@ -56,7 +56,24 @@
           "Clients": "العملاء",
           "Drivers": "السائقون",
           "Annual Statistics": "الإحصائيات السنوية"
-        }
+        },
+
+      "driverProfile": {
+      "verified": "موثّق",
+      "From": "من:",
+      "LicenceType": "نوع الرخصة:",
+      "Trips": "الرحلات",
+      "Rating": "التقييم",
+      "Years": "السنوات",
+      "Reviews": "المراجعات"
+  },
+
+   "driverHomePage": {
+    "Hi": "مرحبًا",
+    "TodaysEarnings": "أرباح اليوم",
+    "TodaysOrders": "طلبات اليوم",
+    "YourOrders": "طلباتك"
+  }
      
       
    

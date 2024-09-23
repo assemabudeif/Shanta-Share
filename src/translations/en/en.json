@@ -56,7 +56,25 @@
       "Drivers":"Drivers",
       "Annual Statistics":"Annual Statistics"
 
+    },
+    "driverProfile":{
+      "verified":"verified",
+      "From":"From:",
+      "LicenceType":"Licence Type:",
+      "Trips":"Trips",
+      "Rating":"Rating",
+      "Years":"Years",
+      "Reviews":"Reviews"
+
+    },
+
+    "driverHomePage":{
+      "Hi":"Hi",
+      "TodaysEarnings":"Today's Earnings",
+      "TodaysOrders":"Today's Orders",
+      "YourOrders":"Your Orders"
     }
+
 
 
   }
