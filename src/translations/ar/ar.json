@@ -68,8 +68,8 @@
     "Next": "التالي",
     "Client Information": "معلومات العميل",
     "Driver Information": "معلومات السائق",
-    "Government": "الحكومة",
-    "Select a Government": "اختر حكومة",
+    "Government": "المحافظة",
+    "Select a Government": "اختر محافظة",
     "City": "المدينة",
     "Select a city": "اختر مدينة",
     "Address": "العنوان",
@@ -118,7 +118,18 @@
       "licenseIssuedDate": "تاريخ إصدار الرخصة",
       "licenseExpirationDate": "تاريخ انتهاء الرخصة",
       "back": "العودة",
-      "next": "التالي"
+      "next": "التالي",
+      "welcome": "مرحبًا بك",
+  "enterEmailOrUsername": "أدخل البريد الإلكتروني أو اسم المستخدم",
+  "enterPassword": "أدخل كلمة المرور",
+  "login": "تسجيل الدخول",
+  "dontHaveAccount": "ليس لديك حساب؟",
+  "signUpHere": "سجل هنا",
+  "unauthorized": "بيانات الاعتماد غير صحيحة.",
+  "checkCredentials": "تحقق من البريد الإلكتروني أو كلمة المرور.",
+  "tryAgain": "حدث خطأ ما. حاول مرة أخرى.",
+  "validEmail": "أدخل بريدًا إلكترونيًا صالحًا.",
+  "validUsername": "أدخل اسم مستخدم صالحًا."
   }
   
   

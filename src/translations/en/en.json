@@ -116,7 +116,18 @@
           "licenseIssuedDate": "License Issued Date",
           "licenseExpirationDate": "License Expiration Date",
           "back": "Back",
-          "next": "Next"
+          "next": "Next",
+          "welcome": "Welcome",
+  "enterEmailOrUsername": "Enter email or username",
+  "enterPassword": "Enter password",
+  "login": "Login",
+  "dontHaveAccount": "Don't have an account?",
+  "signUpHere": "Sign up here",
+  "unauthorized": "Invalid credentials.",
+  "checkCredentials": "Check your email or password.",
+  "tryAgain": "Something went wrong. Try again.",
+  "validEmail": "Enter a valid email.",
+  "validUsername": "Enter a valid username."
       }
       
   
