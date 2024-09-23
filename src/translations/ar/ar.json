@@ -1,0 +1,34 @@
+{
+    "navbar": {
+      "discover": "استكشف",
+      "search": "بحث",
+      "contactUs": "اتصل بنا",
+      "about": "معلومات عنا",
+      "join": "انضم",
+      "logout": "تسجيل الخروج",
+      "shantaShare": "شانتا شير"
+    },
+
+    "dashboardAdmin":{
+      "summary": "ملخص",
+      "orders": "الطلبات",
+      "posts": "المنشورات",
+      "users": "المستخدمين",
+      "dashboard":"لوحة تحكم"
+    },
+    
+    "createPostPage": {
+        "createPost": "إنشاء مشاركة",
+        "pickupLocation": "موقع الاستلام",
+        "selectGovernment": "اختر محافظة",
+        "selectcity": "اختر مدينة",
+        "pickupTime": "وقت الاستلام",
+        "destinationLocation": "موقع الوجهة",
+        "arrivalTime": "وقت الوصول",
+        "availableWeightandSize": "الوزن والحجم المتاحين",
+        "description": "الوصف"
+      }
+   
+    
+  }
+  

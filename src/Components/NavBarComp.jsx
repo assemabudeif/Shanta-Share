@@ -2,12 +2,14 @@ import {Disclosure, DisclosureButton, DisclosurePanel} from '@headlessui/react';
 import {Bars3Icon, XMarkIcon} from '@heroicons/react/24/outline';
 import {Link, useNavigate} from 'react-router-dom';
 import {useState, useEffect} from 'react';
+import { useTranslation } from 'react-i18next';
+
 
 const navigation = [
-    {name: 'Discover', href: '/', current: true},
-    {name: 'Search', href: '/search', current: false},
-    {name: 'Contact Us', href: '/contact-us', current: false},
-    {name: 'About', href: '/about', current: false},
+    {name: 'navbar.discover', href: '/', current: true},
+    {name: 'navbar.search', href: '/search', current: false},
+    {name: 'navbar.contactUs', href: '/contact-us', current: false},
+    {name: 'navbar.about', href: '/about', current: false},
 ];
 
 function classNames(...classes) {
@@ -16,6 +18,7 @@ function classNames(...classes) {
 
 export default function NavBarComp({isLoggedIn, onLogout}) {
     const navigate = useNavigate();
+    const { t, i18n } = useTranslation();
 
     const isLogin = localStorage.getItem('token') !== null;
     const user_type = localStorage.getItem('user_type') || '';
@@ -41,7 +44,7 @@ export default function NavBarComp({isLoggedIn, onLogout}) {
                     </div>
                     <div className="flex flex-1 items-center justify-center md:items-stretch md:justify-start">
                         <div className="flex flex-shrink-0 items-center">
-                            <h1 className="text-2xl text-white">Shanta Share</h1>
+                            <h1 className="text-2xl text-white">{t('navbar.shantaShare')}</h1>
                         </div>
                         <div className="hidden sm:ml-6 md:block">
                             <div className="flex space-x-4">
@@ -55,7 +58,7 @@ export default function NavBarComp({isLoggedIn, onLogout}) {
                                             'rounded-md px-3 py-2 text-sm font-medium',
                                         )}
                                     >
-                                        {item.name}
+                                        {t(item.name)}
                                     </Link>
                                 ))}
                             </div>
@@ -63,9 +66,11 @@ export default function NavBarComp({isLoggedIn, onLogout}) {
                     </div>
                     <div
                         className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                        <button className="text-white font-semibold mr-3">AR</button>
+                        <button onClick={() => i18n.changeLanguage(i18n.language === 'en' ? 'ar' : 'en')} className="text-white font-semibold mr-3">
+                           {i18n.language === 'en' ? 'AR' : 'EN'}
+                        </button>
                         {!isLogin ? (
-                            <Link to="/login" className="text-white font-semibold">Join</Link>
+                            <Link to="/login" className="text-white font-semibold">{t('navbar.join')}</Link>
 
 
                         ) : (
@@ -79,7 +84,7 @@ export default function NavBarComp({isLoggedIn, onLogout}) {
                                     onClick={handleLogout}
                                     className="text-white font-semibold ml-4"
                                 >
-                                    Logout
+                                    {t('navbar.logout')}
                                 </button>
                             </>
                         )}

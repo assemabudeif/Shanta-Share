@@ -1,10 +1,11 @@
 // import logo from './logo.svg';
-import React from 'react';
+import React, {useEffect} from 'react';
 import './App.css';
 import './index.css';
+import { useTranslation } from 'react-i18next';
 // import DriverProfile from './components/driverProfile';
 import CustomerViewProfile from './Components/customerViewProfile';
-import DriverViewProfile from './Components/driverVeiwProfile';
+// import DriverViewProfile from './Components/driverVeiwProfile';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import HomePage from "./Pages/HomePage";
 import PostDetailsPage from "./Pages/PostDetailsPage";
@@ -44,6 +45,16 @@ function App() {
     const location = window.location.pathname;
     console.log(location);
     const user_type = localStorage.getItem('user_type') || '';
+    const { i18n } = useTranslation();
+
+    useEffect(() => {
+        
+        if (i18n.language === 'ar') {
+            document.documentElement.setAttribute('dir', 'rtl');
+        } else {
+            document.documentElement.setAttribute('dir', 'ltr');
+        }
+    }, [i18n.language]);
 
 
     return (
@@ -77,7 +88,7 @@ function App() {
                         <Route path="/driverProfile/:id" element={<DriverProfile onSave={handleSave}/>}/>
                         <Route path="/driver_home" element={<DriverHomePage onSave={handleSave}/>}/>
                         <Route path="/customerViewProfile/:id" element={<CustomerViewProfile/>}/>
-                        <Route path="/driverViewProfile" element={<DriverViewProfile onSave={handleSave}/>}/>
+                        {/* <Route path="/driverViewProfile" element={<DriverViewProfile onSave={handleSave}/>}/> */}
                         <Route path={"/post/:id"} element={<PostDetailsPage/>}/>
                         <Route path="/ordershistory" element={<OrdersHistory/>}/>
                         <Route path="/dashboard" element={<Dashboard/>}/>
