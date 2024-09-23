@@ -25,7 +25,37 @@
       "destinationLocation":"Destination Location",
       "arrivalTime":"Arrival Time",
       "availableWeightandSize":"Available Weight and Size",
-      "description":"Description"
+      "description":"Description",
+      "Addressline":"Address line",
+      "Writenotesforclients":"Write notes for clients..."
+    },
+
+    "preview":{
+         "Pickup":"Pickup",
+         "Address line":"Address line",
+         "City":"City",
+         "Government":"Government",
+         "Destination":"Destination",
+         "Available weight and size":"Available weight and size",
+         "Description":"Description",
+         "Write notes for clients...":"Write notes for clients...",
+         "-- L.E":"-- L.E",
+         "Calculate Price":"Calculate Price",
+         "Confirm Post":"Confirm Post"
+    },
+
+    "page":{
+      "Preview":"Preview"
+    },
+
+    "summary":{
+      "Total Orders":"Total Orders",
+      "Total Posts":"Total Posts",
+      "Total Users":"Total Users",
+      "Clients":"Clients",
+      "Drivers":"Drivers",
+      "Annual Statistics":"Annual Statistics"
+
     }
 
 

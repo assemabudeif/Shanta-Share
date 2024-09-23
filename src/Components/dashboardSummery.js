@@ -5,9 +5,11 @@ import { useNavigate } from "react-router-dom";
 import { IoCarSharp } from "react-icons/io5";
 import { BsFilePostFill } from "react-icons/bs";
 import { HiUsers } from "react-icons/hi2";
+import { useTranslation } from 'react-i18next';
 import '../CSS/users.css'
 
 function DashboardSummary(){
+    const { t, i18n } = useTranslation();
     const [isFormVisible, setIsFormVisible] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const handleSearchChange = (e) => setSearchTerm(e.target.value);
@@ -43,7 +45,7 @@ function DashboardSummary(){
     }, []);
      return(
         <div className="p-4 text-sm">
-            <div className={`flex justify-center mb-4 bg-gray-100 p-4 rounded-lg ${isFormVisible ? 'hidden' : ''}`}>
+            {/* <div className={`flex justify-center mb-4 bg-gray-100 p-4 rounded-lg ${isFormVisible ? 'hidden' : ''}`}>
                 <input
                     type="text"
                     placeholder="Search..."
@@ -51,19 +53,19 @@ function DashboardSummary(){
                     onChange={handleSearchChange}
                     className=" py-2 px-3 border border-gray-300 rounded-md bg-gray-100 text-lg search"
                 />
-            </div>
+            </div> */}
             <div className='flex gap-4 w-full'>
                 <div className='bg-gray-100 rounded-sm p-4 flex-1 border border-gray-100 flex items-center'>
                    <div className='rounded-full h-12 w-12 flex items-center justify-center bg-black'><IoCarSharp className='text-2xl text-white' /></div>
                    <div className='pl-4'>
-                       <span className='text-lg text-gray-500 font-light font-semibold'><b>Total Orders</b></span>
+                       <span className='text-lg text-gray-500 font-light font-semibold'><b>{t("summary.Total Orders")}</b></span>
                        <div className='flex items-center ml-5'><strong className='text-xl text-gray-700 font-semibold'>{totals.orders}</strong></div>
                    </div>
                 </div>
                 <div className='bg-gray-100 rounded-sm p-4 flex-1 border border-gray-100 flex items-center'>
                 <div className='rounded-full h-12 w-12 flex items-center justify-center bg-black'><BsFilePostFill className='text-2xl text-white' /></div>
                    <div className='pl-4'>
-                       <span className='text-lg text-gray-500 font-light font-semibold'><b>Total Posts</b></span>
+                       <span className='text-lg text-gray-500 font-light font-semibold'><b>{t("summary.Total Posts")}</b></span>
                        <div className='flex items-center ml-5'><strong className='text-xl text-gray-700 font-semibold'>{totals.posts}</strong></div>
                    </div>
                 </div>
@@ -77,7 +79,7 @@ function DashboardSummary(){
                         {isTotalUsers ? (
                         <>
                             <span className='text-lg text-gray-500 font-light font-semibold'>
-                            <b>Total Users</b>
+                            <b>{t("summary.Total Users")}</b>
                             </span>
                             <div className='flex items-center ml-5'>
                             <strong className='text-xl text-gray-700 font-semibold'>{totalUsers}</strong>
@@ -87,7 +89,7 @@ function DashboardSummary(){
                         <>
                             <span className='text-lg text-gray-500 font-light font-semibold'>
                             <b>
-                              Clients
+                              {t("summary.Clients")}
                             </b>
                             </span>
                             &nbsp;
@@ -97,11 +99,14 @@ function DashboardSummary(){
                             &nbsp;
                             <span className='text-lg text-gray-500 font-light font-semibold'>
                             <b>
-                              Drivers
+                              {t("summary.Drivers")}
                             </b>
                             </span>
                             <div className='flex items-center ml-5'>
                             <strong className='text-xl text-gray-700 font-semibold'>{clients.clients}</strong>
+                            &nbsp;
+                            &nbsp;
+                            &nbsp;
                             &nbsp;
                             &nbsp;
                             &nbsp;
@@ -123,7 +128,7 @@ function DashboardSummary(){
 
             </div>
             <div className='h-[22rem] bg-black-100 p-4 rounded-sm border border-black-100 flex flex-col flex-1 mt-10'>
-                <strong className='text-gray-700 font-meduim text-lg'>Annual Statistics</strong>
+                <strong className='text-gray-700 font-meduim text-lg'>{t("summary.Annual Statistics")}</strong>
             <div className='w-full mt-3 flex-1 text-xs'>
                 <ResponsiveContainer width="100%" height="100%">
                     <BarChart width={500} height={300} data={data} margin={{top:20, right:10, left:-10, bottom:0}}>

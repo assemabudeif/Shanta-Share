@@ -26,8 +26,39 @@
         "destinationLocation": "موقع الوجهة",
         "arrivalTime": "وقت الوصول",
         "availableWeightandSize": "الوزن والحجم المتاحين",
-        "description": "الوصف"
-      }
+        "description": "الوصف",
+        "Addressline":"العنوان",
+         "Writenotesforclients":"...اكتب ملاحظاتك للعملاء"
+      },
+    
+      "preview": {
+          "Pickup": "الاستلام",
+          "Address line": "خط العنوان",
+          "City":"مدينه",
+          "Government":"محافظة",
+          "Destination": "الوجهة",
+          "Available weight and size": "الوزن والحجم المتاح",
+          "Description": "الوصف",
+          "Write notes for clients...": "اكتب ملاحظات للعملاء...",
+          "-- L.E": "-- جنيه",
+          "Calculate Price": "احسب السعر",
+          "Confirm Post": "تأكيد النشر"
+        },
+      
+      "page":{
+      "Preview":"Preview"
+       },
+      
+      "summary": {
+          "Total Orders": "إجمالي الطلبات",
+          "Total Posts": "إجمالي المنشورات",
+          "Total Users": "إجمالي المستخدمين",
+          "Clients": "العملاء",
+          "Drivers": "السائقون",
+          "Annual Statistics": "الإحصائيات السنوية"
+        }
+     
+      
    
     
   }

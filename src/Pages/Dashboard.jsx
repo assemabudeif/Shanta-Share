@@ -91,7 +91,7 @@ export default function Dashboard() {
                         </div>
                     </div>
                     <div className="text-center py-4 bg-gray-200">
-                <h1 className="text-3xl font-bold">Dashboard</h1>
+                <h1 className="text-3xl font-bold">{t('dashboardAdmin.dashboard')}</h1>
             </div>
                     <div className="p-4">
                         {selectedComponent}
