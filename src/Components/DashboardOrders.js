@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { AxiosInstance } from '../Network/AxiosInstance';
 import LoadingComp from '../Components/LoadingComp';
 import { useSelector } from 'react-redux';
+import { data } from 'autoprefixer';
 
 function DashBoardOrders() {
     const navigate = useNavigate();
@@ -12,13 +13,40 @@ function DashBoardOrders() {
     const [totalPages, setTotalPages] = useState(1);
     const [editingOrder, setEditingOrder] = useState(null);
     const [form, setForm] = useState({});
-    const [alert, setAlert] = useState({ message: '', type: '' }); 
-    const [isModalOpen, setIsModalOpen] = useState(false); 
-    const [orderIdToDelete, setOrderIdToDelete] = useState(null); 
+    const [alert, setAlert] = useState({ message: '', type: '' });
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [orderIdToDelete, setOrderIdToDelete] = useState(null);
     const ordersPerPage = 5;
     const token = localStorage.getItem("token");
-    const loader = useSelector(state => state.loader); 
-    const [loading, setLoading] = useState(true); 
+    const loader = useSelector(state => state.loader.loader);
+    const [loading, setLoading] = useState(true);
+    const [governments, setGovernments] = useState([]);
+    const [cities, setCities] = useState([]);
+
+    const fetchGovernments = async () => {
+        try {
+            const response = await AxiosInstance.get('/governments/');
+            const data = await response.json();
+            setGovernments(data);
+            console.log(data)
+        } catch (error) {
+            console.error('Error fetching governments:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchGovernments();
+    }, []);
+
+    useEffect(() => {
+        if (form.government) {
+            // Fetch cities based on the selected government
+            AxiosInstance.get(`/cities?government_id=${form.government}`)
+                .then(response => response.json())
+                .then(data => setCities(data))
+                .catch(error => console.error('Error fetching cities:', error));
+        }
+    }, [form.government]);
 
     const fetchOrders = () => {
         setLoading(true);
@@ -27,28 +55,28 @@ function DashBoardOrders() {
                 'Authorization': `Bearer ${token}`
             }
         })
-        .then(response => {
-            const data = response.data;
-            setOrders(data.data);
-            setTotalPages(Math.ceil(data.data.length / ordersPerPage));
-        })
-        .catch(error => {
-            console.error('Error fetching orders:', error);
-            setOrders([]);
-        })
-        .finally(() => {
-            setLoading(false);
-        });
+            .then(response => {
+                const data = response.data;
+                setOrders(data.data);
+                setTotalPages(Math.ceil(data.data.length / ordersPerPage));
+            })
+            .catch(error => {
+                console.error('Error fetching orders:', error);
+                setOrders([]);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
     };
-    
+
     useEffect(() => {
         fetchOrders();
     }, [currentPage]);
-    
+
     if (loading) {
         return <LoadingComp />;
     }
-    
+
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     const openDeleteModal = (orderId) => {
@@ -65,32 +93,32 @@ function DashBoardOrders() {
                 Authorization: `Bearer ${token}`,
             }
         })
-        .then(response => {
-            if (response.ok) {
-                setAlert({ message: 'Order deleted successfully', type: 'success' });
-    
+            .then(response => {
+                if (response.ok) {
+                    setAlert({ message: 'Order deleted successfully', type: 'success' });
+
+                    setTimeout(() => {
+                        setAlert({ message: '', type: '' });
+                    }, 5000);
+                } else {
+                    setAlert({ message: 'Failed to delete order', type: 'error' });
+                }
+            })
+            .catch(error => {
+                console.error('Error deleting order:', error);
+                setAlert({ message: 'Error deleting order', type: 'error' });
+
+                // Clear alert after 5 seconds
                 setTimeout(() => {
-                    setAlert({ message: '', type: '' }); 
+                    setAlert({ message: '', type: '' });
                 }, 5000);
-            } else {
-                setAlert({ message: 'Failed to delete order', type: 'error' });
-            }
-        })
-        .catch(error => {
-            console.error('Error deleting order:', error);
-            setAlert({ message: 'Error deleting order', type: 'error' });
-    
-            // Clear alert after 5 seconds
-            setTimeout(() => {
-                setAlert({ message: '', type: '' }); 
-            }, 5000);
-        })
-        .finally(() => {
-            setIsModalOpen(false);
-            setOrderIdToDelete(null);
-        });
+            })
+            .finally(() => {
+                setIsModalOpen(false);
+                setOrderIdToDelete(null);
+            });
     };
-    
+
 
     // ========== Handling Edit ==========
 
@@ -99,8 +127,8 @@ function DashBoardOrders() {
         setForm({
             id: order.id,
             created_by: order.client?.name || 'Unknown',
-            from_city: order.post?.from_city?.name || 'Unknown',
-            to_city: order.post?.to_city?.name || 'Unknown',
+            from_city: order.post?.from_city || 'Unknown',
+            to_city: order.post?.to_city || 'Unknown',
             pickup_time: order.pickup_time || '',
             status: order.status,
         });
@@ -116,30 +144,34 @@ function DashBoardOrders() {
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
-    
-        fetch(`http://127.0.0.1:8000/orders/admin/?order_id=${form.id}`, {
-            method: 'PATCH',
-            headers: {
-                Authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json', 
-            },
-            body: JSON.stringify(form), 
-        })
-        .then(response => {
-            if (!response.ok) {
-                return response.json().then(errorData => {
-                    throw new Error(errorData.detail || 'Failed to update order');
-                });
-            }
-            setAlert({ message: 'Order updated successfully', type: 'success' });
-            fetchOrders(); 
-            setEditingOrder(null); 
-        })
-        .catch(error => {
-            console.error('Error updating order:', error);
-            setAlert({ message: 'Error updating order', type: 'error' });
-        });
+
+        AxiosInstance.patch(`/orders/admin/?order_id=${form.id}`,
+            data = {
+                // created_by: form.client?.name || 'Unknown',
+                // from_city: form.post?.from_city?.name || 'Unknown',
+                // to_city: form.post?.to_city?.name || 'Unknown',
+                // pickup_time: form.pickup_time || '',
+                status: form.status,
+            },)
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(errorData => {
+                        throw new Error(errorData.detail || 'Failed to update order');
+                    });
+                }
+                setAlert({ message: 'Order updated successfully', type: 'success' });
+                fetchOrders();
+                setEditingOrder(null);
+            })
+            .catch(error => {
+                console.error('Error updating order:', error);
+                setAlert({ message: 'Error updating order', type: 'error' });
+            });
     };
+
+    if (loader) {
+        return <LoadingComp />;
+    }
 
 
     return (
@@ -179,7 +211,7 @@ function DashBoardOrders() {
                                                     e.stopPropagation();
                                                     handleEdit(order);
                                                 }}
-                                                className="bg-black text-white px-2 py-1 rounded-md"
+                                                className="text-white px-2 py-1 rounded-md bg-yellow-500"
                                             >
                                                 Edit
                                             </button>
@@ -188,7 +220,7 @@ function DashBoardOrders() {
                                                     e.stopPropagation();
                                                     openDeleteModal(order.id);
                                                 }}
-                                                className="bg-black text-white px-2 py-1 rounded-md"
+                                                className="bg-red-500 text-white px-2 py-1 rounded-md"
                                             >
                                                 Delete
                                             </button>
@@ -201,21 +233,22 @@ function DashBoardOrders() {
                         {editingOrder && (
                             <form onSubmit={handleFormSubmit} className="mt-4 bg-gray-100 p-4 rounded-md">
                                 <h2 className="text-lg font-semibold mb-2">Edit Order</h2>
-                                <input
+                                {/* <input
                                     type="text"
                                     name="id"
                                     value={form.id}
                                     readOnly
                                     className="border p-2 mb-2 rounded-md w-full"
-                                />
+                                /> */}
                                 <input
                                     type="text"
                                     name="client_name"
+                                    placeholder='Client Name'
                                     value={form.client_name}
                                     readOnly
                                     className="border p-2 mb-2 rounded-md w-full"
                                 />
-                                <input
+                                {/* <input
                                     type="text"
                                     name="from_city"
                                     value={form.from_city}
@@ -230,23 +263,29 @@ function DashBoardOrders() {
                                     onChange={handleFormChange}
                                     placeholder="To City"
                                     className="border p-2 mb-2 rounded-md w-full"
-                                />
+                                /> */}
                                 <input
                                     type="datetime-local"
                                     name="pickup_time"
+                                    placeholder='Pickup Time'
                                     value={form.pickup_time}
                                     onChange={handleFormChange}
                                     className="border p-2 mb-2 rounded-md w-full"
                                 />
+
                                 <select
                                     name="status"
                                     value={form.status}
+                                    placeholder="Status"
                                     onChange={handleFormChange}
                                     className="border p-2 mb-2 rounded-md w-full"
                                 >
-                                    <option value="Pending">Pending</option>
-                                    <option value="Completed">Completed</option>
-                                    <option value="Cancelled">Cancelled</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="accepted">Accepted</option>
+                                    <option value="rejected">Rejected</option>
+                                    <option value="in_progress">In Progress</option>
+                                    <option value="completed">Completed</option>
+                                    <option value="cancelled">Cancelled</option>
                                 </select>
                                 <button type="submit" className="bg-black text-white px-4 py-2 rounded-md">
                                     Save Changes
@@ -258,30 +297,30 @@ function DashBoardOrders() {
                         )}
                         {/* Pagination */}
                         <div className="mt-4 flex justify-center">
+                            <button
+                                onClick={() => paginate(currentPage - 1)}
+                                disabled={currentPage === 1}
+                                className="py-1 px-3 mx-1 bg-gray-200 text-gray-700 rounded-md"
+                            >
+                                Prev
+                            </button>
+                            {[...Array(totalPages).keys()].map(pageNumber => (
                                 <button
-                                    onClick={() => paginate(currentPage - 1)}
-                                    disabled={currentPage === 1}
-                                    className="py-1 px-3 mx-1 bg-gray-200 text-gray-700 rounded-md"
+                                    key={pageNumber + 1}
+                                    onClick={() => paginate(pageNumber + 1)}
+                                    className={`py-1 px-3 mx-1 ${currentPage === pageNumber + 1 ? 'bg-black text-white' : 'bg-gray-200 text-gray-700'} rounded-md`}
                                 >
-                                    Prev
+                                    {pageNumber + 1}
                                 </button>
-                                {[...Array(totalPages).keys()].map(pageNumber => (
-                                    <button
-                                        key={pageNumber + 1}
-                                        onClick={() => paginate(pageNumber + 1)}
-                                        className={`py-1 px-3 mx-1 ${currentPage === pageNumber + 1 ? 'bg-black text-white' : 'bg-gray-200 text-gray-700'} rounded-md`}
-                                    >
-                                        {pageNumber + 1}
-                                    </button>
-                                ))}
-                                <button
-                                    onClick={() => paginate(currentPage + 1)}
-                                    disabled={currentPage === totalPages}
-                                    className="py-1 px-3 mx-1 bg-gray-200 text-gray-700 rounded-md"
-                                >
-                                    Next
-                                </button>
-                            </div>
+                            ))}
+                            <button
+                                onClick={() => paginate(currentPage + 1)}
+                                disabled={currentPage === totalPages}
+                                className="py-1 px-3 mx-1 bg-gray-200 text-gray-700 rounded-md"
+                            >
+                                Next
+                            </button>
+                        </div>
                     </>
                 ) : (
                     <p>No orders found.</p>

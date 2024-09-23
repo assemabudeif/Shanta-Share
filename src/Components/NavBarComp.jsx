@@ -1,27 +1,29 @@
-import {Disclosure, DisclosureButton, DisclosurePanel} from '@headlessui/react';
-import {Bars3Icon, XMarkIcon} from '@heroicons/react/24/outline';
-import {Link, useNavigate} from 'react-router-dom';
-import {useState, useEffect} from 'react';
+import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 
 const navigation = [
-    {name: 'navbar.discover', href: '/', current: true},
-    {name: 'navbar.search', href: '/search', current: false},
-    {name: 'navbar.contactUs', href: '/contact-us', current: false},
-    {name: 'navbar.about', href: '/about', current: false},
+    { name: 'navbar.discover', href: '/', current: true },
+    { name: 'navbar.search', href: '/search', current: false },
+    { name: 'navbar.contactUs', href: '/contact-us', current: false },
+    { name: 'navbar.about', href: '/about', current: false },
 ];
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ');
 }
 
-export default function NavBarComp({isLoggedIn, onLogout}) {
+export default function NavBarComp({ isLoggedIn, onLogout }) {
     const navigate = useNavigate();
     const { t, i18n } = useTranslation();
+    const hostname = 'http://localhost:8000';
 
     const isLogin = localStorage.getItem('token') !== null;
     const user_type = localStorage.getItem('user_type') || '';
+    const user_image = localStorage.getItem('user_image') || '';
 
     const handleLogout = () => {
         localStorage.clear();
@@ -36,10 +38,10 @@ export default function NavBarComp({isLoggedIn, onLogout}) {
                         {/* Mobile menu button */}
                         <DisclosureButton
                             className="group relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
-                            <span className="absolute -inset-0.5"/>
+                            <span className="absolute -inset-0.5" />
                             <span className="sr-only">Open main menu</span>
-                            <Bars3Icon aria-hidden="true" className="block h-6 w-6 group-data-[open]:hidden"/>
-                            <XMarkIcon aria-hidden="true" className="hidden h-6 w-6 group-data-[open]:block"/>
+                            <Bars3Icon aria-hidden="true" className="block h-6 w-6 group-data-[open]:hidden" />
+                            <XMarkIcon aria-hidden="true" className="hidden h-6 w-6 group-data-[open]:block" />
                         </DisclosureButton>
                     </div>
                     <div className="flex flex-1 items-center justify-center md:items-stretch md:justify-start">
@@ -67,7 +69,7 @@ export default function NavBarComp({isLoggedIn, onLogout}) {
                     <div
                         className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                         <button onClick={() => i18n.changeLanguage(i18n.language === 'en' ? 'ar' : 'en')} className="text-white font-semibold mr-3">
-                           {i18n.language === 'en' ? 'AR' : 'EN'}
+                            {i18n.language === 'en' ? 'AR' : 'EN'}
                         </button>
                         {!isLogin ? (
                             <Link to="/login" className="text-white font-semibold">{t('navbar.join')}</Link>
@@ -78,7 +80,11 @@ export default function NavBarComp({isLoggedIn, onLogout}) {
                                 <Link
                                     to={`${user_type === 'DRIVER' ? '/myaccount' : user_type === 'CLIENT' ? '/ordershistory' : '/dashboard'}`}
                                     className="text-white font-semibold">
-                                    <div className='h-12 w-12 bg-white rounded-full'></div>
+                                    <div className='h-12 w-12 bg-white rounded-full'>
+                                        {
+                                            user_image ? <img src={hostname + user_image} alt="profile" className="h-12 w-12 rounded-full" /> : <img src="https://via.placeholder.com/150" alt="profile" className="h-12 w-12 rounded-full" />
+                                        }
+                                    </div>
                                 </Link>
                                 <button
                                     onClick={handleLogout}
