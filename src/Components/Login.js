@@ -1,8 +1,8 @@
-import {useState} from 'react';
+import { useState } from 'react';
 import React from 'react';
-import {useNavigate} from 'react-router-dom';
-import {AxiosInstance} from "../Network/AxiosInstance";
-import {useSelector} from "react-redux";
+import { useNavigate } from 'react-router-dom';
+import { AxiosInstance } from "../Network/AxiosInstance";
+import { useSelector } from "react-redux";
 import LoadingComp from "./LoadingComp";
 
 const Login = () => {
@@ -49,8 +49,9 @@ const Login = () => {
         }).then(r => {
             const type = r.data.user.user_type;
             SaveToken(r.data.access_token);
-            console.log(r);
+            console.log(r.data);
             localStorage.setItem('user_type', type);
+            localStorage.setItem('user_image', r.data.user.profile_picture);
             switch (type) {
                 case userTypes.admin:
                     navigate("/dashboard");
@@ -61,6 +62,8 @@ const Login = () => {
                 case userTypes.driver:
                     navigate("/driver_home");
                     break;
+                default:
+                    break;
             }
         }).catch(e => {
             if (e.response.status === 401) {
@@ -68,7 +71,7 @@ const Login = () => {
             } else if (e.response.status === 404) {
                 setLoginError('Check your credentials and try again');
             } else {
-                setLoginError(e.response.statusText + ' try again');
+                setLoginError(e.response.data.message + ' try again');
             }
         })
     }
@@ -124,19 +127,19 @@ const Login = () => {
     };
 
     const HandleChange = (e) => {
-        const {name, value} = e.target;
+        const { name, value } = e.target;
         if (name === 'email') {
             if (value.includes('@')) {
                 if (!emailRegex.test(value)) {
-                    setErrors({email: 'Please enter a valid email address. Example: user@example.com'});
+                    setErrors({ email: 'Please enter a valid email address. Example: user@example.com' });
                 } else {
-                    setErrors({email: ''});
+                    setErrors({ email: '' });
                 }
             } else {
                 if (!usernameRegex.test(value)) {
-                    setErrors({email: 'Please enter a valid username. Minimum 3 characters'});
+                    setErrors({ email: 'Please enter a valid username. Minimum 3 characters' });
                 } else {
-                    setErrors({email: ''});
+                    setErrors({ email: '' });
                 }
             }
             setEmail(value);
@@ -151,7 +154,7 @@ const Login = () => {
     }
 
     if (loader) {
-        return <LoadingComp/>;
+        return <LoadingComp />;
     }
 
     return (
@@ -204,7 +207,7 @@ const Login = () => {
                     <button
                         type="submit"
                         className="bg-black text-white py-2 px-4 rounded-md w-full mb-4 hover:bg-gray-800 transition-colors"
-                        // disabled={errors.email !== "" || errors.password !== ""}
+                    // disabled={errors.email !== "" || errors.password !== ""}
                     >
                         Login
                     </button>
