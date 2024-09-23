@@ -4,9 +4,11 @@ import {AxiosInstance} from "../Network/AxiosInstance";
 import {useSelector} from 'react-redux';
 import LoadingComp from './LoadingComp';
 import {useNavigate} from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const RegistrationForm = () => {
         const [step, setStep] = useState(1);
+        const { t, i18n } = useTranslation();
         const [role, setRole] = useState('driver');
         const [formData, setFormData] = useState({
             email: '',
@@ -83,66 +85,66 @@ const RegistrationForm = () => {
             switch (name) {
                 case 'email':
                     if (!value) {
-                        error = 'Email is required.';
+                        error = t('Email is required.');
                     } else if (!regex.email.test(value)) {
-                        error = 'Invalid email address.';
+                        error = t('Invalid email address.');
                     }
                     break;
                 case 'password':
                     if (!value) {
-                        error = 'Password is required.';
+                        error = t('Password is required.');
                     } else if (!regex.password.test(value)) {
-                        error = 'Password must be at least 6 characters long, include at least one number, one lowercase letter, and one uppercase letter.';
+                        error = t('Password must be at least 6 characters long, include at least one number, one lowercase letter, and one uppercase letter.');;
                     }
                     break;
                 case 'confirmPassword':
                     if (!value) {
-                        error = 'Confirm Password is required.';
+                        error = t('Confirm Password is required.');;
                     } else if (value !== formData.password) {
-                        error = 'Passwords do not match.';
+                        error = t('Passwords do not match.');
                     }
                     break;
                 case 'firstName':
                 case 'lastName':
                     if (!value) {
-                        error = 'This field is required.';
+                        error = t('This field is required.');
                     } else if (!regex.name.test(value)) {
-                        error = 'Name must contain only letters.';
+                        error = t('Name must contain only letters.');
                     }
                     break;
                 case 'address':
                     if (!value) {
-                        error = 'Address is required.';
+                        error = t('Address is required.');
                     } else if (!regex.address.test(value)) {
-                        error = 'Address is not valid.';
+                        error = t('Address is not valid.');
                     }
                     break;
                 case 'vehicle':
                     if (!value) {
-                        error = 'Vehicle Informations is required.';
+                        error = t('Vehicle information is required.');
                     } else if (!regex.vehicle.test(value)) {
-                        error = 'Vehicle Informations is not valid.';
+                        error = t('Vehicle information is not valid.');
                     }
                     break;
                 case 'city':
                     if (!value) {
-                        error = 'City is required.';
+                        error = t('City is required.');
                     } else if (!regex.city.test(value)) {
-                        error = 'City must contain only letters.';
+                        error = t('City must contain only letters.');
                     }
                     break;
                 case 'mobile':
                     if (!value) {
-                        error = 'Mobile number is required.';
+                        error = t('Mobile number is required.');
                     } else if (!regex.mobile.test(value)) {
-                        error = 'Mobile number is not valid.';
+                        error = t('Government name is not valid.');
                     }
                     break;
                 case 'government':
                     if (!value) {
-                        error = 'Government field is required.';
+                        error = t('Government field is required.');
                     } else if (!regex.government.test(value)) {
-                        error = 'Government name is not valid.';
+                        error = t('Government name is not valid.');
                     }
                     break;
 
@@ -150,7 +152,7 @@ const RegistrationForm = () => {
                 case 'personalImage':
                 case 'licenseImage':
                     if (!value) {
-                        error = 'This field is required.';
+                        error = t('This field is required.');
                     }
                     break;
                 default:
@@ -417,22 +419,22 @@ const RegistrationForm = () => {
 // ============== Confirmation Before user submit    ================
 
         const renderConfirmation = () => (<div>
-                <h2 className="text-2xl font-bold mb-4">Confirm Your Details</h2>
+                <h2 className="text-2xl font-bold mb-4">{t('confirmDetails')}</h2>
                 <div className="space-y-4">
                     <div>
-                        <strong>Email:</strong> {formData.email}
+                        <strong>{t('email')}</strong> {formData.email}
                     </div>
                     <div>
-                        <strong>Name:</strong> {formData.firstName} {formData.lastName}
+                        <strong>{t('name')}</strong> {formData.firstName} {formData.lastName}
                     </div>
                     <div>
-                        <strong>Birth Date:</strong> {formData.birthDate}
+                        <strong>{t('birthDate')}</strong> {formData.birthDate}
                     </div>
                     <div>
-                        <strong>Address:</strong> {formData.address}, {formData.city}, {formData.government}
+                        <strong>{t('address')}</strong> {formData.address}, {formData.city}, {formData.government}
                     </div>
                     <div>
-                        <strong>Mobile:</strong> {formData.mobile}
+                        <strong>{t('mobile')}</strong> {formData.mobile}
                     </div>
                     {/*{role === 'driver' && (<>*/}
                     {/*    <div>*/}
@@ -458,15 +460,16 @@ const RegistrationForm = () => {
                         onClick={() => setStep(role === 'driver' ? 5 : 3)}
                         className="bg-gray-400 text-white py-2 px-4 rounded-lg"
                     >
-                        Back
+                                                {t('back')}
+
                     </button>
                     <button
                         type="button"
                         onClick={handleSubmit}
                         className="bg-black text-white py-2 px-4 rounded-lg"
                     >
-                        Confirm
-                    </button>
+                        {t('confirm')}
+                        </button>
                 </div>)}
             </div>
 
@@ -484,167 +487,171 @@ const RegistrationForm = () => {
 // =============== Driver License Ids render ================
 
         const renderNationalityId = () => {
-            return (<div>
-                <h2 className="text-2xl font-bold mb-4">Nationality ID</h2>
-                <form onSubmit={handleNext}>
-                    <div className="space-y-4">
-                        {role === 'driver' && (<>
-                            <div>
-                                <label className="block text-gray-700 mb-2">Nationality ID Number</label>
-                                <input
-                                    type="number"
-                                    name="nationality_id_number"
-                                    value={formData.nationality_id.nationality_id_number}
-                                    onChange={handleNationalityIdChange}
-                                    required
-                                    className="border rounded-lg py-2 px-4 w-full"
-                                />
+            return (
+                <div>
+                    <h2 className="text-2xl font-bold mb-4">{t('nationalityId')}</h2>
+                    <form onSubmit={handleNext}>
+                        <div className="space-y-4">
+                            {role === 'driver' && (
+                                <>
+                                    <div>
+                                        <label className="block text-gray-700 mb-2">{t('nationalityIdNumber')}</label>
+                                        <input
+                                            type="number"
+                                            name="nationality_id_number"
+                                            value={formData.nationality_id.nationality_id_number}
+                                            onChange={handleNationalityIdChange}
+                                            required
+                                            className="border rounded-lg py-2 px-4 w-full"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-gray-700 mb-2">{t('nationalityIdIssuedDate')}</label>
+                                        <input
+                                            type="date"
+                                            name="issued_date"
+                                            value={formData.nationality_id.issued_date}
+                                            required
+                                            onChange={handleNationalityIdChange}
+                                            className="border rounded-lg py-2 px-4 w-full"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-gray-700 mb-2">{t('nationalityIdExpirationDate')}</label>
+                                        <input
+                                            type="date"
+                                            name="expiration_date"
+                                            value={formData.nationality_id.expiration_date}
+                                            required
+                                            onChange={handleNationalityIdChange}
+                                            className="border rounded-lg py-2 px-4 w-full"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-gray-700 mb-2">{t('frontImage')}</label>
+                                        <input
+                                            type="file"
+                                            name="front_image_url"
+                                            required
+                                            onChange={handleNationalityIdChange}
+                                            className="border rounded-lg py-2 px-4 w-full"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-gray-700 mb-2">{t('backImage')}</label>
+                                        <input
+                                            type="file"
+                                            name="back_image_url"
+                                            required
+                                            onChange={handleNationalityIdChange}
+                                            className="border rounded-lg py-2 px-4 w-full"
+                                        />
+                                    </div>
+                                </>
+                            )}
+                            <div className="flex justify-between mt-10">
+                                <button
+                                    type="button"
+                                    onClick={handlePrev}
+                                    className="bg-gray-400 text-white py-2 px-4 rounded-lg"
+                                >
+                                    {t('back')}
+                                </button>
+                                <button
+                                    type="submit"
+                                    className="bg-black text-white py-2 px-4 rounded-lg"
+                                >
+                                    {t('next')}
+                                </button>
                             </div>
-                            <div>
-                                <label className="block text-gray-700 mb-2">Nationality ID Issued Date</label>
-                                <input
-                                    type="date"
-                                    name="issued_date"
-                                    value={formData.nationality_id.issued_date}
-                                    required
-                                    onChange={handleNationalityIdChange}
-                                    className="border rounded-lg py-2 px-4 w-full"
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-gray-700 mb-2">Nationality ID Expiration Date</label>
-                                <input
-                                    type="date"
-                                    name="expiration_date"
-                                    value={formData.nationality_id.expiration_date}
-                                    required
-                                    onChange={handleNationalityIdChange}
-                                    className="border rounded-lg py-2 px-4 w-full"
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-gray-700 mb-2">Front Image</label>
-                                <input
-                                    type="file"
-                                    name="front_image_url"
-                                    required
-                                    onChange={handleNationalityIdChange}
-                                    className="border rounded-lg py-2 px-4 w-full"
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-gray-700 mb-2">Back Image</label>
-                                <input
-                                    type="file"
-                                    name="back_image_url"
-                                    required
-                                    onChange={handleNationalityIdChange}
-                                    className="border rounded-lg py-2 px-4 w-full"
-                                />
-                            </div>
-                        </>)}
-                        <div className="flex justify-between mt-10">
-                            <button
-                                type="button"
-                                onClick={handlePrev}
-                                className="bg-gray-400 text-white py-2 px-4 rounded-lg"
-                            >
-                                Back
-                            </button>
-                            <button
-                                type="submit"
-                                className="bg-black text-white py-2 px-4 rounded-lg"
-                            >
-                                Next
-                            </button>
                         </div>
-
-                    </div>
-                </form>
-            </div>);
+                    </form>
+                </div>
+            );
         }
-
         const renderDriverLicenseIds = () => {
-            return (<div>
-                <h2 className="text-2xl font-bold mb-4">Driver License</h2>
-                <form onSubmit={handleNext}>
-                    <div className="space-y-4">
-                        {role === 'driver' && (<>
-                            <div>
-                                <label className="block text-gray-700 mb-2">License Number</label>
-                                <input
-                                    type="number"
-                                    name="license_number"
-                                    value={formData.driver_license_ids[0].license_number}
-                                    onChange={handleDriverLicenseIdsChange}
-                                    required
-                                    className="border rounded-lg py-2 px-4 w-full"
-                                />
+            return (
+                <div>
+                    <h2 className="text-2xl font-bold mb-4">{t('driverLicense')}</h2>
+                    <form onSubmit={handleNext}>
+                        <div className="space-y-4">
+                            {role === 'driver' && (
+                                <>
+                                    <div>
+                                        <label className="block text-gray-700 mb-2">{t('licenseNumber')}</label>
+                                        <input
+                                            type="number"
+                                            name="license_number"
+                                            value={formData.driver_license_ids[0].license_number}
+                                            onChange={handleDriverLicenseIdsChange}
+                                            required
+                                            className="border rounded-lg py-2 px-4 w-full"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-gray-700 mb-2">{t('licenseIssuedDate')}</label>
+                                        <input
+                                            type="date"
+                                            name="issued_date"
+                                            value={formData.driver_license_ids[0].issued_date}
+                                            required
+                                            onChange={handleDriverLicenseIdsChange}
+                                            className="border rounded-lg py-2 px-4 w-full"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-gray-700 mb-2">{t('licenseExpirationDate')}</label>
+                                        <input
+                                            type="date"
+                                            name="expiration_date"
+                                            value={formData.driver_license_ids[0].expiration_date}
+                                            required
+                                            onChange={handleDriverLicenseIdsChange}
+                                            className="border rounded-lg py-2 px-4 w-full"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-gray-700 mb-2">{t('frontImage')}</label>
+                                        <input
+                                            type="file"
+                                            name="front_image_url"
+                                            required
+                                            onChange={handleDriverLicenseIdsChange}
+                                            className="border rounded-lg py-2 px-4 w-full"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-gray-700 mb-2">{t('backImage')}</label>
+                                        <input
+                                            type="file"
+                                            name="back_image_url"
+                                            required
+                                            onChange={handleDriverLicenseIdsChange}
+                                            className="border rounded-lg py-2 px-4 w-full"
+                                        />
+                                    </div>
+                                </>
+                            )}
+                            <div className="flex justify-between mt-10">
+                                <button
+                                    type="button"
+                                    onClick={handlePrev}
+                                    className="bg-gray-400 text-white py-2 px-4 rounded-lg"
+                                >
+                                    {t('back')}
+                                </button>
+                                <button
+                                    type="submit"
+                                    className="bg-black text-white py-2 px-4 rounded-lg"
+                                >
+                                    {t('next')}
+                                </button>
                             </div>
-                            <div>
-                                <label className="block text-gray-700 mb-2">License Issued Date</label>
-                                <input
-                                    type="date"
-                                    name="issued_date"
-                                    value={formData.driver_license_ids[0].issued_date}
-                                    required
-                                    onChange={handleDriverLicenseIdsChange}
-                                    className="border rounded-lg py-2 px-4 w-full"
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-gray-700 mb-2">License Expiration Date</label>
-                                <input
-                                    type="date"
-                                    name="expiration_date"
-                                    value={formData.driver_license_ids[0].expiration_date}
-                                    required
-                                    onChange={handleDriverLicenseIdsChange}
-                                    className="border rounded-lg py-2 px-4 w-full"
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-gray-700 mb-2">Front Image</label>
-                                <input
-                                    type="file"
-                                    name="front_image_url"
-                                    required
-                                    onChange={handleDriverLicenseIdsChange}
-                                    className="border rounded-lg py-2 px-4 w-full"
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-gray-700 mb-2">Back Image</label>
-                                <input
-                                    type="file"
-                                    name="back_image_url"
-                                    required
-                                    onChange={handleDriverLicenseIdsChange}
-                                    className="border rounded-lg py-2 px-4 w-full"
-                                />
-                            </div>
-                        </>)}
-                        <div className="flex justify-between mt-10">
-                            <button
-                                type="button"
-                                onClick={handlePrev}
-                                className="bg-gray-400 text-white py-2 px-4 rounded-lg"
-                            >
-                                Back
-                            </button>
-                            <button
-                                type="submit"
-                                className="bg-black text-white py-2 px-4 rounded-lg"
-                            >
-                                Next
-                            </button>
                         </div>
-
-                    </div>
-                </form>
-            </div>);
+                    </form>
+                </div>
+            );
         }
-
 
 // ============== Landing Page ================
         if (loader) {
@@ -653,7 +660,6 @@ const RegistrationForm = () => {
 
         return (<div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg my-16">
             <button onClick={() => console.log(formData)}>
-                Test
             </button>
             <div className="flex items-center mb-8">
                 {role === 'client' ? ['Role Selection', 'Login Info', 'Client Info', 'Confirmation'].map((text, index) => (
@@ -673,22 +679,23 @@ const RegistrationForm = () => {
                     </React.Fragment>))}
             </div>
             {step === 1 && (<div>
-                <h2 className="text-2xl font-bold mb-4">Select Your Role</h2>
+                <h2 className="text-2xl font-bold mb-4">{t('Select Your Role')}</h2>
                 <div className="flex flex-col items-center space-y-4">
                     <button
                         type="button"
                         onClick={() => setRole('client')}
                         className={`text-2xl px-4 py-2 rounded-lg ${role === 'client' ? 'bg-black text-white' : 'bg-gray-200'}`}
                     >
-                        Client
+                                                    {t('Client')}
+
                     </button>
                     <button
                         type="button"
                         onClick={() => setRole('driver')}
                         className={`text-2xl px-4 py-2 rounded-lg ${role === 'driver' ? 'bg-black text-white' : 'bg-gray-200'}`}
                     >
-                        Driver
-                    </button>
+                            {t('Driver')}
+                            </button>
                     {renderAlert('role')}
                 </div>
                 <div className="flex justify-end mt-10">
@@ -697,18 +704,18 @@ const RegistrationForm = () => {
                         onClick={handleNext}
                         className="bg-black text-white py-2 px-4 rounded-lg"
                     >
-                        Next
-                    </button>
+                            {t('Next')}
+                            </button>
                 </div>
 
             </div>)}
 
             {step === 2 && (<div>
-                <h2 className="text-2xl font-bold mb-4">Enter Your Login Information</h2>
+                <h2 className="text-2xl font-bold mb-4">{t('Enter Your Login Information')}</h2>
                 <form onSubmit={handleNext}>
                     <div className="space-y-4">
                         <div>
-                            <label className="block text-gray-700 mb-2">First Name</label>
+                            <label className="block text-gray-700 mb-2">{t('First Name')}</label>
                             <input
                                 type="text"
                                 name="firstName"
@@ -719,7 +726,7 @@ const RegistrationForm = () => {
                             {renderAlert('firstName')}
                         </div>
                         <div>
-                            <label className="block text-gray-700 mb-2">Last Name</label>
+                            <label className="block text-gray-700 mb-2">{t('Last Name')}</label>
                             <input
                                 type="text"
                                 name="lastName"
@@ -730,7 +737,7 @@ const RegistrationForm = () => {
                             {renderAlert('lastName')}
                         </div>
                         <div>
-                            <label className="block text-gray-700 mb-2">Email</label>
+                            <label className="block text-gray-700 mb-2">{t('Email')}</label>
                             <input
                                 type="email"
                                 name="email"
@@ -741,7 +748,7 @@ const RegistrationForm = () => {
                             {renderAlert('email')}
                         </div>
                         <div>
-                            <label className="block text-gray-700 mb-2">Password</label>
+                            <label className="block text-gray-700 mb-2">{t('Password')}</label>
                             <input
                                 type="password"
                                 name="password"
@@ -752,7 +759,7 @@ const RegistrationForm = () => {
                             {renderAlert('password')}
                         </div>
                         <div>
-                            <label className="block text-gray-700 mb-2">Confirm Password</label>
+                            <label className="block text-gray-700 mb-2">{t('Confirm Password')}</label>
                             <input
                                 type="password"
                                 name="confirmPassword"
@@ -768,33 +775,32 @@ const RegistrationForm = () => {
                                 onClick={handlePrev}
                                 className="bg-gray-400 text-white py-2 px-4 rounded-lg"
                             >
-                                Back
-                            </button>
+                                    {t('Back')}
+                                    </button>
                             <button
                                 type="submit"
                                 className="bg-black text-white py-2 px-4 rounded-lg"
                             >
-                                Next
-                            </button>
+                                    {t('Next')}
+                                    </button>
                         </div>
                     </div>
                 </form>
             </div>)}
 
             {step === 3 && (<div>
-                <h2 className="text-2xl font-bold mb-4">{role === 'client' ? 'Client Information' : 'Driver Information'}</h2>
-                <form onSubmit={handleNext}>
+                <h2 className="text-2xl font-bold mb-4">{role === 'client' ? t('Client Information') : t('Driver Information')}</h2>                <form onSubmit={handleNext}>
                     <div className="space-y-4">
                         {role === 'client' && (<>
                             <div>
-                                <label className="block text-gray-700 mb-2">Government</label>
+                                <label className="block text-gray-700 mb-2">{t('Government')}</label>
                                 <select
                                     name="government"
                                     value={formData.government}
                                     onChange={handleChange}
                                     className="border rounded-lg py-2 px-4 w-full"
                                 >
-                                    <option value="">Select a Government</option>
+                                    <option value="">{t('Select a Government')}</option>
                                     {governments.map((gov) => (<option key={gov.id} value={gov.id}>
                                         {gov.name}
                                     </option>))}
@@ -802,7 +808,7 @@ const RegistrationForm = () => {
                                 {renderAlert('government')}
                             </div>
                             <div>
-                                <label className="block text-gray-700 mb-2">City</label>
+                                <label className="block text-gray-700 mb-2">{t('City')}</label>
                                 {/*<input*/}
                                 {/*  type="text"*/}
                                 {/*  name="city"*/}
@@ -817,7 +823,7 @@ const RegistrationForm = () => {
                                     className="border rounded-lg py-2 px-4 w-full"
                                     disabled={!formData.government} // Disable if no government is selected
                                 >
-                                    <option value="">Select a city</option>
+                                    <option value="">{t('Select a city')}</option>
                                     {cities.map(city => (<option key={city.id} value={city.id}>
                                         {city.name}
                                     </option>))}
@@ -825,7 +831,7 @@ const RegistrationForm = () => {
                                 {renderAlert('city')}
                             </div>
                             <div>
-                                <label className="block text-gray-700 mb-2">Address</label>
+                                <label className="block text-gray-700 mb-2">{t('Address')}</label>
                                 <input
                                     type="text"
                                     name="address"
@@ -837,7 +843,7 @@ const RegistrationForm = () => {
                             </div>
 
                             <div>
-                                <label className="block text-gray-700 mb-2">Birth Date</label>
+                                <label className="block text-gray-700 mb-2">{t('Birth Date')}</label>
                                 <input
                                     type="date"
                                     name="birthDate"
@@ -847,7 +853,7 @@ const RegistrationForm = () => {
                                 />
                             </div>
                             <div>
-                                <label className="block text-gray-700 mb-2">Mobile Number</label>
+                                <label className="block text-gray-700 mb-2">{t('Mobile Number')}</label>
                                 <input
                                     type="text"
                                     name="mobile"
@@ -858,7 +864,7 @@ const RegistrationForm = () => {
                                 {renderAlert('mobile')}
                             </div>
                             <div>
-                                <label className="block text-gray-700 mb-2">Personal Image</label>
+                                <label className="block text-gray-700 mb-2">{t('Personal Image')}</label>
                                 <input
                                     type="file"
                                     name="personalImage"
@@ -870,14 +876,14 @@ const RegistrationForm = () => {
                         </>)}
                         {role === 'driver' && (<>
                             <div>
-                                <label className="block text-gray-700 mb-2">Government</label>
+                                <label className="block text-gray-700 mb-2">{t('Government')}</label>
                                 <select
                                     name="government"
                                     value={formData.government}
                                     onChange={handleChange}
                                     className="border rounded-lg py-2 px-4 w-full"
                                 >
-                                    <option value="">Select a Government</option>
+                                    <option value="">{t('Select a Government')}</option>
                                     {governments.map((gov) => (<option key={gov.id} value={gov.id}>
                                         {gov.name}
                                     </option>))}
@@ -885,7 +891,7 @@ const RegistrationForm = () => {
                                 {renderAlert('government')}
                             </div>
                             <div>
-                                <label className="block text-gray-700 mb-2">City</label>
+                                <label className="block text-gray-700 mb-2">{t('City')}</label>
                                 {/*<input*/}
                                 {/*  type="text"*/}
                                 {/*  name="city"*/}
@@ -900,7 +906,7 @@ const RegistrationForm = () => {
                                     className="border rounded-lg py-2 px-4 w-full"
                                     disabled={!formData.government} // Disable if no government is selected
                                 >
-                                    <option value="">Select a city</option>
+                                    <option value="">{t('Select a city')}</option>
                                     {cities.map(city => (<option key={city.id} value={city.id}>
                                         {city.name}
                                     </option>))}
@@ -908,7 +914,7 @@ const RegistrationForm = () => {
                                 {renderAlert('city')}
                             </div>
                             <div>
-                                <label className="block text-gray-700 mb-2">Address</label>
+                                <label className="block text-gray-700 mb-2">{t('Address')}</label>
                                 <input
                                     type="text"
                                     name="address"
@@ -919,7 +925,7 @@ const RegistrationForm = () => {
                                 {renderAlert('address')}
                             </div>
                             <div>
-                                <label className="block text-gray-700 mb-2">Birth Date</label>
+                                <label className="block text-gray-700 mb-2">{t('Birth Date')}</label>
                                 <input
                                     type="date"
                                     name="birthDate"
@@ -929,7 +935,7 @@ const RegistrationForm = () => {
                                 />
                             </div>
                             <div>
-                                <label className="block text-gray-700 mb-2">Mobile Number</label>
+                                <label className="block text-gray-700 mb-2">{t('Mobile Number')}</label>
                                 <input
                                     type="text"
                                     name="mobile"
@@ -940,7 +946,7 @@ const RegistrationForm = () => {
                                 {renderAlert('mobile')}
                             </div>
                             <div>
-                                <label className="block text-gray-700 mb-2">Personal Image</label>
+                                <label className="block text-gray-700 mb-2">{t('Personal Image')}</label>
                                 <input
                                     type="file"
                                     name="personalImage"
@@ -950,7 +956,7 @@ const RegistrationForm = () => {
                                 {renderAlert('personalImage')}
                             </div>
                             <div>
-                                <label className="block text-gray-700 mb-2">Car Brand</label>
+                                <label className="block text-gray-700 mb-2">{t('Car Brand')}</label>
                                 <input
                                     type="text"
                                     name="make"
@@ -960,7 +966,7 @@ const RegistrationForm = () => {
                                 />
                             </div>
                             <div>
-                                <label className="block text-gray-700 mb-2">Car Model</label>
+                                <label className="block text-gray-700 mb-2">{t('Car Model')}</label>
                                 <input
                                     type="text"
                                     name="model"
@@ -970,7 +976,7 @@ const RegistrationForm = () => {
                                 />
                             </div>
                             <div>
-                                <label className="block text-gray-700 mb-2">Car Yeear</label>
+                                <label className="block text-gray-700 mb-2">{t('Car Year')}</label>
                                 <input
                                     type="number"
                                     name="year"
