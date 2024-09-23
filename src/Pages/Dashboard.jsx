@@ -4,27 +4,31 @@ import DashBoardOrders  from '../Components/DashboardOrders';
 import UsersInDashbourd from '../Components/usersInDashbpurd';
 import '../CSS/users.css'
 import DashboardSummary from '../Components/dashboardSummery';
+import { useTranslation } from 'react-i18next';
+
 
 export default function Dashboard() {
+    const { t, i18n } = useTranslation();
     const pages = [
-        "Sumary",
-        "Orders",
-        "Posts",
-        "Users",
+        t('dashboardAdmin.summary'),
+        t('dashboardAdmin.orders'),
+        t('dashboardAdmin.posts'),
+        t('dashboardAdmin.users'),
 
     ];
     const [posts, setPosts] = useState([]);
     const [orders, setOrders] = useState([]);
 
+
     const PagesComponent = [
         <>
-        <div className='title'>Summary </div>
+        <div className='title'>{t('dashboardAdmin.summary')}</div>
         <DashboardSummary/>
         </>, 
         <DashboardPosts posts={posts} setPosts={setPosts} />, 
         <DashBoardOrders posts={orders} setOrders={setOrders}/>, 
         <>
-        <div className='title'>Users</div>
+        <div className='title'>{t('dashboardAdmin.users')}</div>
         <UsersInDashbourd/>
         </>
     ];
@@ -45,14 +49,14 @@ export default function Dashboard() {
 
     useEffect(() => {
         setSelectedComponent(PagesComponent[selectedPage]);
-    }, [selectedPage]);
-
+    }, [selectedPage, i18n.language]);
+ 
    
     return (
         <>
             <div className="grid grid-cols-12 md:max-w-[1920px]">
                 <div className={`${isSidebarOpen ? "col-span-2" : "hidden"} h-screen w-full shadow-2xl bg-[#F3F3F3]`}>
-                    <h1 className="text-2xl font-bold text-center py-8">Dashboard</h1>
+                    <h1 className="text-2xl font-bold text-center py-8">{t('dashboardAdmin.dashboard')}</h1>
                     <div className="flex flex-col items-start w-full cursor-pointer">
                         <div className={"w-full "}>
                             {pages.map((page, index) => (

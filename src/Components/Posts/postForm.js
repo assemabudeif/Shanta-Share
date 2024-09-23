@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import '../../CSS/createPost.css';
+import { useTranslation } from 'react-i18next';
+
 
 // import weightImage from "../assets/images/weight.png";
 
@@ -10,6 +12,8 @@ function Form({setFormData, formData, errors, setErrors, validate}) {
   const [pickupCities, setPickupCities] = useState([]);
   const [arrivalGovernments, setArrivalGovernments] = useState([]);
   const [arrivalCities, setArrivalCities] = useState([]);
+  const { t, i18n } = useTranslation();
+
 
   // const [formData, setFormData] = useState({
   //   from_city: '',
@@ -103,11 +107,11 @@ function Form({setFormData, formData, errors, setErrors, validate}) {
   return (
     <>
       <div className="p-6 rounded-lg space-y-4">
-        <h1 className="text-2xl font-semibold mb-10 titlePost">Create Post</h1>
+        <h1 className="text-2xl font-semibold mb-10 titlePost">{t('createPostPage.createPost')}</h1>
 
         <div className="space-y-4">
           <div className="space-y-2">
-            <label className="text-sm font-medium titleLocation">Pickup Location</label>
+            <label className="text-sm font-medium titleLocation">{t('createPostPage.pickupLocation')}</label>
             <div className="flex space-x-2">
               {/*<input*/}
               {/*  type="text"*/}
@@ -123,7 +127,7 @@ function Form({setFormData, formData, errors, setErrors, validate}) {
                 onChange={handleChangeObject}
                 className={`background w-1/2 p-2 border border-gray-300 rounded ${errors.from ? 'border-red-500' : ''}`}
               >
-                <option value={JSON.stringify({})}>Select a Government</option>
+                <option value={JSON.stringify({})}>{t('createPostPage.selectGovernment')}</option>
                 {pickupGovernments?.map((gov, index) => (<option key={gov.id} value={JSON.stringify(gov)}>
                   {gov.name}
                 </option>))}
@@ -136,7 +140,7 @@ function Form({setFormData, formData, errors, setErrors, validate}) {
                 className={`background w-1/2 p-2 border border-gray-300 rounded ${errors.pickupCity ? 'border-red-500' : ''}`}
                 disabled={!formData.from_government} // Disable if no government is selected
               >
-                <option value={JSON.stringify({})}>Select a city</option>
+                <option value={JSON.stringify({})}>{t('createPostPage.selectcity')}</option>
                 {pickupCities.map((city) => (
                   <option key={city.id} value={JSON.stringify(city)}>
                     {city.name}
@@ -166,7 +170,7 @@ function Form({setFormData, formData, errors, setErrors, validate}) {
           </div>
 
           <div className="space-y-2">
-            <label className="flex text-sm font-medium titleLocation w-1/2">Pickup Time</label>
+            <label className="flex text-sm font-medium titleLocation w-1/2">{t('createPostPage.pickupTime')}</label>
             <input
               type="datetime-local"
               name="pickup_time"
@@ -178,7 +182,7 @@ function Form({setFormData, formData, errors, setErrors, validate}) {
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium titleLocation">Destination Location</label>
+            <label className="text-sm font-medium titleLocation">{t('createPostPage.destinationLocation')}</label>
             <div className="flex space-x-2">
               {/*<input*/}
               {/*  type="text"*/}
@@ -203,7 +207,7 @@ function Form({setFormData, formData, errors, setErrors, validate}) {
                 onChange={handleChangeObject}
                 className={`background w-1/2 p-2 border rounded ${errors.to_government ? 'border-red-500' : 'border-gray-300'}`}
               >
-                <option value={JSON.stringify({})}>Select a Government</option>
+                <option value={JSON.stringify({})}>{('createPostPage.selectGovernment')}</option>
                 {arrivalGovernments.map((gov, index) => (<option key={gov.id} value={JSON.stringify(gov)}>
                   {gov.name}
                 </option>))}
@@ -216,7 +220,7 @@ function Form({setFormData, formData, errors, setErrors, validate}) {
                 className={`background w-1/2 p-2 border rounded ${errors.to_city ? 'border-red-500' : 'border-gray-300'}`}
                 disabled={!formData.to_government} // Disable if no government is selected
               >
-                <option value={JSON.stringify({})}>Select a city</option>
+                <option value={JSON.stringify({})}>{('createPostPage.selectcity')}</option>
                 {arrivalCities.map((city) => (<option key={city.id} value={JSON.stringify(city)}>
                   {city.name}
                 </option>))}
@@ -237,7 +241,7 @@ function Form({setFormData, formData, errors, setErrors, validate}) {
           </div>
 
           <div className="space-y-2">
-            <label className="flex w-1/2 text-sm font-medium titleLocation">Arrival Time</label>
+            <label className="flex w-1/2 text-sm font-medium titleLocation">{('createPostPage.arrivalTime')}</label>
             <input
               type="datetime-local"
               name="arrival_time"
@@ -250,7 +254,7 @@ function Form({setFormData, formData, errors, setErrors, validate}) {
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-medium titleLocation">Available Weight and Size</label>
+          <label className="text-sm font-medium titleLocation">{t('createPostPage.availableWeightandSize')}</label>
           <div className="flex space-x-2">
             <input
               type="text"
@@ -274,7 +278,7 @@ function Form({setFormData, formData, errors, setErrors, validate}) {
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-medium titleLocation">Description</label>
+          <label className="text-sm font-medium titleLocation">{t('createPostPage.description')}</label>
           <textarea
             name="description"
             value={formData.description}

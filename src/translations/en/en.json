@@ -1,0 +1,33 @@
+{
+    "navbar": {
+      "discover": "Discover",
+      "search": "Search",
+      "contactUs": "Contact Us",
+      "about": "About",
+      "join": "Join",
+      "logout": "Logout",
+      "shantaShare": "Shanta Share"
+    },
+    "dashboardAdmin":{
+      "summary": "summary",
+      "orders": "orders",
+      "posts": "posts",
+      "users": "users",
+      "dashboard":"Dashboard"
+    },
+
+    "createPostPage":{
+      "createPost":"Create Post",
+      "pickupLocation":"Pickup Location",
+      "selectGovernment":"Select a Government",
+      "selectcity":"Select a city",
+      "pickupTime":"Pickup Time",
+      "destinationLocation":"Destination Location",
+      "arrivalTime":"Arrival Time",
+      "availableWeightandSize":"Available Weight and Size",
+      "description":"Description"
+    }
+
+
+  }
+  
