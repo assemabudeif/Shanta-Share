@@ -54,6 +54,9 @@ export default function Dashboard() {
    
     return (
         <>
+
+
+
             <div className="grid grid-cols-12 md:max-w-[1920px]">
                 <div className={`${isSidebarOpen ? "col-span-2" : "hidden"} h-screen w-full shadow-2xl bg-[#F3F3F3]`}>
                     <h1 className="text-2xl font-bold text-center py-8">{t('dashboardAdmin.dashboard')}</h1>
@@ -87,6 +90,9 @@ export default function Dashboard() {
                            
                         </div>
                     </div>
+                    <div className="text-center py-4 bg-gray-200">
+                <h1 className="text-3xl font-bold">Dashboard</h1>
+            </div>
                     <div className="p-4">
                         {selectedComponent}
                     </div>
