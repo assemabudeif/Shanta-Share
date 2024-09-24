@@ -57,6 +57,23 @@
           "Drivers": "السائقون",
           "Annual Statistics": "الإحصائيات السنوية"
         },
+
+      "driverProfile": {
+      "verified": "موثّق",
+      "From": "من:",
+      "LicenceType": "نوع الرخصة:",
+      "Trips": "الرحلات",
+      "Rating": "التقييم",
+      "Years": "السنوات",
+      "Reviews": "المراجعات"
+  },
+
+   "driverHomePage": {
+    "Hi": "مرحبًا",
+    "TodaysEarnings": "أرباح اليوم",
+    "TodaysOrders": "طلبات اليوم",
+    "YourOrders": "طلباتك"
+  },
      
       
         "find_your_courier": "ابحث عن سائقك",
@@ -158,7 +175,33 @@
   "checkCredentials": "تحقق من البريد الإلكتروني أو كلمة المرور.",
   "tryAgain": "حدث خطأ ما. حاول مرة أخرى.",
   "validEmail": "أدخل بريدًا إلكترونيًا صالحًا.",
-  "validUsername": "أدخل اسم مستخدم صالحًا."
+  "validUsername": "أدخل اسم مستخدم صالحًا.",
+
+  "postPage": {
+      "Description": "الوصف",
+      "Total": "الإجمالي",
+      "RequestDelivery": "طلب التوصيل",
+      "PickupLocation": "موقع الاستلام",
+      "PickupTime": "وقت الاستلام",
+      "ArrivalLocation": "موقع الوصول",
+      "ArrivalTime": "وقت الوصول",
+      "CargoImage": "صورة الحمولة",
+      "Apply": "تطبيق"
+    },
+
+  "orderHistory": {
+      "Details": "التفاصيل",
+      "Previous": "السابق",
+      "Page": "صفحة",
+      "of": "من",
+      "Next": "التالي",
+      "Orders": "الطلبات",
+      "Summery": "الملخص",
+      "Account": "الحساب",
+      "Setting": "الإعدادات"
+    }
+
+
   }
   
   

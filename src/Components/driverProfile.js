@@ -5,12 +5,14 @@ import axios from "axios";
 import CustomerViewProfile from "./customerViewProfile";
 // import AddReview from "./Reviews/addReview";
 import ReviewsList from "./Reviews/reviewList";
+import { useTranslation } from 'react-i18next';
 import '../CSS/reviewCard.css'
 
 function DriverProfile(){
     const [driverData, setDriverData] = useState([]);
     const [carData, setCardata] = useState([]);
     const params = useParams();
+    const { t, i18n } = useTranslation();
 
     useEffect(() => {
         console.log(params.id);
@@ -37,7 +39,7 @@ function DriverProfile(){
 
            <CustomerViewProfile driverData={driverData} carData={carData} />
            {/* <AddReview/> */}
-           <h1 className="mt-20 mb-10 text-black reviewTitle">Reviews</h1>
+           <h1 className="mt-20 mb-10 text-black reviewTitle">{t("driverProfile.Reviews")}</h1>
            <ReviewsList/>
         </main>
     );

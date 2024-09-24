@@ -5,6 +5,8 @@ import order_img from "../assets/images/order_img.png";
 import {Link} from "react-router-dom";
 import {data} from "autoprefixer";
 import motorcycleImage from "../assets/images/motorcycle.png";
+import { useTranslation } from 'react-i18next';
+
 
 import Chart from "react-apexcharts";
 
@@ -12,6 +14,7 @@ function DiverHomePage() {
     const [posts, setPosts] = useState([]);
     const [postError, setPostError] = useState("");
     const [loading, setLoading] = useState(true);
+    const { t, i18n } = useTranslation();
     // const loading = useSelector(state => state.loader.loader);
 
     const GetPosts = () => {
@@ -51,9 +54,9 @@ function DiverHomePage() {
                         <div className=" w-1/3 p-2 ">
                             <div className="w-full h-full  flex items-center justify-start ">
                                 <div className="flex flex-col items-start">
-                                    <span className="text-4xl">Hi <span className="font-bold"> Amr,</span></span>
+                                    <span className="text-4xl">{t("driverHomePage.Hi")} <span className="font-bold"> Amr,</span></span>
                                     <span className="text-6xl leading-tight font-bold ">1280.00£</span>
-                                    <span className="text-3xl ">Today's Earnings</span>
+                                    <span className="text-3xl ">{t("driverHomePage.TodaysEarnings")}</span>
                                 </div>
                             </div>
                         </div>
@@ -66,7 +69,7 @@ function DiverHomePage() {
 
                     {/*orders_section*/}
                     <div className="  p-2 flex flex-col">
-                        {SectionHeader({title: 'Today\'s Orders', link: '/post/1'})}
+                        {SectionHeader({title: t('driverHomePage.TodaysOrders'), link: '/post/1'})}
                         <div className="w-3/4 ms-12 p-2 flex items-center flex-col">
 
                             {posts.map((post, index) => {
@@ -82,7 +85,7 @@ function DiverHomePage() {
 
                     {/*posts_section*/}
                     <div className=" bg-pink-100 p-2 flex flex-col">
-                        {SectionHeader({title: 'Your Orders', link: '/post/1'})}
+                        {SectionHeader({title: t('driverHomePage.YourOrders'), link: '/post/1'})}
                         <div className="w-3/4 ms-12 p-2 bg-yellow-200 flex items-center flex-col">
 
                             {posts.map((post, index) => {
