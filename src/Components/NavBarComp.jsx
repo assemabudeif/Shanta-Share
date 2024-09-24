@@ -48,7 +48,7 @@ export default function NavBarComp({ isLoggedIn, onLogout }) {
                         <div className="flex flex-shrink-0 items-center">
                             <h1 className="text-2xl text-white">{t('navbar.shantaShare')}</h1>
                         </div>
-                        <div className="hidden sm:ml-6 md:block">
+                        <div className="hidden sm:ms-6 md:block">
                             <div className="flex space-x-4">
                                 {navigation.map((item) => (
                                     <Link
@@ -67,8 +67,8 @@ export default function NavBarComp({ isLoggedIn, onLogout }) {
                         </div>
                     </div>
                     <div
-                        className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                        <button onClick={() => i18n.changeLanguage(i18n.language === 'en' ? 'ar' : 'en')} className="text-white font-semibold mr-3">
+                        className="absolute inset-y-0 right-0 flex items-center pe-2 sm:static sm:inset-auto sm:ms-6 sm:pe-0">
+                        <button onClick={() => i18n.changeLanguage(i18n.language === 'en' ? 'ar' : 'en')} className="text-white font-semibold me-3">
                             {i18n.language === 'en' ? 'AR' : 'EN'}
                         </button>
                         {!isLogin ? (
@@ -88,7 +88,7 @@ export default function NavBarComp({ isLoggedIn, onLogout }) {
                                 </Link>
                                 <button
                                     onClick={handleLogout}
-                                    className="text-white font-semibold ml-4"
+                                    className="text-white font-semibold ms-4"
                                 >
                                     {t('navbar.logout')}
                                 </button>
