@@ -1,18 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import DashboardPosts  from '../Components/DashboardPosts';
-import DashBoardOrders  from '../Components/DashboardOrders';
 import {Outlet, useNavigate} from "react-router-dom";
 
 
 
-export default function Dashboard() {
-    const pages = [
-        {page: "summary", title: "Summary"},
-        {page: "posts", title: "Posts"},
-        {page: "orders", title: "Orders"},
-        {page: "settings", title: "Settings"},
-
-    ];
+export default function Dashboard( props= {pages: [{page: "route", title: "Title"}], pathName: 'dashboard'}) {
+    const pages = props.pages;
     const [posts, setPosts] = useState([]);
     const [orders, setOrders] = useState([]);
 
@@ -27,9 +20,17 @@ export default function Dashboard() {
     const [selectedPage, setSelectedPage] = useState(
       pages.findIndex(function (page) {
           // console.log(window.location.pathname.includes(page.page));
+         if (page.page === "") {
+             return window.location.pathname === props.pathName || window.location.pathname === props.pathName + "/";
+         } else {
+             return window.location.pathname.includes(page.page);
+         }
+      }) /*> 0 ? pages.findIndex(function (page) {
+          // console.log(window.location.pathname.includes(page.page));
           return window.location.pathname.includes(page.page);
-      })
+      }) : 0*/
     );
+    console.log(window.location.pathname)
     // const [selectedComponent, setSelectedComponent] = useState(PagesComponent[0]);
     const navigate = useNavigate()
     const toggleSidebar = () => {
@@ -53,7 +54,7 @@ export default function Dashboard() {
     return (
         <>
             <div className="grid grid-cols-12 md:max-w-[1920px]">
-                <div className={`${isSidebarOpen ? "col-span-2" : "hidden"} h-screen w-full shadow-2xl bg-[#F3F3F3]`}>
+                <div className={`${isSidebarOpen ? "col-span-2" : "hidden"} h-screen w-full shadow-2xl bg-[#F3F3F3] sticky top-0 left-0`}>
                     <h1 className="text-2xl font-bold text-center py-8">Dashboard</h1>
                     <div className="flex flex-col items-start w-full cursor-pointer">
                         <div className={"w-full "}>

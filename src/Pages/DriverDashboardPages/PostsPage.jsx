@@ -1,10 +1,13 @@
 import {useNavigate} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import CreatePostPage from "../../Components/Posts/createPostPage";
+import LoadingProgress from "../../Components/LoadingProgress";
+import CircularProgress from "../../Components/LoadingProgressCircular";
 
 function PostsPage() {
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
+  const [isPostsLoading, setIsPostsLoading] = useState(false);
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [form, setForm] = useState({
     id: '',
@@ -23,27 +26,53 @@ function PostsPage() {
 
 
   useEffect(() => {
-    //TODO: Data loading
-    const params = {
-      page: currentPage,
-    }
-    const config = {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      }
-    }
-    const queryString = new URLSearchParams(params).toString();
-    fetch(`http://127.0.0.1:8000/posts/driver-posts/?${queryString}`, config)
-      .then(response => response.json())
-      .then(data => {
-        console.log(data)
-        setPosts(data.results);
-        setPageCount(data.page_count)
-      })
-      .catch(error => console.error('Error fetching posts:', error));
+    // //TODO: Data loading
+    // setIsPostsLoading(true);
+    // const params = {
+    //   page: currentPage,
+    // }
+    // const config = {
+    //   headers: {
+    //     Authorization: `Bearer ${localStorage.getItem('token')}`,
+    //   }
+    // }
+    // const queryString = new URLSearchParams(params).toString();
+    // fetch(`http://127.0.0.1:8000/posts/driver-posts/?${queryString}`, config)
+    //   .then(response => response.json())
+    //   .then(data => {
+    //     console.log(data)
+    //     setPosts(data.results);
+    //     setPageCount(data.page_count);
+    //     setIsPostsLoading(false);
+    //   })
+    //   .catch(error => console.error('Error fetching posts:', error));
+    fetchPosts();
   }, []);
 
   useEffect(() => {
+    // const params = {
+    //   page: currentPage,
+    // }
+    // const config = {
+    //   headers: {
+    //     Authorization: `Bearer ${localStorage.getItem('token')}`,
+    //   }
+    // }
+    // const queryString = new URLSearchParams(params).toString();
+    // fetch(`http://127.0.0.1:8000/posts/driver-posts/?${queryString}`, config)
+    //   .then(response => response.json())
+    //   .then(data => {
+    //     console.log(data)
+    //     setPosts(data.results);
+    //     setPageCount(data.page_count)
+    //   })
+    //   .catch(error => console.error('Error fetching posts:', error));
+
+    fetchPosts();
+  }, [currentPage]);
+
+  const fetchPosts = () => {
+    setIsPostsLoading(true);
     const params = {
       page: currentPage,
     }
@@ -58,10 +87,11 @@ function PostsPage() {
       .then(data => {
         console.log(data)
         setPosts(data.results);
-        setPageCount(data.page_count)
+        setPageCount(data.page_count);
+        setIsPostsLoading(false);
       })
       .catch(error => console.error('Error fetching posts:', error));
-  }, [currentPage]);
+  }
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
@@ -115,7 +145,8 @@ function PostsPage() {
           onClick={()=>{navigate('create')}}
           className="py-2 px-4 bg-black text-white rounded-lg shadow-sm hover:bg-gray-800 text-lg"
         >
-          {isFormVisible ? 'Cancel' : 'Create Post'}
+         Create Post
+
         </button>
       </div>
 
@@ -130,92 +161,80 @@ function PostsPage() {
         />
       </div>
 
-      {isFormVisible && (
-        <CreatePostPage/>
-        // <form onSubmit={handleFormSubmit} className="mb-4">
-        //     <input type="text" name="from" value={form.from} onChange={handleFormChange} placeholder="From" required className="border px-2 py-1 rounded-md mb-2 w-full" />
-        //     <input type="text" name="to" value={form.to} onChange={handleFormChange} placeholder="To" required className="border px-2 py-1 rounded-md mb-2 w-full" />
-        //     <input type="text" name="name" value={form.name} onChange={handleFormChange} placeholder="Name" required className="border px-2 py-1 rounded-md mb-2 w-full" />
-        //     <input type="text" name="rate" value={form.rate} onChange={handleFormChange} placeholder="Rate" required className="border px-2 py-1 rounded-md mb-2 w-full" />
-        //     <input type="number" name="price" value={form.price} onChange={handleFormChange} placeholder="Price" required className="border px-2 py-1 rounded-md mb-2 w-full" />
-        //     <input type="number" name="weight" value={form.weight} onChange={handleFormChange} placeholder="Weight" required className="border px-2 py-1 rounded-md mb-2 w-full" />
-        //     <textarea name="description" value={form.description} onChange={handleFormChange} placeholder="Description" required className="border px-2 py-1 rounded-md mb-2 w-full" />
-        //     <button type="submit" className="py-2 px-4 bg-black text-white rounded-lg">Submit</button>
-        // </form>
-      )}
 
-      {!isFormVisible && (
-        <div>
-          {posts.length > 0 ? (
-            <>
-              <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
-                <thead className="bg-gray-100">
-                <tr>
-                  <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">ID</th>
-                  <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">From</th>
-                  <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">To</th>
-                  <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Name</th>
-                  <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Rate</th>
-                  <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Price</th>
-                  <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Weight</th>
-                  <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Description</th>
-                  <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Pick Time</th>
+      <div>
+        {!isPostsLoading ? (
+          <>
+            <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+              <thead className="bg-gray-100">
+              <tr>
+                {/*<th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">ID</th>*/}
+                <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">From</th>
+                <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">To</th>
+                <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Name</th>
+                <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Rate</th>
+                <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Price</th>
+                <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Weight</th>
+                <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Description</th>
+                <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Pick Time</th>
+
+              </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-200">
+              {posts.map(post => (
+                <tr key={post.id}
+                    className='cursor-pointer'
+                    onClick={()=> navigate(`${post.id}`, {state: {postId: post.id}})}
+                >
+                  {/*<td className="px-4 py-2 text-sm text-gray-800">{post.id}</td>*/}
+                  <td className="px-4 py-2 text-sm text-gray-800">{post.from_city ? post.from_city.name : 'Unknown'}</td>
+                  <td className="px-4 py-2 text-sm text-gray-800">{post.to_city ? post.to_city.name : 'Unknown'}</td>
+                  <td className="px-4 py-2 text-sm text-gray-800">{post.created_by.name}</td>
+                  <td className="px-4 py-2 text-sm text-gray-800">{post.created_by.average_rate}</td>
+                  <td className="px-4 py-2 text-sm text-gray-800">${post.delivery_fee}</td>
+                  <td className="px-4 py-2 text-sm text-gray-800">{post.max_weight} kg</td>
+                  <td className="px-4 py-2 text-sm text-gray-800">{post.description}</td>
+                  <td className="px-4 py-2 text-sm text-gray-800">{post.pickup_time}</td>
 
                 </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200">
-                {posts.map(post => (
-                  <tr key={post.id}
-                      className='cursor-pointer'
-                      onClick={()=> navigate(`${post.id}`, {state: {postId: post.id}})}
-                  >
-                    <td className="px-4 py-2 text-sm text-gray-800">{post.id}</td>
-                    <td className="px-4 py-2 text-sm text-gray-800">{post.from_city ? post.from_city.name : 'Unknown'}</td>
-                    <td className="px-4 py-2 text-sm text-gray-800">{post.to_city ? post.to_city.name : 'Unknown'}</td>
-                    <td className="px-4 py-2 text-sm text-gray-800">{post.created_by.name}</td>
-                    <td className="px-4 py-2 text-sm text-gray-800">{post.created_by.average_rate}</td>
-                    <td className="px-4 py-2 text-sm text-gray-800">${post.delivery_fee}</td>
-                    <td className="px-4 py-2 text-sm text-gray-800">{post.max_weight} kg</td>
-                    <td className="px-4 py-2 text-sm text-gray-800">{post.description}</td>
-                    <td className="px-4 py-2 text-sm text-gray-800">{post.pickup_time}</td>
+              ))}
+              </tbody>
+            </table>
 
-                  </tr>
-                ))}
-                </tbody>
-              </table>
+            {/* Pagination */}
+            <div className="mt-4 flex justify-center">
+              <button
+                onClick={() => paginate(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="py-1 px-3 mx-1 bg-gray-200 text-gray-700 rounded-md"
+              >
+                Prev
+              </button>
+              {[...Array(pageCount).keys()].map(pageNumber => (
+                <button
+                  key={pageNumber + 1}
+                  onClick={() => paginate(pageNumber + 1)}
+                  className={`py-1 px-3 mx-1 ${currentPage === pageNumber + 1 ? 'bg-black text-white' : 'bg-gray-200 text-gray-700'} rounded-md`}
+                >
+                  {pageNumber + 1}
+                </button>
+              ))}
+              <button
+                onClick={() => paginate(currentPage + 1)}
+                disabled={currentPage === pageCount}
+                className="py-1 px-3 mx-1 bg-gray-200 text-gray-700 rounded-md"
+              >
+                Next
+              </button>
+            </div>
+          </>
+        ) : (
+          <div className='w-full h-full flex items-center justify-center'>
+            <LoadingProgress/>
+          </div>
+        )}
+      </div>
 
-              {/* Pagination */}
-              <div className="mt-4 flex justify-center">
-                <button
-                  onClick={() => paginate(currentPage - 1)}
-                  disabled={currentPage === 1}
-                  className="py-1 px-3 mx-1 bg-gray-200 text-gray-700 rounded-md"
-                >
-                  Prev
-                </button>
-                {[...Array(pageCount).keys()].map(pageNumber => (
-                  <button
-                    key={pageNumber + 1}
-                    onClick={() => paginate(pageNumber + 1)}
-                    className={`py-1 px-3 mx-1 ${currentPage === pageNumber + 1 ? 'bg-black text-white' : 'bg-gray-200 text-gray-700'} rounded-md`}
-                  >
-                    {pageNumber + 1}
-                  </button>
-                ))}
-                <button
-                  onClick={() => paginate(currentPage + 1)}
-                  disabled={currentPage === pageCount}
-                  className="py-1 px-3 mx-1 bg-gray-200 text-gray-700 rounded-md"
-                >
-                  Next
-                </button>
-              </div>
-            </>
-          ) : (
-            <p className="text-gray-500">No posts available.</p>
-          )}
-        </div>
-      )}
     </div>
   );
 }

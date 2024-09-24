@@ -79,7 +79,6 @@ function OrdersPage() {
   return (
     <>
           <div className="flex space-x-8 p-8">
-
             <div className="flex-1 flex flex-col">
               <div className="w-full py-4 bg-pink-300">
                 <h1 className="mb-2 text-4xl font-semibold ">Post Details</h1>
@@ -173,6 +172,34 @@ function OrdersPage() {
 }
 
 function OrderItem(post) {
+
+  // const [acceptLoading, setAcceptLoading] = useState(false);
+  // const [acceptLoading, setAcceptLoading] = useState(false);
+
+  const handelAcceptAction = (id) => {
+
+    // setAcceptLoading(true);
+
+    const params = {
+      order_id:id,
+      order_status: 'in_progress',
+    }
+    const config = {
+      method: 'PATCH',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      }
+    }
+    const queryString = new URLSearchParams(params).toString();
+    fetch(`http://127.0.0.1:8000/orders/update-status/?${queryString}`, config)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data)
+        // setAcceptLoading(false);
+      })
+      .catch(error => console.error('Error fetching posts:', error));
+  }
+
   return (
     <>
       <div className="bg-gray-100 border-2 border-black rounded-2xl grid grid-cols-12 ">
@@ -239,8 +266,18 @@ function OrderItem(post) {
 
             </div>
             <div className={"flex  justify-between"}>
-              <button className="rounded-full py-2 px-12 bg-black text-white "
-              >Accept
+              <button
+                className="rounded-full py-2 px-12 bg-black text-white "
+                onClick={()=> handelAcceptAction(post.id)}
+              >
+                {false ?
+                  <div
+                    className='flex items-center justify-center w-full'
+                  >
+                    <div
+                      className="animate-spin rounded-full h-8 w-8 border-b-4 border-white"/>
+                  </div> : 'Accept'
+                }
               </button>
             </div>
           </div>

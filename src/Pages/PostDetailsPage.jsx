@@ -114,7 +114,7 @@ function PostDetailsPage(props) {
             pickup_time: formData.pickupTime,
             pickup_address_line: formData.pickupAddress,
             arrival_time: formData.arrivalTime,
-            delivery_address_line: formData.arrivalAddress,
+            delivery_address_line: formData.destinationAddress,
             client_notes: formData.description,
             cargo_image: convertedImages[0]
         };

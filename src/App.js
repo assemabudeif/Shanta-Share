@@ -21,14 +21,17 @@ import SearchPage from "./Pages/SearchPage";
 import Store from "./Store/Store";
 import {Provider} from "react-redux";
 import MyAccountPage from "./Pages/MyAccountPage";
-import CreatePostPage from './Components/Posts/createPostPage';
+
 import DriverHomePage from "./Pages/DriverHomePage";
 import ClientDashboardMain from "./Pages/ClientDashboardMain";
 import OrdersHistory from "./Pages/OrdersHistory"
 import Dashboard from "./Pages/Dashboard"
-import DashBoardOrders from "./Components/DashboardOrders";
 import PostsPage from "./Pages/DriverDashboardPages/PostsPage";
-import OrdersPage from "./Pages/ClientDashboardPages/OrdersPage";
+import CreatePostPage from "./Pages/DriverDashboardPages/CreatPost/createPostPage";
+import OrdersPage from "./Pages/DriverDashboardPages/OrdersPage";
+import DashBoardOrders from "./Pages/DriverDashboardPages/DashboardOrders";
+import ClientDashboardOrders from "./Pages/ClientDashboardPages/ClientDashboardOrders";
+import PrivateRoutes from "./Components/PrivateRoutes";
 
 
 const handleSave = (updatedDriver) => {
@@ -47,7 +50,18 @@ function App() {
     const location = window.location.pathname;
     console.log(location);
     const user_type = localStorage.getItem('user_type') || '';
+    const DriverDashboardRoutes = [
+        {page: "", title: "Summary"},
+        {page: "posts", title: "Posts"},
+        {page: "orders", title: "Orders"},
+        {page: "settings", title: "Settings"},
 
+    ];
+    const ClientDashboardRoutes = [
+        {page: "", title: "Account"},
+        {page: "orders", title: "Orders"},
+        {page: "settings", title: "Settings"},
+    ]
 
     return (
         <>
@@ -57,8 +71,8 @@ function App() {
                     {
                         location !== "/myaccount" &&
                         location !== "/client-dashboard" &&
-                        // location !== "/ordershistory" &&
-
+                        // !location.includes('/dashboard') &&
+                        // !location.includes('/client-dashboard') &&
                         <>
                             <NavBarComp/>
                             <div className="bg-transparent h-20"></div>
@@ -74,8 +88,8 @@ function App() {
                         {/*       element={<LoginStep2/>}/>/!* <Route path="/reviewCard" element={<ReviewCard />} /> *!/*/}
                         <Route path="/reviewList" element={<ReviewsList/>}/>
                         <Route path="/driverInfoComp" element={<DriverInfoComp/>}/>
-                        <Route path="/myaccount" element={<MyAccountPage/>}/>
-                        <Route path="/client-dashboard" element={<ClientDashboardMain/>}/>
+                        {/*<Route path="/myaccount" element={<MyAccountPage/>}/>*/}
+                        {/*<Route path="/client-dashboard" element={<ClientDashboardMain/>}/>*/}
                         <Route path="/CreatePostPage" element={<CreatePostPage/>}/>
                         <Route path="/driverProfile/:id" element={<DriverProfile onSave={handleSave}/>}/>
                         <Route path="/driver_home" element={<DriverHomePage onSave={handleSave}/>}/>
@@ -83,15 +97,22 @@ function App() {
                         <Route path="/driverViewProfile" element={<DriverViewProfile onSave={handleSave}/>}/>
                         <Route path={"/post/:id"} element={<PostDetailsPage/>}/>
                         <Route path="/ordershistory" element={<OrdersHistory/>}/>
-                        <Route path="/dashboard" element={<Dashboard/>}>
-                            <Route path={'summary'} element={<div>Summary</div>}/>
-                            <Route path={"posts"} element={<PostsPage/>} />
-                            {/*<Route path={"posts/:id"} element={<PostDetailsPage/>}/>*/}
-                            <Route path={"posts/:id"} element={<OrdersPage/>}/>
-                            <Route path={"posts/create"} element={<CreatePostPage/>}/>
+                        <Route path='' element={<PrivateRoutes/>} >
+                            <Route path="/dashboard" element={<Dashboard pages={DriverDashboardRoutes} pathName={'/dashboard'}/>}>
 
-                            <Route path={'orders'} element={<DashBoardOrders/>}/>
-                            <Route path={'settings'} element={<div>Settings</div>}/>
+                                <Route path={''} element={<div>Initial</div>}/>
+                                {/*<Route path={'summary'} element={<div>Summary</div>}/>*/}
+                                <Route path={"posts"} element={<PostsPage/>} />
+                                {/*<Route path={"posts/:id"} element={<PostDetailsPage/>}/>*/}
+                                <Route path={"posts/:id"} element={<OrdersPage/>}/>
+                                <Route path={"posts/create"} element={<CreatePostPage/>}/>
+                                <Route path={'orders'} element={<DashBoardOrders/>}/>
+                                <Route path={'settings'} element={<div>Settings</div>}/>
+                            </Route>
+                            <Route path='/client-dashboard' element={<Dashboard pages={ClientDashboardRoutes} pathName={'/client-dashboard'}/> }>
+                                <Route path='' element={<div>Account</div>}/>
+                                <Route path={'orders'} element={<ClientDashboardOrders/>} />
+                            </Route>
                         </Route>
                         <Route path="*" element={<PageNotFound/>}/>
                     </Routes>

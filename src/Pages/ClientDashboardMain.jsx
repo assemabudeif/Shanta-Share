@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import DriverPosts from '../Components/DriverPosts';
-import OrdersPage from "./ClientDashboardPages/OrdersPage";
+import OrdersPage from "./DriverDashboardPages/OrdersPage";
 
 export default function ClientDashboardMain() {
   const pages = [
