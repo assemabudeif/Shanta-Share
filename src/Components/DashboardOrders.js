@@ -329,15 +329,15 @@ function DashBoardOrders() {
 
             {/* Delete Confirmation Modal */}
             {isModalOpen && (
-                <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75 z-50">
-                    <div className="bg-white p-4 rounded-md">
-                        <h2 className="text-lg font-semibold">Confirm Deletion</h2>
-                        <p>Are you sure you want to delete this order?</p>
-                        <div className="flex justify-end mt-4">
-                            <button onClick={handleDelete} className="bg-red-500 text-white px-4 py-2 rounded-md">
+                <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+                    <div className="bg-white rounded-lg p-6 w-1/3">
+                    <h2 className="text-2xl mb-4 mb-10"><center><strong>Confirm Deletion</strong></center></h2>
+                    <p className="mb-4 text-xl">Are you sure you want to delete this order?</p>
+                        <div className="flex justify-between items-center space-x-2 mt-10">
+                            <button onClick={handleDelete} className="bg-red-500 text-white py-2 px-4 rounded-lg">
                                 Delete
                             </button>
-                            <button onClick={() => setIsModalOpen(false)} className="bg-gray-300 text-black px-4 py-2 rounded-md ml-2">
+                            <button onClick={() => setIsModalOpen(false)} className="bg-gray-500 text-white py-2 px-4 rounded-lg">
                                 Cancel
                             </button>
                         </div>
@@ -349,3 +349,4 @@ function DashBoardOrders() {
 }
 
 export default DashBoardOrders;
+ 

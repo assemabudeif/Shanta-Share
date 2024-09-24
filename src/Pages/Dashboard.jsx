@@ -25,8 +25,8 @@ export default function Dashboard() {
         <div className='title'>{t('dashboardAdmin.summary')}</div>
         <DashboardSummary/>
         </>, 
-        <DashboardPosts posts={posts} setPosts={setPosts} />, 
         <DashBoardOrders posts={orders} setOrders={setOrders}/>, 
+        <DashboardPosts posts={posts} setPosts={setPosts} />, 
         <>
         <div className='title'>{t('dashboardAdmin.users')}</div>
         <UsersInDashbourd/>

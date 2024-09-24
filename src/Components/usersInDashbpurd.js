@@ -204,9 +204,9 @@ function UsersInDashbourd() {
                                             <td className="px-4 py-2 text-lg text-gray-800">{user.phone_numbers.map(phone => extractPhoneNumber(phone.phone_number)).join(', ')}</td>
                                             {form.user_type == 'DRIVER'&&(<td className="px-4 py-2 text-lg text-gray-800">{user.average_rating}</td>)}
                                             <td className="px-4 py-2 text-lg text-gray-800">{user.user_type}</td>
-                                            <td className="px-4 py-2 text-lg text-gray-800">
-                                                <button className="py-2 px-4 bg-black text-white rounded-lg shadow-sm hover:bg-gray-800 text-lg" onClick={() => handleEdit(user)}>Edit</button>
-                                                <button className="py-2 px-4 bg-black text-white rounded-lg shadow-sm hover:bg-gray-800 text-lg" onClick={() => handleDeleteClick(user)}>Delete</button>
+                                            <td className= "px-4 py-2 text-sm text-gray-800 flex space-x-2">
+                                                <button className="text-white px-2 py-1 rounded-md bg-yellow-500" onClick={() => handleEdit(user)}>Edit</button>
+                                                <button className="bg-red-500 text-white px-2 py-1 rounded-md" onClick={() => handleDeleteClick(user)}>Delete</button>
                                             </td>
                                         </tr>
                                     ))}
@@ -315,7 +315,7 @@ function UsersInDashbourd() {
                         <h2 className="text-2xl mb-4 mb-10"><center><strong>Confirm Deletion</strong></center></h2>
                         <p className="mb-4 text-xl">Are you sure you want to delete user {userToDelete?.name}?</p>
                         <div className="flex justify-between items-center space-x-2 mt-10">
-                            <button onClick={handleDeleteConfirm} className="bg-black text-white py-2 px-4 rounded-lg">Confirm</button>
+                            <button onClick={handleDeleteConfirm} className="bg-red-500 text-white py-2 px-4 rounded-lg">Confirm</button>
                             <button onClick={() => setIsDeleteModalVisible(false)} className="bg-gray-500 text-white py-2 px-4 rounded-lg">Cancel</button>
                         </div>
                     </div>
