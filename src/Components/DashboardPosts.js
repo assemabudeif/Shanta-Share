@@ -229,13 +229,13 @@ const handleDelete = () => {
                                         <td className="px-4 py-2 text-sm text-gray-800 flex space-x-2">
                                             <button
                                                 onClick={() => handleEdit(post)}
-                                                className="bg-black text-white px-2 py-1 rounded-md"
+                                                className="text-white px-2 py-1 rounded-md bg-yellow-500"
                                             >
                                                 Edit
                                             </button>
                                             <button
                                                 onClick={() => handleDeleteConfirmation(post.id)}
-                                                className="bg-black text-white px-2 py-1 rounded-md"
+                                                className="bg-red-500 text-white px-2 py-1 rounded-md"
                                             >
                                                 Delete
                                             </button>
