@@ -4,11 +4,11 @@ import {AxiosInstance} from "../Network/AxiosInstance";
 import {useSelector} from 'react-redux';
 import LoadingComp from './LoadingComp';
 import {useNavigate} from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 
 const RegistrationForm = () => {
         const [step, setStep] = useState(1);
-        const { t, i18n } = useTranslation();
+        const {t, i18n} = useTranslation();
         const [role, setRole] = useState('driver');
         const [formData, setFormData] = useState({
             email: '',
@@ -22,13 +22,13 @@ const RegistrationForm = () => {
             mobile: '',
             personalImage: null,
             nationality_id: {
-                nationality_id_number: 0, issued_date: "", expiration_date: "", front_image_url: "", back_image_url: ""
+                nationality_id_number: '', issued_date: "", expiration_date: "", front_image_url: "", back_image_url: ""
             },
             driver_license_ids: [{
                 license_number: "", issued_date: "", expiration_date: "", front_image_url: "", back_image_url: ""
             }],
             car_ids: [{
-                make: "", model: "", year: 0
+                make: "", model: "", year: ''
             }]
         });
         const [errors, setErrors] = useState({});
@@ -78,6 +78,8 @@ const RegistrationForm = () => {
             mobile: /^[0-9]{10,15}$/,
             government: /^[a-zA-Z0-9\s]+$/,
             vehicle: /^[a-zA-Z0-9\s,'-]+$/,
+            nationality_id: /^(2|3)[0-9][1-9][0-1][1-9][0-3][1-9](01|02|03|04|11|12|13|14|15|16|17|18|19|21|22|23|24|25|26|27|28|29|31|32|33|34|35|88)\d\d\d\d\d$/,
+            year: /^[1-2](0|9)[0-9]{2}$/
         };
 
         const validateField = (name, value) => {
@@ -94,12 +96,14 @@ const RegistrationForm = () => {
                     if (!value) {
                         error = t('Password is required.');
                     } else if (!regex.password.test(value)) {
-                        error = t('Password must be at least 6 characters long, include at least one number, one lowercase letter, and one uppercase letter.');;
+                        error = t('Password must be at least 6 characters long, include at least one number, one lowercase letter, and one uppercase letter.');
+                        ;
                     }
                     break;
                 case 'confirmPassword':
                     if (!value) {
-                        error = t('Confirm Password is required.');;
+                        error = t('Confirm Password is required.');
+                        ;
                     } else if (value !== formData.password) {
                         error = t('Passwords do not match.');
                     }
@@ -119,18 +123,9 @@ const RegistrationForm = () => {
                         error = t('Address is not valid.');
                     }
                     break;
-                case 'vehicle':
-                    if (!value) {
-                        error = t('Vehicle information is required.');
-                    } else if (!regex.vehicle.test(value)) {
-                        error = t('Vehicle information is not valid.');
-                    }
-                    break;
                 case 'city':
                     if (!value) {
                         error = t('City is required.');
-                    } else if (!regex.city.test(value)) {
-                        error = t('City must contain only letters.');
                     }
                     break;
                 case 'mobile':
@@ -143,14 +138,44 @@ const RegistrationForm = () => {
                 case 'government':
                     if (!value) {
                         error = t('Government field is required.');
-                    } else if (!regex.government.test(value)) {
-                        error = t('Government name is not valid.');
                     }
                     break;
-
-                case 'idImage':
+                case 'nationality_id_number':
+                    if (value === '0')
+                        error = t('This field is required.');
+                    else if (!regex.nationality_id.test(value)) {
+                        error = "Please Enter Valid National ID";
+                    }
+                    break;
+                case 'make':
+                    if (value === '0')
+                        error = t('This field is required.');
+                    else if (value.length < 3) {
+                        error = "Please Enter Valid Brand";
+                    }
+                    break;
+                case 'model':
+                    if (value === '0')
+                        error = t('This field is required.');
+                    else if (value.length < 3) {
+                        error = "Please Enter Valid model";
+                    }
+                    break;
+                case 'year':
+                    if (value === '0')
+                        error = t('This field is required.');
+                    else if (!regex.year.test(value)) {
+                        error = "Please Enter Valid Year";
+                    }
+                    break;
+                case 'birthDate':
                 case 'personalImage':
                 case 'licenseImage':
+                case 'issued_date':
+                case 'expiration_date':
+                case 'front_image_url':
+                case 'back_image_url':
+                case 'driver_license_id_number':
                     if (!value) {
                         error = t('This field is required.');
                     }
@@ -174,20 +199,23 @@ const RegistrationForm = () => {
 
             if (type === 'file') {
                 console.log('File:', convertImageToBase64(files[0]));
-
                 setFormData({...formData, [name]: await convertImageToBase64(files[0])});
+
             } else {
                 setFormData({...formData, [name]: value});
-                error = validateField(name, value);
             }
+            error = validateField(name, value);
             setErrors({...errors, [name]: error});
         };
+
 
         const handleNationalityIdChange = async (e) => {
             const name = e.target.name;
             const value = e.target.value;
             const type = e.target.type;
             const files = e.target.files;
+            let error = '';
+
 
             if (type === 'file') {
                 setFormData({
@@ -200,6 +228,9 @@ const RegistrationForm = () => {
                     ...formData.nationality_id, [name]: value
                 }
             });
+
+            error = validateField(name, value);
+            setErrors({...errors, [name]: error});
         };
 
         const handleDriverLicenseIdsChange = async (e) => {
@@ -207,6 +238,7 @@ const RegistrationForm = () => {
             const value = e.target.value;
             const files = e.target.files;
             let form = formData;
+            let error = '';
             switch (name) {
                 case 'license_number':
                     form.driver_license_ids[0].license_number = value;
@@ -229,6 +261,8 @@ const RegistrationForm = () => {
                     break;
             }
             console.log(form);
+            error = validateField(name, value);
+            setErrors({...errors, [name]: error});
             setFormData({
                 ...form
             });
@@ -238,6 +272,7 @@ const RegistrationForm = () => {
             const name = e.target.name;
             const value = e.target.value;
             let form = formData;
+            let error = '';
             switch (name) {
                 case 'make':
                     console.log(value);
@@ -253,59 +288,100 @@ const RegistrationForm = () => {
                     console.log('default');
             }
 
+            error = validateField(name, value);
+            setErrors({...errors, [name]: error});
+
             setFormData({
                 ...form
             });
         };
 
 
-// ================== Steps Validation ==========================
+        // ================== Steps Validation ==========================
 
 
-// Handle Step Navigation
+        // Handle Step Navigation
         const handleNext = (e) => {
             e.preventDefault();
             let errorMessages = {};
-
             if (!role) errorMessages.role = 'Role is required.';
-            if ((role === 'driver' && step < 6) && Object.values(errorMessages).every(msg => msg === '')) {
-                setStep(step + 1);
-                console.log(step);
-                return
-            }
 
-            if (step === 2) {
-                errorMessages = {
-                    ...errorMessages,
-                    email: validateField('email', formData.email),
-                    password: validateField('password', formData.password),
-                    confirmPassword: validateField('confirmPassword', formData.confirmPassword),
-                    firstName: validateField('firstName', formData.firstName),
-                    lastName: validateField('lastName', formData.lastName),
-                };
-            } else if (step === 3) {
-                if (role === 'client') {
+
+            if (role === 'client') {
+                if (step === 2) {
                     errorMessages = {
                         ...errorMessages,
-                        address: validateField('address', formData.address),
-                        city: validateField('city', formData.city),
-                        age: validateField('age', formData.birthDate),
-                        mobile: validateField('mobile', formData.mobile),
+                        email: validateField('email', formData.email),
+                        password: validateField('password', formData.password),
+                        confirmPassword: validateField('confirmPassword', formData.confirmPassword),
+                        firstName: validateField('firstName', formData.firstName),
+                        lastName: validateField('lastName', formData.lastName),
                     };
-                } else if (role === 'driver') {
+                } else if (step === 3) {
                     errorMessages = {
                         ...errorMessages,
                         address: validateField('address', formData.address),
                         city: validateField('city', formData.city),
+                        birthDate: validateField('birthDate', formData.birthDate),
                         mobile: validateField('mobile', formData.mobile),
-                        government: validateField('government', formData.government),
-                        vehicle: validateField('vehicle', formData.vehicle),
-                        personalImage: validateField('personalImage', formData.personalImage),
-                        idImage: validateField('idImage', formData.idImage),
-                        licenseImage: validateField('licenseImage', formData.licenseImage),
                     };
                 }
+            } else {
+                switch (step) {
+                    case 2:
+                        errorMessages = {
+                            ...errorMessages,
+                            email: validateField('email', formData.email),
+                            password: validateField('password', formData.password),
+                            confirmPassword: validateField('confirmPassword', formData.confirmPassword),
+                            firstName: validateField('firstName', formData.firstName),
+                            lastName: validateField('lastName', formData.lastName),
+                        };
+                        break;
+
+                    case 3:
+                        errorMessages = {
+                            ...errorMessages,
+                            address: validateField('address', formData.address),
+                            city: validateField('city', formData.city),
+                            birthDate: validateField('birthDate', formData.birthDate),
+                            mobile: validateField('mobile', formData.mobile),
+                            personalImage: validateField('personalImage', formData.personalImage),
+                            model: validateField('model', formData.car_ids[0].model),
+                            make: validateField('make', formData.car_ids[0].make),
+                            year: validateField('year', formData.car_ids[0].year),
+                        };
+                        break;
+
+                    case 4:
+                        errorMessages = {
+                            ...errorMessages,
+                            nationality_id_number: validateField('nationality_id_number', formData.nationality_id.nationality_id_number),
+                            nationality_id_issued_date: validateField('issued_date', formData.nationality_id.issued_date),
+                            nationality_id_expiration_date: validateField('expiration_date', formData.nationality_id.expiration_date),
+                            nationality_id_front_image_url: validateField('front_image_url', formData.nationality_id.front_image_url),
+                            nationality_id_back_image_url: validateField('back_image_url', formData.nationality_id.back_image_url),
+                        };
+                        break;
+
+                    case 5:
+                        errorMessages = {
+                            ...errorMessages,
+                            driver_license_id_number: validateField('driver_license_id_number', formData.driver_license_ids[0].license_number),
+                            driver_license_id_issued_date: validateField('issued_date', formData.driver_license_ids[0].issued_date),
+                            driver_license_id_expiration_date: validateField('expiration_date', formData.driver_license_ids[0].expiration_date),
+                            driver_license_id_front_image_url: validateField('front_image_url', formData.driver_license_ids[0].front_image_url),
+                            driver_license_id_back_image_url: validateField('back_image_url', formData.driver_license_ids[0].back_image_url),
+                        };
+                        break;
+
+                    default:
+                        break;
+                }
+
             }
+
+
             setErrors(errorMessages);
             if (Object.values(errorMessages).every(msg => msg === '')) {
                 setStep(step + 1);
@@ -314,7 +390,7 @@ const RegistrationForm = () => {
         };
 
 
-// =======  handle back buttonon ======
+        // =======  handle back buttonon ======
 
         const handlePrev = () => {
             if (step > 1) {
@@ -323,7 +399,7 @@ const RegistrationForm = () => {
         };
 
 
-// =======  Submit button ======
+        // =======  Submit button ======
 
 
         const handleSubmit = (e) => {
@@ -416,7 +492,7 @@ const RegistrationForm = () => {
             <div className="text-red-600 text-sm mt-1">{errors[field]}</div>) : null);
 
 
-// ============== Confirmation Before user submit    ================
+        // ============== Confirmation Before user submit    ================
 
         const renderConfirmation = () => (<div>
                 <h2 className="text-2xl font-bold mb-4">{t('confirmDetails')}</h2>
@@ -431,7 +507,7 @@ const RegistrationForm = () => {
                         <strong>{t('birthDate')}</strong> {formData.birthDate}
                     </div>
                     <div>
-                        <strong>{t('address')}</strong> {formData.address}, {formData.city}, {formData.government}
+                        <strong>{t('address')}</strong> {formData.address}
                     </div>
                     <div>
                         <strong>{t('mobile')}</strong> {formData.mobile}
@@ -460,7 +536,7 @@ const RegistrationForm = () => {
                         onClick={() => setStep(role === 'driver' ? 5 : 3)}
                         className="bg-gray-400 text-white py-2 px-4 rounded-lg"
                     >
-                                                {t('back')}
+                        {t('back')}
 
                     </button>
                     <button
@@ -469,7 +545,7 @@ const RegistrationForm = () => {
                         className="bg-black text-white py-2 px-4 rounded-lg"
                     >
                         {t('confirm')}
-                        </button>
+                    </button>
                 </div>)}
             </div>
 
@@ -484,7 +560,7 @@ const RegistrationForm = () => {
             });
         };
 
-// =============== Driver License Ids render ================
+        // =============== Driver License Ids render ================
 
         const renderNationalityId = () => {
             return (
@@ -501,9 +577,11 @@ const RegistrationForm = () => {
                                             name="nationality_id_number"
                                             value={formData.nationality_id.nationality_id_number}
                                             onChange={handleNationalityIdChange}
-                                            required
+                                            // required
                                             className="border rounded-lg py-2 px-4 w-full"
                                         />
+                                        {renderAlert('nationality_id_number')}
+
                                     </div>
                                     <div>
                                         <label className="block text-gray-700 mb-2">{t('nationalityIdIssuedDate')}</label>
@@ -511,41 +589,46 @@ const RegistrationForm = () => {
                                             type="date"
                                             name="issued_date"
                                             value={formData.nationality_id.issued_date}
-                                            required
+                                            // required
                                             onChange={handleNationalityIdChange}
                                             className="border rounded-lg py-2 px-4 w-full"
                                         />
+                                        {renderAlert('nationality_id_issued_date')}
                                     </div>
                                     <div>
-                                        <label className="block text-gray-700 mb-2">{t('nationalityIdExpirationDate')}</label>
+                                        <label
+                                            className="block text-gray-700 mb-2">{t('nationalityIdExpirationDate')}</label>
                                         <input
                                             type="date"
                                             name="expiration_date"
                                             value={formData.nationality_id.expiration_date}
-                                            required
+                                            // required
                                             onChange={handleNationalityIdChange}
                                             className="border rounded-lg py-2 px-4 w-full"
                                         />
+                                        {renderAlert('nationality_id_expiration_date')}
                                     </div>
                                     <div>
                                         <label className="block text-gray-700 mb-2">{t('frontImage')}</label>
                                         <input
                                             type="file"
                                             name="front_image_url"
-                                            required
+                                            // required
                                             onChange={handleNationalityIdChange}
                                             className="border rounded-lg py-2 px-4 w-full"
                                         />
+                                        {renderAlert('nationality_id_front_image_url')}
                                     </div>
                                     <div>
                                         <label className="block text-gray-700 mb-2">{t('backImage')}</label>
                                         <input
                                             type="file"
                                             name="back_image_url"
-                                            required
+                                            // required
                                             onChange={handleNationalityIdChange}
                                             className="border rounded-lg py-2 px-4 w-full"
                                         />
+                                        {renderAlert('nationality_id_back_image_url')}
                                     </div>
                                 </>
                             )}
@@ -584,9 +667,9 @@ const RegistrationForm = () => {
                                             name="license_number"
                                             value={formData.driver_license_ids[0].license_number}
                                             onChange={handleDriverLicenseIdsChange}
-                                            required
                                             className="border rounded-lg py-2 px-4 w-full"
                                         />
+                                        {renderAlert('driver_license_id_number')}
                                     </div>
                                     <div>
                                         <label className="block text-gray-700 mb-2">{t('licenseIssuedDate')}</label>
@@ -594,10 +677,10 @@ const RegistrationForm = () => {
                                             type="date"
                                             name="issued_date"
                                             value={formData.driver_license_ids[0].issued_date}
-                                            required
                                             onChange={handleDriverLicenseIdsChange}
                                             className="border rounded-lg py-2 px-4 w-full"
                                         />
+                                        {renderAlert('driver_license_id_issued_date')}
                                     </div>
                                     <div>
                                         <label className="block text-gray-700 mb-2">{t('licenseExpirationDate')}</label>
@@ -605,30 +688,30 @@ const RegistrationForm = () => {
                                             type="date"
                                             name="expiration_date"
                                             value={formData.driver_license_ids[0].expiration_date}
-                                            required
                                             onChange={handleDriverLicenseIdsChange}
                                             className="border rounded-lg py-2 px-4 w-full"
                                         />
+                                        {renderAlert('driver_license_id_expiration_date')}
                                     </div>
                                     <div>
                                         <label className="block text-gray-700 mb-2">{t('frontImage')}</label>
                                         <input
                                             type="file"
                                             name="front_image_url"
-                                            required
                                             onChange={handleDriverLicenseIdsChange}
                                             className="border rounded-lg py-2 px-4 w-full"
                                         />
+                                        {renderAlert('driver_license_id_front_image_url')}
                                     </div>
                                     <div>
                                         <label className="block text-gray-700 mb-2">{t('backImage')}</label>
                                         <input
                                             type="file"
                                             name="back_image_url"
-                                            required
                                             onChange={handleDriverLicenseIdsChange}
                                             className="border rounded-lg py-2 px-4 w-full"
                                         />
+                                        {renderAlert('driver_license_id_back_image_url')}
                                     </div>
                                 </>
                             )}
@@ -653,13 +736,17 @@ const RegistrationForm = () => {
             );
         }
 
-// ============== Landing Page ================
+        // ============== Landing Page ================
         if (loader) {
             return <LoadingComp/>
         }
 
         return (<div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg my-16">
             <button onClick={() => console.log(formData)}>
+                Test
+            </button>
+            <button onClick={() => console.log(errors)}>
+                Errors
             </button>
             <div className="flex items-center mb-8">
                 {role === 'client' ? ['Role Selection', 'Login Info', 'Client Info', 'Confirmation'].map((text, index) => (
@@ -686,7 +773,7 @@ const RegistrationForm = () => {
                         onClick={() => setRole('client')}
                         className={`text-2xl px-4 py-2 rounded-lg ${role === 'client' ? 'bg-black text-white' : 'bg-gray-200'}`}
                     >
-                                                    {t('Client')}
+                        {t('Client')}
 
                     </button>
                     <button
@@ -694,8 +781,8 @@ const RegistrationForm = () => {
                         onClick={() => setRole('driver')}
                         className={`text-2xl px-4 py-2 rounded-lg ${role === 'driver' ? 'bg-black text-white' : 'bg-gray-200'}`}
                     >
-                            {t('Driver')}
-                            </button>
+                        {t('Driver')}
+                    </button>
                     {renderAlert('role')}
                 </div>
                 <div className="flex justify-end mt-10">
@@ -704,8 +791,8 @@ const RegistrationForm = () => {
                         onClick={handleNext}
                         className="bg-black text-white py-2 px-4 rounded-lg"
                     >
-                            {t('Next')}
-                            </button>
+                        {t('Next')}
+                    </button>
                 </div>
 
             </div>)}
@@ -775,21 +862,22 @@ const RegistrationForm = () => {
                                 onClick={handlePrev}
                                 className="bg-gray-400 text-white py-2 px-4 rounded-lg"
                             >
-                                    {t('Back')}
-                                    </button>
+                                {t('Back')}
+                            </button>
                             <button
                                 type="submit"
                                 className="bg-black text-white py-2 px-4 rounded-lg"
                             >
-                                    {t('Next')}
-                                    </button>
+                                {t('Next')}
+                            </button>
                         </div>
                     </div>
                 </form>
             </div>)}
 
             {step === 3 && (<div>
-                <h2 className="text-2xl font-bold mb-4">{role === 'client' ? t('Client Information') : t('Driver Information')}</h2>                <form onSubmit={handleNext}>
+                <h2 className="text-2xl font-bold mb-4">{role === 'client' ? t('Client Information') : t('Driver Information')}</h2>
+                <form onSubmit={handleNext}>
                     <div className="space-y-4">
                         {role === 'client' && (<>
                             <div>
@@ -851,6 +939,7 @@ const RegistrationForm = () => {
                                     onChange={handleChange}
                                     className="border rounded-lg py-2 px-4 w-full"
                                 />
+                                {renderAlert('birthDate')}
                             </div>
                             <div>
                                 <label className="block text-gray-700 mb-2">{t('Mobile Number')}</label>
@@ -933,6 +1022,8 @@ const RegistrationForm = () => {
                                     onChange={handleChange}
                                     className="border rounded-lg py-2 px-4 w-full"
                                 />
+                                {renderAlert('birthDate')}
+
                             </div>
                             <div>
                                 <label className="block text-gray-700 mb-2">{t('Mobile Number')}</label>
@@ -964,6 +1055,7 @@ const RegistrationForm = () => {
                                     onChange={handleCarIdsChange}
                                     className="border rounded-lg py-2 px-4 w-full"
                                 />
+                                {renderAlert('make')}
                             </div>
                             <div>
                                 <label className="block text-gray-700 mb-2">{t('Car Model')}</label>
@@ -974,6 +1066,7 @@ const RegistrationForm = () => {
                                     onChange={handleCarIdsChange}
                                     className="border rounded-lg py-2 px-4 w-full"
                                 />
+                                {renderAlert('model')}
                             </div>
                             <div>
                                 <label className="block text-gray-700 mb-2">{t('Car Year')}</label>
@@ -984,6 +1077,7 @@ const RegistrationForm = () => {
                                     onChange={handleCarIdsChange}
                                     className="border rounded-lg py-2 px-4 w-full"
                                 />
+                                {renderAlert('year')}
                             </div>
 
                         </>)}
