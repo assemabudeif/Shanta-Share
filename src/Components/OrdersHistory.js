@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import order_img from "../assets/images/order_img.png";
 import { AxiosInstance } from "../Network/AxiosInstance";
+import { useTranslation } from 'react-i18next';
 
 const ITEMS_PER_PAGE = 5;
 
 export default function OrderHistory() {
+  const { t, i18n } = useTranslation();
   const [posts, setPosts] = useState([]);
   const [postError, setPostError] = useState("");
   const [loading, setLoading] = useState(true);
@@ -120,7 +122,7 @@ export default function OrderHistory() {
                       </div>
 
                       <button className="bg-black text-white text-md px-10 py-1 rounded-lg mt-6"> {/* Reduced button padding */}
-                        Details
+                        {t("orderHistory.Details")}
                       </button>
                     </div>
                   </div>
@@ -141,17 +143,17 @@ export default function OrderHistory() {
               className="bg-gray-300 text-black px-4 py-2 rounded-lg mx-2"
               disabled={currentPage === 1}
             >
-              Previous
+              {t("orderHistory.Previous")}
             </button>
             <span className="text-lg mx-2">
-              Page {currentPage} of {totalPages}
+              {t("orderHistory.Page")} {currentPage} {t("orderHistory.of")} {totalPages}
             </span>
             <button
               onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
               className="bg-gray-300 text-black px-4 py-2 rounded-lg mx-2"
               disabled={currentPage === totalPages}
             >
-              Next
+              {t("orderHistory.Next")}
             </button>
           </div>
         </div>

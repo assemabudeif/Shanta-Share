@@ -171,6 +171,30 @@
           "TodaysEarnings":"Today's Earnings",
           "TodaysOrders":"Today's Orders",
           "YourOrders":"Your Orders"
+        },
+
+        "postPage":{
+          "Description":"Description",
+          "Total":"Total",
+          "RequestDelivery":"Request Delivery",
+          "PickupLocation":"Pickup Location",
+          "PickupTime":"Pickup Time",
+          "ArrivalLocation":"Arrival Location",
+          "ArrivalTime":"Arrival Time",
+          "CargoImage":"Cargo Image",
+          "Apply":"Apply"
+        },
+
+        "orderHistory":{
+          "Details":"Details",
+          "Previous":"Previous",
+          "Page":"Page",
+          "of":"of",
+          "Next":"Next",
+          "Orders":"Orders",
+          "Summery":"Summery",
+          "Account":"Account",
+          "Setting":"Setting"
         }
 
 

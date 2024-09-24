@@ -11,8 +11,10 @@ import {BiExit} from "react-icons/bi";
 import {format, parseISO} from "date-fns";
 import {AxiosInstance} from "../Network/AxiosInstance";
 import {logDOM} from "@testing-library/react";
+import { useTranslation } from 'react-i18next';
 
 function PostDetailsPage(props) {
+    const { t, i18n } = useTranslation();
     const [carData, setCardata] = useState({
         carBrand: 'Toyota',
         carModel: 'Corolla',
@@ -329,7 +331,7 @@ function PostDetailsPage(props) {
                   !requestEnabled && (
                     <>
                         <div className={"mt-8"}>
-                            <h2 className={"text-3xl font-semibold"}>Description</h2>
+                            <h2 className={"text-3xl font-semibold"}>{t("postPage.Description")}</h2>
                             <p className={"text-lg"}>{post.description}</p>
                             <div className={"flex w-auto text-center self-center content-center mt-8"}>
                         <span>
@@ -352,7 +354,7 @@ function PostDetailsPage(props) {
                         <div className={`m-20 bg-white shadow-xl rounded-2xl px-12 py-4`}
                              style={{width: "25vw"}}>
                             <div className={"flex justify-between"}>
-                                <span className={"text-3xl font-semibold "}>Total</span>
+                                <span className={"text-3xl font-semibold "}>{t("postPage.Total")}</span>
                                 <span className={"text-3xl font-semibold "}>{post.delivery_fee?.toFixed(2) ?? '--'} L.E</span>
                             </div>
                             <hr className={"my-4 border-1 border-[#8B8B8B]"}/>
@@ -361,7 +363,7 @@ function PostDetailsPage(props) {
                             <button
                               onClick={() => handleRequest()}
                               className={"w-full py-4 bg-black text-white font-semibold text-2xl rounded-2xl shadow-lg hover:bg-black hover:bg-opacity-85"}>
-                                Request Delivery
+                                {t("postPage.RequestDelivery")}
                             </button>
                         </div>
                     </>
@@ -376,7 +378,7 @@ function PostDetailsPage(props) {
                         <div className="flex flex-row w-full">
                             <div className={'w-1/2'}>
                                 <div className="space-y-2">
-                                    <label className="text-sm font-medium titleLocation">Pickup Location</label>
+                                    <label className="text-sm font-medium titleLocation">{t("postPage.PickupLocation")}</label>
                                     {/*<div className="flex space-x-2">*/}
                                     {/*    <input*/}
                                     {/*      type="text"*/}
@@ -401,7 +403,7 @@ function PostDetailsPage(props) {
                                       name="pickupAddress"
                                       value={formData.pickupAddress}
                                       onChange={handleChange}
-                                      placeholder="Address line"
+                                      placeholder={t("createPostPage.Addressline")}
                                       className={`background w-full p-2 border border-gray-300 rounded ${errors.pickupAddress ? 'border-red-500' : ''}`}
                                     />
                                     {errors.pickupAddress &&
@@ -409,7 +411,7 @@ function PostDetailsPage(props) {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <label className="flex text-sm font-medium titleLocation w-1/2">Pickup Time</label>
+                                    <label className="flex text-sm font-medium titleLocation w-1/2">{t("postPage.PickupTime")}</label>
                                     <input
                                       type="datetime-local"
                                       name="pickupTime"
@@ -422,7 +424,7 @@ function PostDetailsPage(props) {
                             </div>
                             <div className={'w-1/2 px-4'}>
                                 <div className="space-y-2">
-                                    <label className="text-sm font-medium titleLocation">Arrival Location</label>
+                                    <label className="text-sm font-medium titleLocation">{t("postPage.ArrivalLocation")}</label>
                                     {/*<div className="flex space-x-2">*/}
                                     {/*    <input*/}
                                     {/*      type="text"*/}
@@ -447,7 +449,7 @@ function PostDetailsPage(props) {
                                       name="destinationAddress"
                                       value={formData.destinationAddress}
                                       onChange={handleChange}
-                                      placeholder="Address line"
+                                      placeholder={t("createPostPage.Addressline")}
                                       className={`background w-full p-2 border border-gray-300 rounded ${errors.destinationAddress ? 'border-red-500' : ''}`}
                                     />
                                     {errors.destinationAddress &&
@@ -455,7 +457,7 @@ function PostDetailsPage(props) {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <label className="flex w-1/2 text-sm font-medium titleLocation">Arrival Time</label>
+                                    <label className="flex w-1/2 text-sm font-medium titleLocation">{t("postPage.ArrivalTime")}</label>
                                     <input
                                       type="datetime-local"
                                       name="arrivalTime"
@@ -479,12 +481,12 @@ function PostDetailsPage(props) {
                         </div>
                         <div className="flex flex-row w-full">
                             <div className="space-y-2 w-1/2">
-                                <label className="text-sm font-medium titleLocation">Description</label>
+                                <label className="text-sm font-medium titleLocation">{t("postPage.Description")}</label>
                                 <textarea
                                   name="description"
                                   value={formData.description}
                                   onChange={handleChange}
-                                  placeholder="Write notes for clients..."
+                                  placeholder={t("preview.Write notes for clients...")}
                                   className={` max-h-32 line-clamp-2 background h-max w-full p-2 border border-gray-300 rounded ${errors.description ? 'border-red-500' : ''}`}
                                   style={{
                                       height:"max-content"
@@ -494,7 +496,7 @@ function PostDetailsPage(props) {
                             </div>
                             <div>
                                 <div className="flex flex-col space-y-2 ms-3">
-                                    <label className="text-sm font-medium titleLocation">Cargo Image</label>
+                                    <label className="text-sm font-medium titleLocation">{t("postPage.CargoImage")}</label>
                                     <div className="flex flex-col space-x-2 justify-between w-full">
 
                                         <input
@@ -522,7 +524,7 @@ function PostDetailsPage(props) {
                             <div className={`m-20 bg-white ${!requestEnabled && "shadow-xl rounded-2xl"} px-12 py-4`}
                                  style={{width: "25vw"}}>
                                 <div className={"flex justify-between"}>
-                                    <span className={"text-3xl font-semibold "}>Total</span>
+                                    <span className={"text-3xl font-semibold "}>{t("postPage.Total")}</span>
                                     <span className={"text-3xl font-semibold "}>{post.delivery_fee?.toFixed(2) ?? '--'} L.E</span>
                                 </div>
                                 <hr className={"my-4 border-1 border-[#8B8B8B]"}/>
@@ -541,7 +543,7 @@ function PostDetailsPage(props) {
                                           >
                                               <div
                                                 className="animate-spin rounded-full h-8 w-8 border-b-4 border-white"/>
-                                          </div> : 'Apply'
+                                          </div> : t('postPage.Apply')
                                         }
 
 

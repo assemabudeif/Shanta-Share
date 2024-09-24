@@ -38,9 +38,9 @@
   }
 }
 
-body[dir="rtl"] {
+/* body[dir="rtl"] {
   text-align: right;
 }
 
 body[dir="ltr"] {
-  text-align: left;}
+  text-align: left;} */
