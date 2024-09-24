@@ -5,40 +5,49 @@ import order_img from "../assets/images/order_img.png";
 import {Link} from "react-router-dom";
 import {data} from "autoprefixer";
 import motorcycleImage from "../assets/images/motorcycle.png";
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 
 
 import Chart from "react-apexcharts";
+import {useSelector} from "react-redux";
+import LoadingComp from "../Components/LoadingComp";
 
 function DiverHomePage() {
     const [posts, setPosts] = useState([]);
+    const [orders, setOrders] = useState([]);
     const [postError, setPostError] = useState("");
-    const [loading, setLoading] = useState(true);
-    const { t, i18n } = useTranslation();
-    // const loading = useSelector(state => state.loader.loader);
+    const [orderError, setOrderError] = useState("");
+    const loading = useSelector(state => state.loader.loader);
+    const {t, i18n} = useTranslation();
 
     const GetPosts = () => {
-        AxiosInstance.get("https://retoolapi.dev/W1fCKB/data").then((response) => {
+        AxiosInstance.get("/posts/driver-posts/").then((response) => {
             console.log(response.data);
-            setPosts(response.data);
-            setLoading(false)
+            setPosts(response.data.results);
         }).catch((error) => {
             setPostError(error);
             console.error("Error fetching data:", error);
         });
     }
 
+    const GetOrders = () => {
+        AxiosInstance.get("/orders/driver-orders/").then((response) => {
+            console.log(response.data);
+            setOrders(response.data.data);
+        }).catch((error) => {
+            setOrderError(error);
+            console.error("Error fetching data:", error);
+        });
+    }
+
     useEffect(() => {
         GetPosts();
+        GetOrders();
 
     }, []);
 
     if (loading) {
-        return (
-            <div className={"flex justify-center items-center h-screen"}>
-                <div className={"animate-spin rounded-full h-32 w-32 border-b-2 border-black"}/>
-            </div>
-        );
+        return (<LoadingComp/>);
     }
 
     return (
@@ -54,7 +63,8 @@ function DiverHomePage() {
                         <div className=" w-1/3 p-2 ">
                             <div className="w-full h-full  flex items-center justify-start ">
                                 <div className="flex flex-col items-start">
-                                    <span className="text-4xl">{t("driverHomePage.Hi")} <span className="font-bold"> Amr,</span></span>
+                                    <span className="text-4xl">{t("driverHomePage.Hi")} <span
+                                        className="font-bold"> {localStorage.getItem('username')}</span></span>
                                     <span className="text-6xl leading-tight font-bold ">1280.00£</span>
                                     <span className="text-3xl ">{t("driverHomePage.TodaysEarnings")}</span>
                                 </div>
@@ -69,13 +79,13 @@ function DiverHomePage() {
 
                     {/*orders_section*/}
                     <div className="  p-2 flex flex-col">
-                        {SectionHeader({title: t('driverHomePage.TodaysOrders'), link: '/post/1'})}
+                        {SectionHeader({title: t('driverHomePage.LatestOrders'), link: '/dashboard'})}
                         <div className="w-3/4 ms-12 p-2 flex items-center flex-col">
 
-                            {posts.map((post, index) => {
+                            {orders.map((order, index) => {
                                 return (
                                     <div className="my-2">
-                                        {OrderItem(post)}
+                                        {OrderItem(order)}
                                     </div>
                                 )
                             })}
@@ -84,9 +94,9 @@ function DiverHomePage() {
                     </div>
 
                     {/*posts_section*/}
-                    <div className=" bg-pink-100 p-2 flex flex-col">
-                        {SectionHeader({title: t('driverHomePage.YourOrders'), link: '/post/1'})}
-                        <div className="w-3/4 ms-12 p-2 bg-yellow-200 flex items-center flex-col">
+                    <div className="p-2 flex flex-col">
+                        {SectionHeader({title: t('driverHomePage.YourPosts'), link: '/dashboard'})}
+                        <div className="w-3/4 ms-12 p-2 flex items-center flex-col">
 
                             {posts.map((post, index) => {
                                 return (
@@ -104,20 +114,22 @@ function DiverHomePage() {
     )
 }
 
-function OrderItem(post) {
+function OrderItem(order) {
+    const hostname = "http://127.0.0.1:8000";
+
     return (
         <>
-            <div className="bg-gray-100 border-2 border-black rounded-2xl grid grid-cols-4 ">
+            <div className="border-2 border-black rounded-2xl grid grid-cols-4 ">
 
-                <img src={order_img} className="col-span-1 h-[100%] rounded-l-2xl object-cover"/>
+                <img src={hostname + order.cargo_image} className="col-span-1 h-[100%] rounded-l-2xl object-cover"/>
 
                 <div className="col-span-3 p-4  flex flex-col justify-between">
-                    <div className={"bg-gray-300 w-full flex flex-col lg:flex-row justify-between items-center"}>
+                    <div className={"w-full flex flex-col lg:flex-row justify-between items-center"}>
                         <div>
               <span className={"text-2xl font-semibold"}>
-                  {post.from}
+                  {order.post.from_city.name}
                   <span className={"text-xl font-normal"}>
-                      <br/> Today 06:30 AM
+                      <br/> {new Date(order.pickup_time).toLocaleString()}
                   </span>
               </span>
                         </div>
@@ -144,21 +156,20 @@ function OrderItem(post) {
 
                         <div>
               <span className="text-2xl font-semibold">
-                 {post.to}
+                 {order.post.to_city.name}
                   <span className="text-xl font-normal">
-                     <br/> Today 10:30 AM
+                     <br/> {new Date(order.arrival_time).toLocaleString()}
                   </span>
               </span>
                         </div>
                     </div>
 
-                    <div className="bg-pink-200 w-full h-full my-4">
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
-                        the industry's standard dummy text ever since the 1500s, when an unknown printer took
+                    <div className="w-full h-full my-4">
+                        {order.client_notes}
                     </div>
 
 
-                    <div className={"bg-green-200 flex  justify-between"}>
+                    <div className={"flex  justify-between"}>
                         <div className="w flex items-center">
                             <span className="font-bold text-lg">Mr.Amr El-Saady</span>
                             <svg className="w-6 h-6 ms-8" viewBox="0 0 32 32" fill="none"
@@ -183,16 +194,19 @@ function OrderItem(post) {
                             </svg>
 
                         </div>
-                        <div className={"flex  justify-between"}>
-                            <Link to={"/post/1"} state={post} className={""}>
-                                <svg width="16" height="28" viewBox="0 0 16 28" fill="none"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M3.62229 27.414L0.800293 24.5859L11.3783 14L0.800293 3.41395L3.63029 0.585953L14.2003 11.172C14.9502 11.9221 15.3714 12.9393 15.3714 14C15.3714 15.0606 14.9502 16.0778 14.2003 16.8279L3.62229 27.414Z"
-                                        fill="#374957"/>
-                                </svg>
-                            </Link>
+                        <div className={"text-sm font-semibold text-green-500"}>
+                            {order.status}
                         </div>
+                        {/*<div className={"flex  justify-between"}>*/}
+                        {/*    <Link to={"/order/1"} state={order} className={""}>*/}
+                        {/*        <svg width="16" height="28" viewBox="0 0 16 28" fill="none"*/}
+                        {/*             xmlns="http://www.w3.org/2000/svg">*/}
+                        {/*            <path*/}
+                        {/*                d="M3.62229 27.414L0.800293 24.5859L11.3783 14L0.800293 3.41395L3.63029 0.585953L14.2003 11.172C14.9502 11.9221 15.3714 12.9393 15.3714 14C15.3714 15.0606 14.9502 16.0778 14.2003 16.8279L3.62229 27.414Z"*/}
+                        {/*                fill="#374957"/>*/}
+                        {/*        </svg>*/}
+                        {/*    </Link>*/}
+                        {/*</div>*/}
                     </div>
 
                 </div>
@@ -212,9 +226,9 @@ function PostItem(post) {
                     <div className={"flex flex-col lg:flex-row justify-between me-8 mb-4"}>
                         <div>
                                         <span className={"text-2xl font-semibold"}>
-                                            {post.from}
+                                            {post.from_city.name}, {post.from_city['government']['name']}
                                             <span className={"text-xl font-normal"}>
-                                                <br/> Today 06:30 AM
+                                                <br/> {new Date(post.pickup_time).toLocaleString()}
                                             </span>
                                         </span>
                         </div>
@@ -242,9 +256,9 @@ function PostItem(post) {
 
                         <div>
                                         <span className={"text-2xl font-semibold"}>
-                                           {post.to}
+                                           {post.to_city.name}, {post.to_city['government']['name']}
                                             <span className={"text-xl font-normal"}>
-                                               <br/> Today 10:30 AM
+                                               <br/> {new Date(post.arrival_time).toLocaleString()}
                                             </span>
                                         </span>
                         </div>
@@ -269,7 +283,9 @@ function PostItem(post) {
                             <span
                                 className="ms-2 text-black-600 font-semibold me-8">{String(post.rate).length / 2}</span>
                             {
-                                post.verified && (
+                                //!TODO: add verified
+                                // post.verified &&
+                                (
                                     <>
                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                              xmlns="http://www.w3.org/2000/svg">
@@ -281,7 +297,7 @@ function PostItem(post) {
                                     </>)}
                         </div>
                         <h3 className={"text-xl font-semibold mt-2"}>
-                            {post.weight}kg max 0.5 msq
+                            {post.max_weight}kg - {post.max_size} msq
                         </h3>
                         <div className={"flex  justify-between"}>
                             <h3 className={"text-xl font-semibold mt-2"}>
@@ -289,9 +305,9 @@ function PostItem(post) {
                             </h3>
                             <div className={"flex  justify-between"}>
                                             <span className={"text-4xl font-semibold"}>
-                                                {post.price}.00 L.E
+                                                {Math.round(post.delivery_fee)} L.E
                                             </span>
-                                <Link to={"/post/1"} state={post} className={"mx-8"}>
+                                <Link to={`/post/${post.id}`} state={post} className={"mx-8"}>
                                     <svg width="16" height="28" viewBox="0 0 16 28" fill="none"
                                          xmlns="http://www.w3.org/2000/svg">
                                         <path
