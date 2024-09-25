@@ -33,7 +33,7 @@ function DiverHomePage() {
     const GetOrders = () => {
         AxiosInstance.get("/orders/driver-orders/").then((response) => {
             console.log(response.data);
-            setOrders(response.data.data);
+            setOrders(response.data.results);
         }).catch((error) => {
             setOrderError(error);
             console.error("Error fetching data:", error);
@@ -79,7 +79,7 @@ function DiverHomePage() {
 
                     {/*orders_section*/}
                     <div className="  p-2 flex flex-col">
-                        {SectionHeader({title: t('driverHomePage.LatestOrders'), link: '/dashboard'})}
+                        {SectionHeader({title: t('driverHomePage.LatestOrders'), link: '/driver-dashboard/orders'})}
                         <div className="w-3/4 ms-12 p-2 flex items-center flex-col">
 
                             {orders.map((order, index) => {
@@ -95,7 +95,7 @@ function DiverHomePage() {
 
                     {/*posts_section*/}
                     <div className="p-2 flex flex-col">
-                        {SectionHeader({title: t('driverHomePage.YourPosts'), link: '/dashboard'})}
+                        {SectionHeader({title: t('driverHomePage.YourPosts'), link: '/driver-dashboard/posts'})}
                         <div className="w-3/4 ms-12 p-2 flex items-center flex-col">
 
                             {posts.map((post, index) => {
@@ -307,7 +307,7 @@ function PostItem(post) {
                                             <span className={"text-4xl font-semibold"}>
                                                 {Math.round(post.delivery_fee)} L.E
                                             </span>
-                                <Link to={`/post/${post.id}`} state={post} className={"mx-8"}>
+                                <Link to={`/driver-dashboard/posts/${post.id}`} state={post} className={"mx-8"}>
                                     <svg width="16" height="28" viewBox="0 0 16 28" fill="none"
                                          xmlns="http://www.w3.org/2000/svg">
                                         <path
