@@ -162,6 +162,16 @@
   "tryAgain": "حدث خطأ ما. حاول مرة أخرى.",
   "validEmail": "أدخل بريدًا إلكترونيًا صالحًا.",
   "validUsername": "أدخل اسم مستخدم صالحًا.",
+  "Details": "التفاصيل",
+  "Previous": "السابق",
+  "Page": "صفحة",
+  "of": "من",
+  "Next": "التالي",
+  "Orders": "الطلبات",
+  "Summery": "الملخص",
+  "Account": "الحساب",
+  "Setting": "الإعدادات",
+  
   "postPage": {
     "Description": "الوصف",
     "Total": "الإجمالي",
@@ -174,16 +184,29 @@
     "Apply": "تطبيق"
   },
   "orderHistory": {
-    "Details": "التفاصيل",
-    "Previous": "السابق",
-    "Page": "صفحة",
-    "of": "من",
+      "Details": "التفاصيل",
+      "Previous": "السابق",
+      "Page": "صفحة",
+      "of": "من",
+      "Next": "التالي",
+      "Orders": "الطلبات",
+      "Summery": "الملخص",
+      "Account": "الحساب",
+      "Setting": "الإعدادات"
+    },
+    "clientDashboard": {
+    "PostDetails": "تفاصيل المنشور",
+    "Proposals": "المقترحات",
+    "Prev": "السابق",
     "Next": "التالي",
-    "Orders": "الطلبات",
-    "Summery": "الملخص",
-    "Account": "الحساب",
-    "Setting": "الإعدادات"
-  }
+    "Price": "السعر",
+    "Destination": "الوجهة"
+    }
+
+
+
+  
+    
 }
   
   

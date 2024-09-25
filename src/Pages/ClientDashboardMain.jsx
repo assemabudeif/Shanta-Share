@@ -1,20 +1,22 @@
 import React, {useEffect, useState} from 'react';
 import DriverPosts from '../Components/DriverPosts';
 import OrdersPage from "./ClientDashboardPages/OrdersPage";
+import { useTranslation } from 'react-i18next';
 
 export default function ClientDashboardMain() {
+  const { t, i18n } = useTranslation();
   const pages = [
-    "Posts",
-    "Account ",
-    "Settings ",
+    t("dashboardAdmin.posts"),
+    t("orderHistory.Account"),
+    t("orderHistory.Setting"),
   ];
   const [posts, setPosts] = useState([]);
 
   const PagesComponent = [
     //TODO: create orders page
     <OrdersPage/>,
-    <div>Account</div>,
-    <div>Settings</div>,
+    <div>{t("orderHistory.Account")}</div>,
+    <div>{t("orderHistory.Setting")}</div>,
   ];
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -50,7 +52,7 @@ export default function ClientDashboardMain() {
     <>
       <div className="grid grid-cols-12 md:max-w-[1920px]">
         <div className={`${isSidebarOpen ? "col-span-2" : "hidden"} h-screen w-full shadow-2xl bg-[#F3F3F3]`}>
-          <h1 className="text-2xl font-bold text-center py-8">Shanta Share</h1>
+          <h1 className="text-2xl font-bold text-center py-8">{t("navbar.shantaShare")}</h1>
           <div className="flex flex-col items-start w-full cursor-pointer">
             <div className={"w-full "}>
               {pages.map((page, index) => (

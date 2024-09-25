@@ -5,8 +5,11 @@ import React, {useEffect, useState} from "react";
 import {AxiosInstance} from "../../Network/AxiosInstance";
 import order_img from "../../assets/images/order_img.png";
 import axios, {Axios} from "axios";
+import { useTranslation } from 'react-i18next';
+
 
 function OrdersPage() {
+  const { t, i18n } = useTranslation();
   const location = useLocation();
   const {id} = useParams();
   const [posts, setPosts] = useState([]);
@@ -81,8 +84,8 @@ function OrdersPage() {
           <div className="flex space-x-8 p-8">
             <div className="flex-1 flex flex-col">
               <div className="w-full py-4 bg-pink-300">
-                <h1 className="mb-2 text-4xl font-semibold ">Post Details</h1>
-                <h1 className="text-2xl">Proposals</h1>
+                <h1 className="mb-2 text-4xl font-semibold ">{t("clientDashboard.PostDetails")}</h1>
+                <h1 className="text-2xl">{t("clientDashboard.Proposals")}</h1>
               </div>
               <div className="flex ">
                 <div className="flex flex-col">
@@ -101,7 +104,7 @@ function OrdersPage() {
                   disabled={currentPage === 1}
                   className="py-1 px-3 mx-1 bg-gray-200 text-gray-700 rounded-md"
                 >
-                  Prev
+                  {t("clientDashboard.Prev")}
                 </button>
                 {[...Array(totalPages).keys()].map(pageNumber => (
                   <button
@@ -117,7 +120,7 @@ function OrdersPage() {
                   disabled={currentPage === totalPages}
                   className="py-1 px-3 mx-1 bg-gray-200 text-gray-700 rounded-md"
                 >
-                  Next
+                  {t("clientDashboard.Next")}
                 </button>
               </div>
             </div>
@@ -127,27 +130,27 @@ function OrdersPage() {
                 {/* <h3 className="text-xl font-semibold mb-4">Preview</h3> */}
                 <div className='space-y-4'>
                   <div className="space-y-2">
-                    <strong className="block">Pickup</strong>
+                    <strong className="block">{t("preview.Pickup")}</strong>
                     <p
                       className='color-text'>{formData.from_address_line || 'Address line'}, {formData.from_city?.name || 'City'}, {formData.from_city.government?.name || 'Government'}</p>
                     <p className='color-text'>{formData.pickup_time || 'DD/MM/YYYY - HH:MM'}</p>
                   </div>
                   <div className="space-y-2">
-                    <strong className="block">Destination</strong>
+                    <strong className="block">{t("clientDashboard.Destination")}</strong>
                     <p
                       className='color-text'>{formData.to_address_line || 'Address line'}, {formData.to_city?.name || 'City'}, {formData.to_city.government?.name || 'Government'}</p>
 
                     <p className='color-text'>{formData.arrival_time || 'DD/MM/YYYY - HH:MM'}</p>
                   </div>
                   <div className="space-y-2">
-                    <strong className="block">Available weight and size</strong>
+                    <strong className="block">{t("preview.Available weight and size")}</strong>
                     <div className='flex items-center space-x-20'>
                       <p className='color-text input-with-icon-weight2'>{formData.max_weight || '10.0 kg'}</p>
                       <p className='color-text input-with-icon-area2'>{formData.max_size || '2.0 msq'}</p>
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <strong className="block">Description</strong>
+                    <strong className="block">{t("preview.Description")}</strong>
                     <p className='color-text'>{formData.description || 'Write notes for clients...'}</p>
                   </div>
                 </div>
@@ -155,7 +158,7 @@ function OrdersPage() {
                   <hr/>
                   <div className="flex items-center space-x-2 justify-between">
 
-                    <strong className="block text-lg fee">Price</strong>
+                    <strong className="block text-lg fee">{t("clientDashboard.Price")}</strong>
                     <strong className="block text-lg fee">{formData.delivery_fee?.toFixed(2) ?? '--'} L.E</strong>
 
                     {/* <button className="w-full py-2 px-4 bg-black text-white rounded">Calculate Price</button> */}
@@ -210,8 +213,7 @@ function OrderItem(post) {
           <div className={"bg-gray-300 w-full flex flex-col justify-between "}>
             <div className="mb-2">
               <span className={"text-2xl font-semibold"}>
-                Pickup
-
+                 Pickup
                 <span className={"text-xl font-semibold"}>
                       <br/> {post.pickup_address_line}
                 </span>
