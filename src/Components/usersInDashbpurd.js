@@ -69,10 +69,10 @@ function UsersInDashbourd() {
     
     }, []);
     
-    // دمج المستخدمين
+   
     const mergedUsers = [...users, ...extraUsers];
 
-    // تعديل المستخدم
+    
     const handleEdit = (user) => {
         setIsModalVisible(true);
         setEditingUser(user);
@@ -87,7 +87,7 @@ function UsersInDashbourd() {
         });
     };
 
-    // تغيير الحقول في النموذج
+    
     const handleFormChange = (e) => {
         const { name, value } = e.target;
         setForm(prevForm => ({
@@ -96,7 +96,7 @@ function UsersInDashbourd() {
         }));
     };
 
-    // إرسال النموذج لتحديث بيانات المستخدم
+    
     const handleFormSubmit = (e) => {
         e.preventDefault();
         const token = localStorage.getItem("token");
@@ -108,7 +108,7 @@ function UsersInDashbourd() {
         })
         .then((response) => {
             console.log("User updated successfully", response.data);
-            // تحديث القائمة بعد التعديل إذا لزم الأمر
+            
             setIsModalVisible(false);
         })
         .catch((error) => {
@@ -130,7 +130,7 @@ function UsersInDashbourd() {
         })
         .then((response) => {
             console.log("User deleted successfully", response.data);
-            // تحديث القائمة بعد الحذف
+            
             setUsers(users.filter(user => user.id !== userToDelete.id));
             setExtraUsers(extraUsers.filter(user => user.id !== userToDelete.id));
             setIsDeleteModalVisible(false);
@@ -168,7 +168,7 @@ function UsersInDashbourd() {
 
     return (
         <div className="p-4 text-sm">
-            {/* البحث */}
+            {/* search*/}
             <div className={`flex justify-center mb-4 bg-gray-200 p-4 rounded-lg ${isFormVisible ? 'hidden' : ''}`}>
                 <input
                     type="text"

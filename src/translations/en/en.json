@@ -9,10 +9,10 @@
       "shantaShare": "Shanta Share"
     },
     "dashboardAdmin":{
-      "summary": "summary",
-      "orders": "orders",
-      "posts": "posts",
-      "users": "users",
+      "summary": "Summary",
+      "orders": "Orders",
+      "posts": "Posts",
+      "users": "Users",
       "dashboard":"Dashboard"
     },
 
@@ -194,8 +194,17 @@
           "Orders":"Orders",
           "Summery":"Summery",
           "Account":"Account",
-          "Setting":"Setting"
-        }
+          "Setting":"Settings"
+        },
+
+        "clientDashboard":{
+          "PostDetails":"Post Details",
+          "Proposals":"Proposals",
+          "Prev":"Prev",
+          "Next":"Next",
+          "Price":"Price",
+          "Destination":"Destination" 
+          }
 
 
 

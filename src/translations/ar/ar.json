@@ -199,7 +199,16 @@
       "Summery": "الملخص",
       "Account": "الحساب",
       "Setting": "الإعدادات"
+    },
+    "clientDashboard": {
+    "PostDetails": "تفاصيل المنشور",
+    "Proposals": "المقترحات",
+    "Prev": "السابق",
+    "Next": "التالي",
+    "Price": "السعر",
+    "Destination": "الوجهة"
     }
+
 
 
   }
