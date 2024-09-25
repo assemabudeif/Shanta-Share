@@ -4,6 +4,7 @@ import Preview from "../../Components/Posts/preview";
 import React, {useEffect, useState} from "react";
 import {AxiosInstance} from "../../Network/AxiosInstance";
 import order_img from "../../assets/images/order_img.png";
+import axios, {Axios} from "axios";
 import { useTranslation } from 'react-i18next';
 
 
@@ -49,19 +50,29 @@ function OrdersPage() {
   const [error, setError] = useState("");
 
   const getPosts = () => {
-    AxiosInstance.get("https://retoolapi.dev/W1fCKB/data").then((response) => {
-      console.log(response.data);
-      setPosts(response.data);
-      setLoading(false)
-    }).catch((error) => {
-      setError(error);
-      console.error("Error fetching data:", error);
-    });
+
+    const params = {
+      post_id:id
+    }
+    const config = {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      }
+    }
+    const queryString = new URLSearchParams(params).toString();
+    fetch(`http://127.0.0.1:8000/orders/post-orders/?${queryString}`, config)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data)
+        setPosts(data.data);
+        setLoading(false)
+      })
+      .catch(error => console.error('Error fetching posts:', error));
   }
 
   useEffect(() => {
     AxiosInstance.get(
-      `/posts/${28}`
+      `/posts/${id}`
     ).then((response) => setFormData(response.data))
     getPosts()
   }, []);
@@ -71,7 +82,6 @@ function OrdersPage() {
   return (
     <>
           <div className="flex space-x-8 p-8">
-
             <div className="flex-1 flex flex-col">
               <div className="w-full py-4 bg-pink-300">
                 <h1 className="mb-2 text-4xl font-semibold ">{t("clientDashboard.PostDetails")}</h1>
@@ -79,7 +89,7 @@ function OrdersPage() {
               </div>
               <div className="flex ">
                 <div className="flex flex-col">
-                  {currentPosts.map((post, index) => {
+                  {posts.map((post, index) => {
                     return (
                       <div className="my-2">
                         {OrderItem(post)}
@@ -165,12 +175,39 @@ function OrdersPage() {
 }
 
 function OrderItem(post) {
-  
+
+  // const [acceptLoading, setAcceptLoading] = useState(false);
+  // const [acceptLoading, setAcceptLoading] = useState(false);
+
+  const handelAcceptAction = (id) => {
+
+    // setAcceptLoading(true);
+
+    const params = {
+      order_id:id,
+      order_status: 'in_progress',
+    }
+    const config = {
+      method: 'PATCH',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      }
+    }
+    const queryString = new URLSearchParams(params).toString();
+    fetch(`http://127.0.0.1:8000/orders/update-status/?${queryString}`, config)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data)
+        // setAcceptLoading(false);
+      })
+      .catch(error => console.error('Error fetching posts:', error));
+  }
+
   return (
     <>
       <div className="bg-gray-100 border-2 border-black rounded-2xl grid grid-cols-12 ">
 
-        <img src={order_img} className="col-span-4 h-[100%] rounded-l-2xl object-cover"/>
+        <img src={'http://localhost:8000' + post.cargo_image} className="col-span-4 h-[100%] rounded-l-2xl object-cover"/>
 
         <div className="col-span-8 p-4  flex flex-col justify-between">
           <div className={"bg-gray-300 w-full flex flex-col justify-between "}>
@@ -178,10 +215,10 @@ function OrderItem(post) {
               <span className={"text-2xl font-semibold"}>
                  Pickup
                 <span className={"text-xl font-semibold"}>
-                      <br/> {post.from}
+                      <br/> {post.pickup_address_line}
                 </span>
                 <span className={"text-xl font-normal"}>
-                      <br/> Today 06:30 AM
+                      <br/> {post.pickup_time}
                 </span>
               </span>
             </div>
@@ -191,24 +228,23 @@ function OrderItem(post) {
                  Destination
 
                 <span className={"text-xl font-semibold"}>
-                      <br/> {post.to}
+                      <br/> {post.delivery_address_line}
                 </span>
                 <span className="text-xl font-normal">
-                     <br/> Today 10:30 AM
+                     <br/> {post.arrival_time}
                   </span>
               </span>
             </div>
           </div>
 
           <div className="bg-pink-200 w-full h-full my-4">
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
-            the industry's standard dummy text ever since the 1500s, when an unknown printer took
+            {post.client_notes}
           </div>
 
 
           <div className={"bg-green-200 flex  justify-between"}>
             <div className="w flex items-center">
-              <span className="font-bold text-lg">Mr.Amr El-Saady</span>
+              <span className="font-bold text-lg">{post.client.name}</span>
               <svg className="w-6 h-6 ms-8" viewBox="0 0 32 32" fill="none"
                    xmlns="http://www.w3.org/2000/svg">
                 <g clipPath="url(#clip0_37_379)">
@@ -232,8 +268,18 @@ function OrderItem(post) {
 
             </div>
             <div className={"flex  justify-between"}>
-              <button className="rounded-full py-2 px-12 bg-black text-white "
-              >Accept
+              <button
+                className="rounded-full py-2 px-12 bg-black text-white "
+                onClick={()=> handelAcceptAction(post.id)}
+              >
+                {false ?
+                  <div
+                    className='flex items-center justify-center w-full'
+                  >
+                    <div
+                      className="animate-spin rounded-full h-8 w-8 border-b-4 border-white"/>
+                  </div> : 'Accept'
+                }
               </button>
             </div>
           </div>

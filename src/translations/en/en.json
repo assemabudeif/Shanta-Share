@@ -129,7 +129,6 @@
         "birthDate": "Birth Date:",
         "address": "Address:",
         "mobile": "Mobile:",
-        "back": "Back",
         "confirm": "Confirm",
         "nationalityId": "Nationality ID",
         "nationalityIdNumber": "Nationality ID Number",
@@ -205,8 +204,6 @@
           "Price":"Price",
           "Destination":"Destination" 
           }
-
-
-
-  }
+  
+}
   

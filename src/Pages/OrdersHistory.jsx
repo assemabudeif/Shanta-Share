@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import OrdersHistory from '../Components/OrdersHistory';
 import { useTranslation } from 'react-i18next';
 
-
+// client orders - client dashboard
 export default function OrderHistory() {
     const { t, i18n } = useTranslation();
     const pages = [

@@ -4,7 +4,6 @@ import {useNavigate} from 'react-router-dom';
 import {AxiosInstance} from "../Network/AxiosInstance";
 import {useSelector} from "react-redux";
 import LoadingComp from "./LoadingComp";
-import { useTranslation } from 'react-i18next';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -23,7 +22,6 @@ const Login = () => {
         driver: 'DRIVER',
         admin: 'ADMIN'
     };
-    const { t, i18n } = useTranslation();
 
     // const [isChecked, setIsChecked] = useState(false)
 
@@ -51,8 +49,10 @@ const Login = () => {
         }).then(r => {
             const type = r.data.user.user_type;
             SaveToken(r.data.access_token);
-            console.log(r);
+            console.log(r.data);
             localStorage.setItem('user_type', type);
+            localStorage.setItem('user_image', r.data.user.profile_picture);
+            localStorage.setItem('username', r.data.user.name);
             switch (type) {
                 case userTypes.admin:
                     navigate("/dashboard");
@@ -63,14 +63,16 @@ const Login = () => {
                 case userTypes.driver:
                     navigate("/driver_home");
                     break;
+                default:
+                    break;
             }
         }).catch(e => {
             if (e.response.status === 401) {
-                setLoginError(t('unauthorized'));
+                setLoginError('Unauthorized');
             } else if (e.response.status === 404) {
-                setLoginError(t('checkCredentials'));
+                setLoginError('Check your credentials and try again');
             } else {
-                setLoginError(e.response.statusText + t('tryAgain'));
+                setLoginError(e.response.data.message + ' try again');
             }
         })
     }
@@ -86,11 +88,11 @@ const Login = () => {
             navigate('/');
         }).catch(e => {
             if (e.response.status === 401) {
-                setLoginError(t('unauthorized'));
+                setLoginError('Unauthorized');
             } else if (e.response.status === 404) {
-                setLoginError(t('checkCredentials'));
+                setLoginError('Check your credentials and try again');
             } else {
-                setLoginError(e.response.statusText +t('tryAgain'));
+                setLoginError(e.response.statusText + ' try again');
             }
         })
     };
@@ -107,11 +109,11 @@ const Login = () => {
             navigate('/driver_home');
         }).catch(e => {
             if (e.response.status === 401) {
-                setLoginError(t('unauthorized'));
+                setLoginError('Unauthorized');
             } else if (e.response.status === 404) {
-                setLoginError(t('checkCredentials')); 
+                setLoginError('Check your credentials and try again');
             } else {
-                setLoginError(e.response.statusText + (t('tryAgain')));
+                setLoginError(e.response.statusText + ' try again');
             }
         })
     };
@@ -130,13 +132,13 @@ const Login = () => {
         if (name === 'email') {
             if (value.includes('@')) {
                 if (!emailRegex.test(value)) {
-                    setErrors({email:  t('validEmail') });
+                    setErrors({email: 'Please enter a valid email address. Example: user@example.com'});
                 } else {
                     setErrors({email: ''});
                 }
             } else {
                 if (!usernameRegex.test(value)) {
-                    setErrors({email:  t('validUsername') });
+                    setErrors({email: 'Please enter a valid username. Minimum 3 characters'});
                 } else {
                     setErrors({email: ''});
                 }
@@ -159,7 +161,7 @@ const Login = () => {
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100 p-6">
             <div className="flex flex-col items-center text-center bg-white p-8 rounded-lg shadow-lg w-full max-w-sm">
-                <h1 className="text-2xl font-semibold mb-6">{t('welcome')}</h1>
+                <h1 className="text-2xl font-semibold mb-6">Welcome Back</h1>
                 {/*<div className="flex items-center mb-6">*/}
                 {/*    <label className="block text-sm font-medium text-gray-700 mr-4">Login as</label>*/}
                 {/*    <button type="button"*/}
@@ -185,7 +187,7 @@ const Login = () => {
                         onChange={HandleChange}
                         type="text"
                         name="email"
-                        placeholder={t('enterEmailOrUsername')}
+                        placeholder="Enter email or Username"
                         className="px-4 py-2 border rounded-md w-full mb-6 border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                         required
                         title="Please fill in this field."
@@ -196,7 +198,7 @@ const Login = () => {
                         name="password"
                         onChange={HandleChange}
                         type="password"
-                        placeholder={t('enterPassword')}
+                        placeholder="Enter password"
                         className="px-4 py-2 border rounded-md w-full mb-6 border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                         required
                         title="Please fill in this field."
@@ -208,20 +210,20 @@ const Login = () => {
                         className="bg-black text-white py-2 px-4 rounded-md w-full mb-4 hover:bg-gray-800 transition-colors"
                         // disabled={errors.email !== "" || errors.password !== ""}
                     >
-                        {t('login')}
-                        </button>
+                        Login
+                    </button>
 
                     {loginError && <div className="text-red-500 mb-4">{loginError}</div>}
                 </form>
 
-                <p className="mb-2">{t('dontHaveAccount')}</p>
+                <p className="mb-2">You don't have an account?</p>
                 <button
                     type="button"
                     onClick={handleRedirect}
                     className="text-blue-600 hover:underline"
                 >
-                    {t('signUpHere')}
-                    </button>
+                    Sign up here
+                </button>
             </div>
         </div>
     );
