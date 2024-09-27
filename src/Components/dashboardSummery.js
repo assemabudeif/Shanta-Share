@@ -23,7 +23,12 @@ function DashboardSummary(){
         setIsTotalUsers(!isTotalUsers); }
 
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/reviews/get_totals/')
+        const token = localStorage.getItem("token");
+        axios.get('http://127.0.0.1:8000/reviews/get_totals/', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        })
             .then(response => {
                 setTotals(response.data);
                 setClients(response.data);
@@ -35,7 +40,12 @@ function DashboardSummary(){
     }, []);
 
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/reviews/get_annual_statistics/')
+        const token = localStorage.getItem("token");
+        axios.get('http://127.0.0.1:8000/reviews/get_annual_statistics/', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        })
             .then(response => {
                 setData(response.data);  
             })

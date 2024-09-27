@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import DashboardPosts  from '../Components/DashboardPosts';
 import {Outlet, useNavigate} from "react-router-dom";
+import { useTranslation } from 'react-i18next';
+
 
 
 
@@ -8,6 +10,7 @@ export default function DashboardBase( props= {pages: [{page: "route", title: "T
   const pages = props.pages;
   const [posts, setPosts] = useState([]);
   const [orders, setOrders] = useState([]);
+  const { t, i18n } = useTranslation();
 
   // const PagesComponent = [
   //     <div>Summary </div>,
@@ -55,7 +58,7 @@ export default function DashboardBase( props= {pages: [{page: "route", title: "T
     <>
       <div className="grid grid-cols-12 md:max-w-[1920px]">
         <div className={`${isSidebarOpen ? "col-span-2" : "hidden"} h-screen w-full shadow-2xl bg-[#F3F3F3] sticky top-0 left-0`}>
-          <h1 className="text-2xl font-bold text-center py-8">Dashboard</h1>
+          <h1 className="text-2xl font-bold text-center py-8">{t("dashboardAdmin.dashboard")}</h1>
           <div className="flex flex-col items-start w-full cursor-pointer">
             <div className={"w-full "}>
               {pages.map((page, index) => (

@@ -9,6 +9,7 @@ function UsersInDashbourd() {
     const [extraUsers, setExtraUsers] = useState([]);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [editingUser, setEditingUser] = useState(null);
+    const [alert, setAlert] = useState({ message: '', type: '', visible: false });
     const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
     const [userToDelete, setUserToDelete] = useState(null);
     const [isFormVisible, setIsFormVisible] = useState(false);
@@ -35,12 +36,12 @@ function UsersInDashbourd() {
             }
         })
         .then((response) => {
-            console.log("data", response.data.data);
+            console.log("data", response.data.results);
 
-            if (Array.isArray(response.data.data)) {
-                setUsers(response.data.data);
+            if (Array.isArray(response.data.results)) {
+                setUsers(response.data.results);
             } else {
-                console.error('Response data is not an array:', response.data);
+                console.error('Response data is not an array:', response.data.results);
                 setUsers([]);
             }
         })
@@ -54,12 +55,12 @@ function UsersInDashbourd() {
             }
         })
         .then((response) => {
-            console.log("data", response.data.data);
+            console.log("data", response.data.results);
 
-            if (Array.isArray(response.data.data)) {
-                setExtraUsers(response.data.data);
+            if (Array.isArray(response.data.results)) {
+                setExtraUsers(response.data.results);
             } else {
-                console.error('Response data is not an array:', response.data);
+                console.error('Response data is not an array:', response.data.results);
                 setExtraUsers([]);
             }
         })
@@ -69,8 +70,10 @@ function UsersInDashbourd() {
     
     }, []);
     
-   
+    console.log("users:", users)
+    console.log("ExtraUsers:", extraUsers)
     const mergedUsers = [...users, ...extraUsers];
+    console.log("mergedUsers:",mergedUsers)
 
     
     const handleEdit = (user) => {
@@ -107,7 +110,12 @@ function UsersInDashbourd() {
             }
         })
         .then((response) => {
-            console.log("User updated successfully", response.data);
+            console.log("User updated successfully", response.data.data);
+            if (response.ok) {
+                showAlert('User updated successfully', 'success');
+              } else {
+                showAlert('Error updated user', 'error');
+              }
             
             setIsModalVisible(false);
         })
@@ -115,11 +123,19 @@ function UsersInDashbourd() {
             console.error("Error updating user:", error);
         });
     };
-//    =================================== delete===============
+//    =================================== delete ======================
     const handleDeleteClick = (user) => {
         setIsDeleteModalVisible(true);
         setUserToDelete(user);
     };
+
+    const showAlert = (message, type) => {
+        setAlert({ message, type, visible: true });
+        setTimeout(() => {
+            setAlert(prev => ({ ...prev, visible: false }));
+        }, 5000);
+    };
+
     const handleDeleteConfirm = () => {
         const token = localStorage.getItem("token");
     
@@ -129,11 +145,15 @@ function UsersInDashbourd() {
             }
         })
         .then((response) => {
-            console.log("User deleted successfully", response.data);
-            
+            console.log("User deleted successfully", response.data.data);
             setUsers(users.filter(user => user.id !== userToDelete.id));
             setExtraUsers(extraUsers.filter(user => user.id !== userToDelete.id));
             setIsDeleteModalVisible(false);
+            if (response.ok) {
+                showAlert('User deleted successfully', 'success');
+              } else {
+                showAlert('Error deleting user', 'error');
+              }
         })
         .catch((error) => {
             console.error("Error deleting user:", error);
@@ -167,6 +187,20 @@ function UsersInDashbourd() {
     };
 
     return (
+        <>
+        <div className="p-4 text-sm">
+            {alert.visible && (
+                <div className={`p-4 mb-4 text-sm text-white ${alert.type === 'success' ? 'bg-green-500' : 'bg-red-500'} rounded`} role="alert">
+                    {alert.message}
+                    <button
+                        className="ml-4 text-white hover:text-gray-200"
+                        onClick={() => setAlert({ ...alert, visible: false })}
+                    >
+                        &times;
+                    </button>
+                </div>
+            )}
+        </div>
         <div className="p-4 text-sm">
             {/* search*/}
             <div className={`flex justify-center mb-4 bg-gray-200 p-4 rounded-lg ${isFormVisible ? 'hidden' : ''}`}>
@@ -190,7 +224,7 @@ function UsersInDashbourd() {
                                         <th className="border-b px-4 py-2 text-left text-lg font-medium text-gray-700 uppercase tracking-wider">Name</th>
                                         <th className="border-b px-4 py-2 text-left text-lg font-medium text-gray-700 uppercase tracking-wider">Email</th>
                                         <th className="border-b px-4 py-2 text-left text-lg font-medium text-gray-700 uppercase tracking-wider">Mobile</th>
-                                        {form.user_type=='DRIVER'&&(<th className="border-b px-4 py-2 text-left text-lg font-medium text-gray-700 uppercase tracking-wider">Rating</th>)}
+                                        {/* {form.user_type=='DRIVER'&&(<th className="border-b px-4 py-2 text-left text-lg font-medium text-gray-700 uppercase tracking-wider">Rating</th>)} */}
                                         <th className="border-b px-4 py-2 text-left text-lg font-medium text-gray-700 uppercase tracking-wider">User type</th>
                                         <th className="border-b px-4 py-2 text-left text-lg font-medium text-gray-700 uppercase tracking-wider">Action</th>
                                     </tr>
@@ -202,7 +236,7 @@ function UsersInDashbourd() {
                                             <td className="px-4 py-2 text-lg text-gray-800">{user.name}</td>
                                             <td className="px-4 py-2 text-lg text-gray-800">{user.email}</td>
                                             <td className="px-4 py-2 text-lg text-gray-800">{user.phone_numbers.map(phone => extractPhoneNumber(phone.phone_number)).join(', ')}</td>
-                                            {form.user_type == 'DRIVER'&&(<td className="px-4 py-2 text-lg text-gray-800">{user.average_rating}</td>)}
+                                            {/* {form.user_type == 'DRIVER'&&(<td className="px-4 py-2 text-lg text-gray-800">{user.average_rating}</td>)} */}
                                             <td className="px-4 py-2 text-lg text-gray-800">{user.user_type}</td>
                                             <td className= "px-4 py-2 text-sm text-gray-800 flex space-x-2">
                                                 <button className="text-white px-2 py-1 rounded-md bg-yellow-500" onClick={() => handleEdit(user)}>Edit</button>
@@ -292,17 +326,17 @@ function UsersInDashbourd() {
                                 placeholder="Phone Numbers"
                                 className="border p-2 w-full mb-2"
                             />
-                            {form.user_type =='DRIVER' &&(<input
+                            {/* {form.user_type =='DRIVER' &&(<input
                                 type="text"
                                 name="average_rating"
                                 value={form.average_rating}
                                 onChange={handleFormChange}
                                 placeholder="Average Rating"
                                 className="border p-2 w-full mb-2"
-                            />)}
+                            />)} */}
                             <div className="flex justify-between items-center space-x-2">
-                                <button type="submit" className="bg-gray-500 text-white py-2 px-4 rounded-lg">Save</button>
-                                <button type="button" className="bg-black text-white py-2 px-4 rounded-lg" onClick={() => setIsModalVisible(false)}>Cancel</button>
+                                <button type="submit" className="bg-green-500 text-white py-2 px-4 rounded-lg">Save</button>
+                                <button type="button" className="bg-gray-500 text-white py-2 px-4 rounded-lg" onClick={() => setIsModalVisible(false)}>Cancel</button>
                             </div>
                         </form>
                     </div>
@@ -324,7 +358,9 @@ function UsersInDashbourd() {
 
 
         </div>
+        </>
     );
 }
+
 
 export default UsersInDashbourd;
