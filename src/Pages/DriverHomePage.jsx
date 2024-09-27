@@ -79,7 +79,7 @@ function DiverHomePage() {
 
                     {/*orders_section*/}
                     <div className="  p-2 flex flex-col">
-                        {SectionHeader({title: t('driverHomePage.LatestOrders'), link: '/driver-dashboard/orders'})}
+                        {SectionHeader({title: t("driverHomePage.TodaysOrders"), link: '/driver-dashboard/orders'})}
                         <div className="w-3/4 ms-12 p-2 flex items-center flex-col">
 
                             {orders.map((order, index) => {
@@ -95,7 +95,7 @@ function DiverHomePage() {
 
                     {/*posts_section*/}
                     <div className="p-2 flex flex-col">
-                        {SectionHeader({title: t('driverHomePage.YourPosts'), link: '/driver-dashboard/posts'})}
+                        {SectionHeader({title: t("driverHomePage.YourPosts"), link: '/driver-dashboard/posts'})}
                         <div className="w-3/4 ms-12 p-2 flex items-center flex-col">
 
                             {posts.map((post, index) => {
