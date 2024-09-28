@@ -34,8 +34,7 @@ import OrdersPage from "./Pages/DriverDashboardPages/OrdersPage";
 import PostsPage from "./Pages/DriverDashboardPages/PostsPage";
 import ClientDashboardOrders from "./Pages/ClientDashboardPages/ClientDashboardOrders";
 import CreatePostPage2 from "./Pages/DriverDashboardPages/CreatPost/createPostPage";
-
-
+import AboutUs from './Pages/about';
 const handleSave = (updatedDriver) => {
     console.log('Saved Driver Data:', updatedDriver);
 };
@@ -95,6 +94,8 @@ function App() {
                     <Routes>
                         <Route path="/" element={user_type === 'DRIVER' ? <DriverHomePage/> : user_type === 'ADMIN' ?
                             <Dashboard/> : <HomePage/>}/>
+                        <Route path={'/about'} element={<AboutUs/>} />
+
                         <Route path="/search" element={<SearchPage/>}/>
                         <Route path='/register' element={<RegistrationForm/>}/>
                         <Route path='/login' element={<Login/>}/>
@@ -124,10 +125,12 @@ function App() {
                                 <Route path={"posts/create"} element={<CreatePostPage2/>}/>
                                 <Route path={'orders'} element={<DashBoardOrders/>}/>
                                 <Route path={'settings'} element={<div>Settings</div>}/>
+
                             </Route>
                             <Route path='/client-dashboard' element={<DashboardBase pages={ClientDashboardRoutes} pathName={'/client-dashboard'}/> }>
                                 <Route path='' element={<div>Account</div>}/>
                                 <Route path={'orders'} element={<ClientDashboardOrders/>} />
+
                             </Route>
                         </Route>
                         <Route path="*" element={<PageNotFound/>}/>

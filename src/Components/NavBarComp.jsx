@@ -8,7 +8,6 @@ import { useTranslation } from 'react-i18next';
 const navigation = [
     { name: 'navbar.discover', href: '/', current: true },
     { name: 'navbar.search', href: '/search', current: false },
-    { name: 'navbar.contactUs', href: '/contact-us', current: false },
     { name: 'navbar.about', href: '/about', current: false },
 ];
 
