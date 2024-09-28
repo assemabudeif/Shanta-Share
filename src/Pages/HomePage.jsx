@@ -1,5 +1,6 @@
 import {useState} from "react";
 import {Link} from "react-router-dom";
+import Footer from '../Components/Footer'
 
 function HomePage() {
 
@@ -260,6 +261,8 @@ function HomePage() {
         </div>
 
       </div>
+      <Footer />
+
     </>
   );
 }
