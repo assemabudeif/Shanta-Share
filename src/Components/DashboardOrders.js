@@ -48,6 +48,7 @@ function DashBoardOrders() {
     useEffect(() => {
         fetchOrders();
     }, [currentPage]);
+
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     const openDeleteModal = (orderId) => {
@@ -170,14 +171,12 @@ function DashBoardOrders() {
                             <thead className="bg-gray-100">
                                 <tr>
                                     {/* <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">ID</th> */}
-                                    <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Client
-                                        Name
-                                    </th>
+                                    <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Client Name</th>
                                     <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">From</th>
                                     <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">To</th>
-                                    <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Pickup
-                                        Time
-                                    </th>
+                                    <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Pickup Time</th>
+                                    <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Arrival Time</th>
+                                    <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Delivery Fee</th>
                                     <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Status</th>
                                     <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Actions</th>
                                 </tr>
@@ -190,6 +189,8 @@ function DashBoardOrders() {
                                         <td className="px-4 py-2 text-sm text-gray-800">{order.post?.from_city?.name || 'Unknown'}</td>
                                         <td className="px-4 py-2 text-sm text-gray-800">{order.post?.to_city?.name || 'Unknown'}</td>
                                         <td className="px-4 py-2 text-sm text-gray-800">{new Date(order.pickup_time).toLocaleString()}</td>
+                                        <td className="px-4 py-2 text-sm text-gray-80">{new Date(order.arrival_time).toLocaleString()}</td>
+                                        <td className="px-4 py-2 text-sm text-gray-80">{Math.round(order.post.delivery_fee)} EGP</td>
                                         <td className="px-4 py-2 text-sm text-gray-800">{order.status}</td>
                                         <td className="px-4 py-2 text-sm text-gray-800 flex space-x-2">
                                             <button
