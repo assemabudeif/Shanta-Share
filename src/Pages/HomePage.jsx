@@ -150,53 +150,50 @@ function HomePage() {
         </div>
 
       </div>
+{/*<------>*<------> Services Section <------->*<------>*/}
 
-      {/*<------>*<------> Services Section <------->*<------>*/}
-
-      <div className="flex justify-center">
-        <div className='p-12 max-w-[1280px] w-full'>
-          <h1 className='text-3xl font-bold'>
-            Our Services
-          </h1>
-          <div className='p-6 gap-3 w-full grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
-            <div className='p-4 bg-gray-100 rounded-lg flex'>
-              <div className='w-3/4 flex flex-col justify-between'>
-                <span className='text-xl font-bold mb-2'>For Clients</span>
-                <span>Ship ..anything any where with our riders fast and secure </span>
-               
-              </div>
-              <div className=''>
-                <img className='' src={require('../assets/images/icon_car.png')}/>
-              </div>
-
-            </div>
-            <div className='p-4 bg-gray-100 rounded-lg flex'>
-              <div className='w-3/4 flex flex-col justify-between'>
-                <span className='text-xl font-bold mb-2'>For Drivers</span>
-                <span> Increase you income by working with us </span>
-               
-              </div>
-              <div className=''>
-                <img className='' src={require('../assets/images/icon_car.png')}/>
-              </div>
-
-            </div>
-            <div className='p-4 bg-gray-100 rounded-lg flex'>
-              <div className='w-3/4 flex flex-col justify-between'>
-                <span className='text-xl font-bold mb-2'>For Campanies</span>
-                <span> Ship your products any where with less cost </span>
-              
-              </div>
-              <div className=''>
-                <img className='' src={require('../assets/images/icon_car.png')}/>
-              </div>
-
-            </div>
-          </div>
-
-
+<div className="flex justify-center">
+  <div className='p-12 max-w-[1280px] w-full'>
+    <h1 className='text-4xl font-bold text-center mb-8'>
+      Our Services
+    </h1>
+    <div className='p-6 gap-6 w-full grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
+      {/* Service for Clients */}
+      <div className='p-6 bg-gray-100 rounded-lg flex items-center'>
+        <div className='w-3/4 flex flex-col justify-between'>
+          <span className='text-2xl font-bold mb-6'>For Clients</span>
+          <span className='text-lg ml-3'>Ship anything anywhere with our riders, fast and secure.</span>
+        </div>
+        <div className='w-[150px] flex justify-end'>
+          <img className='w-[150px] h-[150px] object-contain' src={require('../assets/images/order_img.png')} alt="For Clients"/>
         </div>
       </div>
+      
+      {/* Service for Drivers */}
+      <div className='p-6 bg-gray-100 rounded-lg flex items-center'>
+        <div className='w-3/4 flex flex-col justify-between'>
+          <span className='text-2xl font-bold mb-6'>For Drivers</span>
+          <span className='text-lg ml-3'>Increase your income by working with us.</span>
+        </div>
+        <div className='w-[150px] flex justify-end'>
+          <img className='w-[150px] h-[150px] object-contain' src={require('../assets/images/icon_car.png')} alt="For Drivers"/>
+        </div>
+      </div>
+
+      {/* Service for Companies */}
+      <div className='p-6 bg-gray-100 rounded-lg flex items-center'>
+        <div className='w-3/4 flex flex-col justify-between'>
+          <span className='text-2xl font-bold mb-6'>For Companies</span>
+          <span className='text-lg ml-3'>Ship your products anywhere with lower costs.</span>
+        </div>
+        <div className='w-[150px] flex justify-end'>
+          <img className='w-[150px] h-[150px] object-contain' src={require('../assets/images/motorcycle.png')} alt="For Companies"/>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 
       <div className="flex justify-center">
         <div className='p-12 max-w-[1280px] gap-3 w-full h-screen grid md:grid-cols-1 lg:grid-cols-2'>
