@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AxiosInstance } from '../Network/AxiosInstance';
 import LoadingComp from './LoadingComp';
+import { useSelector } from 'react-redux';
 function DashBoardPosts() {
     const navigate = useNavigate();
 
@@ -9,50 +10,26 @@ function DashBoardPosts() {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [searchTerm, setSearchTerm] = useState('');
-    const postsPerPage = 5;
     const [editingPost, setEditingPost] = useState(null);
     const [form, setForm] = useState({});
     const [alert, setAlert] = useState({ message: '', type: '', visible: false });
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [postIdToDelete, setPostIdToDelete] = useState(null);
-    const [loading, setLoading] = useState(true); 
-
-    // useEffect(() => {
-    //     fetchPosts();
-    // }, [currentPage]);
-
-    // const fetchPosts = () => {
-    //     fetch(`http://127.0.0.1:8000/posts/`)
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             setPosts(data.results);
-    //             setTotalPages(Math.ceil(data.count / postsPerPage));
-    //         })
-    //         .catch(error => console.error('Error fetching posts:', error));
-    // };
+    const loader = useSelector(state => state.loader.loader);
 
     const fetchPosts = () => {
-        setLoading(true); 
-        AxiosInstance.get('http://127.0.0.1:8000/posts/')
+        AxiosInstance.get('/posts/?page=' + currentPage)
             .then(response => {
                 const data = response.data;
                 setPosts(data.results);
-                setTotalPages(Math.ceil(data.count / postsPerPage));
+                setTotalPages(data.page_count);
             })
             .catch(error => console.error('Error fetching data:', error))
-            .finally(() => {
-                setLoading(false); 
-            });
     };
 
     useEffect(() => {
         fetchPosts();
-    }, []); // 
-    if (loading) {
-        return <LoadingComp />; 
-    }
-
-    
+    }, []);
 
     //====== Search & paginatation =====
 
@@ -64,17 +41,15 @@ function DashBoardPosts() {
         )
     );
 
-    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-
-    //====== Clear alert after 5 seconds =====
+    //====== Clear alert after 3 seconds =====
 
 
     const showAlert = (message, type) => {
         setAlert({ message, type, visible: true });
         setTimeout(() => {
             setAlert(prev => ({ ...prev, visible: false }));
-        }, 5000);
+        }, 3000);
     };
 
     const handleDeleteConfirmation = (postId) => {
@@ -83,35 +58,35 @@ function DashBoardPosts() {
     };
 
 
-// ========== Handling Delete ==========
+    // ========== Handling Delete ==========
 
 
-const handleDelete = () => {
-    const token = localStorage.getItem("token");
+    const handleDelete = () => {
+        const token = localStorage.getItem("token");
 
-    fetch(`http://127.0.0.1:8000/posts/details/${postIdToDelete}`, {
-        method: 'DELETE',
-        headers: {
-            Authorization: `Bearer ${token}`,
-        }
-    })
-    .then(response => {
-        if (response.ok) {
-            showAlert('Post deleted successfully', 'success');
-        } else {
-            showAlert('Failed to delete post', 'error');
-        }
-    })
-    .catch(error => console.error('Error deleting post:', error))
-    .finally(() => {
-        setIsModalOpen(false);
-        setPostIdToDelete(null);
-    });
-};
+        fetch(`http://127.0.0.1:8000/posts/details/${postIdToDelete}`, {
+            method: 'DELETE',
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        })
+            .then(response => {
+                if (response.ok) {
+                    showAlert('Post deleted successfully', 'success');
+                } else {
+                    showAlert('Failed to delete post', 'error');
+                }
+            })
+            .catch(error => console.error('Error deleting post:', error))
+            .finally(() => {
+                setIsModalOpen(false);
+                setPostIdToDelete(null);
+            });
+    };
 
 
 
-// ========== Handling Edit =================
+    // ========== Handling Edit =================
 
     const handleEdit = (post) => {
         setEditingPost(post);
@@ -155,21 +130,26 @@ const handleDelete = () => {
                 pickup_time: form.pickup_time,
             }),
         })
-        .then(response => {
-            if (!response.ok) {
-                return response.json().then(errorData => {
-                    throw new Error(errorData.detail || 'Failed to update post');
-                });
-            }
-            showAlert('Post updated successfully', 'success');
-            fetchPosts();
-            setEditingPost(null);
-        })
-        .catch(error => {
-            showAlert(error.message, 'error');
-            console.error('Error updating post:', error);
-        });
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(errorData => {
+                        throw new Error(errorData.detail || 'Failed to update post');
+                    });
+                }
+                showAlert('Post updated successfully', 'success');
+                fetchPosts();
+                setEditingPost(null);
+            })
+            .catch(error => {
+                showAlert(error.message, 'error');
+                console.error('Error updating post:', error);
+            });
     };
+
+    if (loader) {
+        return (<LoadingComp />)
+    }
+
 
     return (
         <div className="p-4 text-sm">
@@ -187,7 +167,7 @@ const handleDelete = () => {
 
             {/* Search Input */}
             <div className="mb-4">
-                <input 
+                <input
                     type="text"
                     value={searchTerm}
                     onChange={handleSearchChange}
@@ -202,7 +182,7 @@ const handleDelete = () => {
                         <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
                             <thead className="bg-gray-100">
                                 <tr>
-                                    <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">ID</th>
+                                    {/* <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">ID</th> */}
                                     <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">From</th>
                                     <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">To</th>
                                     <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Name</th>
@@ -217,7 +197,7 @@ const handleDelete = () => {
                             <tbody className="divide-y divide-gray-200">
                                 {filteredPosts.map(post => (
                                     <tr key={post.id} className='cursor-pointer'>
-                                        <td className="px-4 py-2 text-sm text-gray-800">{post.id}</td>
+                                        {/* <td className="px-4 py-2 text-sm text-gray-800">{post.id}</td> */}
                                         <td className="px-4 py-2 text-sm text-gray-800">{post.from_city ? post.from_city.name : 'Unknown'}</td>
                                         <td className="px-4 py-2 text-sm text-gray-800">{post.to_city ? post.to_city.name : 'Unknown'}</td>
                                         <td className="px-4 py-2 text-sm text-gray-800">{post.created_by.name}</td>
@@ -301,30 +281,30 @@ const handleDelete = () => {
 
                         {/* Pagination */}
                         <div className="mt-4 flex justify-center">
+                            <button
+                                onClick={() => setCurrentPage(currentPage - 1)}
+                                disabled={currentPage === 1}
+                                className="py-1 px-3 mx-1 bg-gray-200 text-gray-700 rounded-md"
+                            >
+                                Prev
+                            </button>
+                            {[...Array(totalPages).keys()].map(pageNumber => (
                                 <button
-                                    onClick={() => paginate(currentPage - 1)}
-                                    disabled={currentPage === 1}
-                                    className="py-1 px-3 mx-1 bg-gray-200 text-gray-700 rounded-md"
+                                    key={pageNumber + 1}
+                                    onClick={() => setCurrentPage(pageNumber + 1)}
+                                    className={`py-1 px-3 mx-1 ${currentPage === pageNumber + 1 ? 'bg-black text-white' : 'bg-gray-200 text-gray-700'} rounded-md`}
                                 >
-                                    Prev
+                                    {pageNumber + 1}
                                 </button>
-                                {[...Array(totalPages).keys()].map(pageNumber => (
-                                    <button
-                                        key={pageNumber + 1}
-                                        onClick={() => paginate(pageNumber + 1)}
-                                        className={`py-1 px-3 mx-1 ${currentPage === pageNumber + 1 ? 'bg-black text-white' : 'bg-gray-200 text-gray-700'} rounded-md`}
-                                    >
-                                        {pageNumber + 1}
-                                    </button>
-                                ))}
-                                <button
-                                    onClick={() => paginate(currentPage + 1)}
-                                    disabled={currentPage === totalPages}
-                                    className="py-1 px-3 mx-1 bg-gray-200 text-gray-700 rounded-md"
-                                >
-                                    Next
-                                </button>
-                            </div>
+                            ))}
+                            <button
+                                onClick={() => setCurrentPage(currentPage + 1)}
+                                disabled={currentPage === totalPages}
+                                className="py-1 px-3 mx-1 bg-gray-200 text-gray-700 rounded-md"
+                            >
+                                Next
+                            </button>
+                        </div>
                     </>
                 ) : (
                     <p>No posts found.</p>

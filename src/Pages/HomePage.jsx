@@ -1,6 +1,5 @@
-import {useState} from "react";
-import {Link} from "react-router-dom";
-import Footer from '../Components/Footer'
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
 function HomePage() {
 
@@ -145,7 +144,7 @@ function HomePage() {
           <div className='w-full justify-end sm:hidden lg:flex'>
             <img
               className='w-auto h-full object-contain'
-              src={require(`../assets/images/bg_home_hero.png`)}/>
+              src={require(`../assets/images/bg_home_hero.png`)} />
           </div>
         </div>
 
@@ -163,10 +162,10 @@ function HomePage() {
               <div className='w-3/4 flex flex-col justify-between'>
                 <span className='text-xl font-bold mb-2'>For Clients</span>
                 <span>Ship ..anything any where with our riders fast and secure </span>
-               
+
               </div>
               <div className=''>
-                <img className='' src={require('../assets/images/icon_car.png')}/>
+                <img className='' src={require('../assets/images/icon_car.png')} />
               </div>
 
             </div>
@@ -174,10 +173,10 @@ function HomePage() {
               <div className='w-3/4 flex flex-col justify-between'>
                 <span className='text-xl font-bold mb-2'>For Drivers</span>
                 <span> Increase you income by working with us </span>
-               
+
               </div>
               <div className=''>
-                <img className='' src={require('../assets/images/icon_car.png')}/>
+                <img className='' src={require('../assets/images/icon_car.png')} />
               </div>
 
             </div>
@@ -185,10 +184,10 @@ function HomePage() {
               <div className='w-3/4 flex flex-col justify-between'>
                 <span className='text-xl font-bold mb-2'>For Campanies</span>
                 <span> Ship your products any where with less cost </span>
-              
+
               </div>
               <div className=''>
-                <img className='' src={require('../assets/images/icon_car.png')}/>
+                <img className='' src={require('../assets/images/icon_car.png')} />
               </div>
 
             </div>
@@ -203,16 +202,16 @@ function HomePage() {
           <div className='w-full justify-start sm:hidden lg:flex'>
             <img
               className='w-auto h-full object-contain'
-              src={require(`../assets/images/bg_home_hero.png`)}/>
+              src={require(`../assets/images/bg_home_hero.png`)} />
           </div>
           <div className='w-full h-full px-6 bg-transparent flex flex-col justify-center items-start'>
             <h1 className='my-3 text-5xl leading-tight font-bold'>
-Deliver When You Want, Earn What You Need
-          </h1>
+              Deliver When You Want, Earn What You Need
+            </h1>
             <span className='text-xl'>Connect with clients and transport goods between cities using your own vehicle. Start earning today!</span>
             <div className='py-3 w-full flex flex-col items-start justify-center'>
               <div className='px-4 py-2 bg-black rounded-lg'>
-              <Link to="/register" className="text-white">Start Now</Link>
+                <Link to="/register" className="text-white">Start Now</Link>
 
               </div>
             </div>
@@ -221,12 +220,6 @@ Deliver When You Want, Earn What You Need
         </div>
 
       </div>
-
-      
-
-
-      <Footer />
-
     </>
   );
 }
