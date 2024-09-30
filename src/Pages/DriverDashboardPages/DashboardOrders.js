@@ -541,14 +541,18 @@ function DashBoardOrders() {
                             <div className="flex items-center space-x-2">
                               <FaMapMarkerAlt className="text-green-500"/>
                               <p>
-                                <strong>From: </strong> {post.post.to_city?.name ?? "UnKnown"}
+                                <strong>From: </strong> {post.post.from_city?.name ?? "UnKnown"}
                               </p>
                             </div>
                             <div className="flex items-center space-x-2">
                               <FaInfoCircle className="text-yellow-400"/>
                               <p>
-                                <strong></strong> {post.pickup_address_line ?? post.post.to_city?.name ?? "UnKnown"}
+                                <strong></strong> {post.pickup_address_line ?? post.post.from_city?.name ?? "UnKnown"}
                               </p>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <FaClock className="text-blue-500"/>
+                              <p><strong>Pick Time:</strong> {post.pickup_time}</p>
                             </div>
                           </div>
                           <div className="flex flex-col justify-center items-start space-y-2">
@@ -563,6 +567,10 @@ function DashBoardOrders() {
                               <p>
                                 <strong></strong> {post.delivery_address_line ?? post.post.to_city?.name ?? "UnKnown"}
                               </p>
+                            </div>
+                            <div className="flex items-center space-x-2 sm:col-span-3">
+                              <FaClock className="text-red-500"/>
+                              <p><strong>Arrival Time:</strong> {post.arrival_time}</p>
                             </div>
                           </div>
                         </div>
@@ -580,29 +588,25 @@ function DashBoardOrders() {
                             <FaDollarSign className="text-green-600"/>
                             <p><strong>Price:</strong> ${post.post.delivery_fee}</p>
                           </div>
-                          <div className="flex items-center space-x-2">
-                            <FaClock className="text-blue-500"/>
-                            <p><strong>Pick Time:</strong> {post.pickup_time}</p>
-                          </div>
-                          <div className="flex items-center space-x-2 sm:col-span-3">
-                            <FaClock className="text-red-500"/>
-                            <p><strong>Arrival Time:</strong> {post.arrival_time}</p>
-                          </div>
+
                         </div>
 
 
                         {/* Divider */}
                         <hr className="border-gray-300"/>
 
-                        <div className="flex items-end">
-                          <button
-                            className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-all"
-                            onClick={()=>{
-                              handelCompleteAction(post.id)
-                            }}
-                          >
-                            Complete
-                          </button>
+                        <div className="w-full flex items-end justify-end">
+                          {
+                            post.status === "in_progress" &&
+                            <button
+                              className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-all"
+                              onClick={() => {
+                                handelCompleteAction(post.id)
+                              }}
+                            >
+                              Complete
+                            </button>
+                          }
                         </div>
                       </div>
                     )}

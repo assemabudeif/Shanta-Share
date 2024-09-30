@@ -56,7 +56,7 @@ function DashBoardOrders() {
           .then(response => response.json())
           .then(data => {
               console.log(data);
-              setPosts(data.data);
+              setPosts(data.results);
               // setTotalPages(Math.ceil(data.count / postsPerPage));
           })
           .catch(error => console.error('Error fetching posts:', error));

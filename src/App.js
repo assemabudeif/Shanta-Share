@@ -113,10 +113,10 @@ function App() {
                         {/*<Route path="/ordershistory" element={<OrdersHistory/>}/>*/}
                         <Route path="/dashboard" element={<Dashboard/>}/>
                         <Route path='' element={<PrivateRoutes/>} >
-                            <Route path="/driver_home" element={<DriverHomePage onSave={handleSave}/>}/>
+                            {/*<Route path="/driver_home" element={<DriverHomePage onSave={handleSave}/>}/>*/}
                             <Route path="/driver-dashboard" element={<DashboardBase pages={DriverDashboardRoutes} pathName={'/dashboard'}/>}>
 
-                                <Route path={''} element={<div>Initial</div>}/>
+                                <Route path={''} element={<DriverHomePage onSave={handleSave}/>} />
                                 {/*<Route path={'summary'} element={<div>Summary</div>}/>*/}
                                 <Route path={"posts"} element={<PostsPage/>} />
                                 {/*<Route path={"posts/:id"} element={<PostDetailsPage/>}/>*/}

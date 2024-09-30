@@ -1,27 +1,33 @@
 import React, {useState} from "react";
 import CircularProgress from "./LoadingProgressCircular";
 
-function OrderItem(props = {post:{}, acceptCallback: (data) => {}, rejectCallback: (data) => {}}) {
+function OrderItem(props = {post:{}, acceptCallback: (data) => {
+    console.log(data)}, rejectCallback: (data) => {
+    console.log(data)}}) {
 
   const [acceptLoading, setAcceptLoading] = useState(false);
+  const [rejectLoading, setRejectLoading] = useState(false);
   // const [acceptLoading, setAcceptLoading] = useState(false);
 
   const handelAcceptAction = (id) => {
     setAcceptLoading(true);
-    changeStatus(id, 'in_progress', (data)=>{
+    changeStatus(id, 'accepted', (data)=>{
       props.acceptCallback(data);
       setAcceptLoading(false)}, ()=>setAcceptLoading(false));
   }
   const handelRejectAction = (id) => {
+    setRejectLoading(true);
     changeStatus(id, 'rejected', (data) => {
       props.rejectCallback(data);
-    });
+      setRejectLoading(false);
+    }, (error) => {
+      console.log(error)});
   }
 
   const changeStatus = (id, status, resolve = ()=>{}, reject = ()=>{}) => {
     const params = {
       order_id: id,
-      order_status: 'in_progress',
+      order_status: status,
     }
     const config = {
       method: 'PATCH',
@@ -84,12 +90,12 @@ function OrderItem(props = {post:{}, acceptCallback: (data) => {}, rejectCallbac
             </div>
           </div>
 
-          <div className="bg-pink-200 w-full h-full my-4">
+          <div className="{/*bg-pink-200*/} w-full h-full my-4">
             {props.post.client_notes}
           </div>
 
 
-          <div className={"bg-green-200 flex  justify-between"}>
+          <div className={"{/*bg-green-200*/} flex  justify-between"}>
             <div className="w flex items-center">
               <span className="font-bold text-lg">{props.post.client.name}</span>
               <svg className="w-6 h-6 ms-8" viewBox="0 0 32 32" fill="none"
@@ -116,7 +122,19 @@ function OrderItem(props = {post:{}, acceptCallback: (data) => {}, rejectCallbac
             </div>
             <div className={"flex  justify-between"}>
               <button
-                className="rounded-full py-2 px-12 bg-black text-white hover:shadow-gray-500 shadow-sm"
+                className="rounded-full py-2 px-12 border-red-500 border-2 text-red-600 font-semibold hover:shadow-gray-500 shadow-sm"
+                onClick={() => handelRejectAction(props.post.id)}
+              >
+                {rejectLoading
+                  ? <div className='flex items-center justify-center w-full'>
+                    <CircularProgress/>
+                  </div>
+                  : 'Reject'
+                }
+              </button>
+              <div className='w-2'/>
+              <button
+                className="rounded-full py-2 px-12 bg-emerald-500 text-white font-semibold hover:shadow-gray-500 shadow-sm"
                 onClick={() => handelAcceptAction(props.post.id)}
               >
                 {acceptLoading
@@ -134,5 +152,4 @@ function OrderItem(props = {post:{}, acceptCallback: (data) => {}, rejectCallbac
     </>
   )
 }
-
 export default OrderItem;

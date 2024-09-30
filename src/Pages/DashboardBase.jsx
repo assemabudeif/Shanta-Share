@@ -12,26 +12,17 @@ export default function DashboardBase( props= {pages: [{page: "route", title: "T
   const [orders, setOrders] = useState([]);
   const { t, i18n } = useTranslation();
 
-  // const PagesComponent = [
-  //     <div>Summary </div>,
-  //     <DashboardPosts posts={posts} setPosts={setPosts} />,
-  //     <DashBoardOrders posts={orders} setOrders={setOrders}/>,
-  //     <div>Users Page Content</div>,
-  // ];
-
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [selectedPage, setSelectedPage] = useState(
     pages.findIndex(function (page) {
       // console.log(window.location.pathname.includes(page.page));
+      console.log(page.page);
       if (page.page === "") {
         return window.location.pathname === props.pathName || window.location.pathname === props.pathName + "/";
       } else {
         return window.location.pathname.includes(page.page);
       }
-    }) /*> 0 ? pages.findIndex(function (page) {
-          // console.log(window.location.pathname.includes(page.page));
-          return window.location.pathname.includes(page.page);
-      }) : 0*/
+    })
   );
   console.log(window.location.pathname)
   // const [selectedComponent, setSelectedComponent] = useState(PagesComponent[0]);
@@ -43,14 +34,13 @@ export default function DashboardBase( props= {pages: [{page: "route", title: "T
   const ChangePage = (index) => {
     setSelectedPage(index);
     navigate(pages[index].page);
-    console.log(index);
-    console.log(selectedPage === index);
   }
   useEffect(() => {
 
   }, []);
   useEffect(() => {
     // setSelectedComponent(PagesComponent[selectedPage]);
+    console.log(selectedPage);
   }, [selectedPage]);
 
 

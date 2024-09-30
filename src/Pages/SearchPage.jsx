@@ -390,7 +390,7 @@ export default function SearchPage() {
     <div className={"col-span-3 lg:col-span-2 mt-16"}>
       <div className={"grid grid-cols-1 gap-8"}>
         {// posts.length > 0 &&
-          posts.map((post, index) => (<div className={"border-2 border-black rounded-2xl grid grid-cols-4 py-8"}>
+          posts.map((post, index) => (<div key={post.id} className={"border-2 border-black rounded-2xl grid grid-cols-4 py-8"}>
               <div className={"w-90 lg:w-64 px-10 me-8 my-8 lg:my-0 rounded-2xl"}>
                 <img src={motorcycleImage} width={"auto"} alt="car" className={"col-span-1"}/>
               </div>

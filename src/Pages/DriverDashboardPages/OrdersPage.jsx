@@ -69,8 +69,10 @@ function OrdersPage() {
     fetch(`http://127.0.0.1:8000/orders/post-orders/?${queryString}`, config)
       .then(response => response.json())
       .then(data => {
-        console.log(data)
-        setPosts(data.data);
+        console.log(data);
+        const posts = data.data.filter((post) => post.status === 'pending');
+        console.log(posts);
+        setPosts(posts);
         setLoading(false)
       })
       .catch(function (error) {
@@ -85,6 +87,7 @@ function OrdersPage() {
       `/posts/${id}`
     )
       .then((response) => {
+
         setFormData(response.data);
         setDetailsLoading(false);
       })
@@ -97,6 +100,12 @@ function OrdersPage() {
   useEffect(() => {
     console.log(formData)
   }, [formData]);
+  const handelOrderAccept = (data) => {
+    getPosts();
+  }
+  const handelOrderReject = (data) => {
+    getPosts();
+  }
   return (
     <>
           <div className="flex space-x-8 p-8">
@@ -110,8 +119,12 @@ function OrdersPage() {
                   {loading
                     ? <LoadingProgress/>
                     : posts.map((post, index) => {
-                    return (<div className="my-2">
-                        <OrderItem post={post}/>
+                    return (<div className="my-2" key={post.id}>
+                        <OrderItem
+                          post={post}
+                          acceptCallback={handelOrderAccept}
+                          rejectCallback={handelOrderReject}
+                        />
                       </div>)
                   })}
                 </div>
