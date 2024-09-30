@@ -172,7 +172,7 @@ function DashBoardPosts() {
             )}
 
             {/* Search Input */}
-            <div className="mb-4">
+            {/* <div className="mb-4">
                 <input
                     type="text"
                     value={searchTerm}
@@ -180,7 +180,7 @@ function DashBoardPosts() {
                     placeholder="Search posts"
                     className="border p-2 rounded-md w-full"
                 />
-            </div>
+            </div> */}
 
             <div>
                 {filteredPosts.length > 0 ? (
