@@ -1,35 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import axios from "axios";
 import '../CSS/users.css'
 import { AxiosInstance } from '../Network/AxiosInstance';
 import { useSelector } from 'react-redux';
 import LoadingComp from './LoadingComp';
+import { data } from 'autoprefixer';
 
 function UsersInDashboard() {
-    const [users, setUsers] = useState([]);
     const [drivers, setDrivers] = useState([]);
     const [driverCurrentPage, setDriverCurrentPage] = useState(1);
     const [driversTotalPages, setDriversTotalPages] = useState(1);
     const [clients, setClients] = useState([]);
     const [clientCurrentPage, setClientCurrentPage] = useState(1);
     const [clientsTotalPages, setClientsTotalPages] = useState(1);
-    const [isModalVisible, setIsModalVisible] = useState(false);
-    const [editingUser, setEditingUser] = useState(null);
     const [alert, setAlert] = useState({ message: '', type: '', visible: false });
     const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
     const [userToDelete, setUserToDelete] = useState(null);
-    const [isFormVisible, setIsFormVisible] = useState(false);
     const [userType, setUserType] = useState('driver');
-    const [form, setForm] = useState({
-        id: '',
-        name: '',
-        first_name: '',
-        last_name: '',
-        email: '',
-        phone_numbers: '',
-        average_rating: '',
-        user_type: ''
-    });
+    const [driverEditUser, setDriverEditUser] = useState(null);
+    const [clientEditUser, setClientEditUser] = useState(null);
     const loader = useSelector(state => state.loader.loader);
 
     const GetDrivers = () => {
@@ -85,55 +73,6 @@ function UsersInDashboard() {
         GetClients();
     }, []);
 
-    const handleEdit = (user) => {
-        setIsModalVisible(true);
-        setEditingUser(user);
-        setForm({
-            id: user.id,
-            first_name: user.first_name || '',
-            last_name: user.last_name || '',
-            email: user.email || '',
-            phone_numbers: user.phone_numbers.map(phone => phone.phone_number).join(', ') || '',
-            average_rating: user.average_rating || '',
-            user_type: user.user_type || ''
-        });
-    };
-
-
-    const handleFormChange = (e) => {
-        const { name, value } = e.target;
-        setForm(prevForm => ({
-            ...prevForm,
-            [name]: value
-        }));
-    };
-
-
-    const handleFormSubmit = (e) => {
-        e.preventDefault();
-        const token = localStorage.getItem("token");
-
-        axios.patch(`http://localhost:8000/users/${form.user_type.toLowerCase()}-profile/${form.id}`, form, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            }
-        })
-            .then((response) => {
-                console.log("User updated successfully", response.data.data);
-                if (response.ok) {
-                    showAlert('User updated successfully', 'success');
-                } else {
-                    showAlert('Error updated user', 'error');
-                }
-
-                setIsModalVisible(false);
-            })
-            .catch((error) => {
-                console.error("Error updating user:", error);
-            });
-    };
-
-
     //    =================================== delete ======================
     const DeleteDriver = (user) => {
         setIsDeleteModalVisible(true);
@@ -173,6 +112,51 @@ function UsersInDashboard() {
             });
     };
 
+    //   =================================== Edit ======================
+
+    const EditDriver = () => {
+        console.log("driverEditForm", driverEditUser);
+
+        AxiosInstance.patch(`/users/driver-profile/${driverEditUser.id}`, data = {
+            name: driverEditUser.name,
+            email: driverEditUser.email,
+            phone_numbers: driverEditUser.phone_numbers,
+            average_rating: driverEditUser.average_rating,
+            address_line: driverEditUser.address_line,
+        })
+            .then((response) => {
+                console.log("User updated successfully", response.data.data);
+                showAlert('User updated successfully', 'success');
+                GetDrivers();
+                setDriverEditUser(null);
+            })
+            .catch((error) => {
+                console.error("Error updating user:", error);
+                showAlert('Error updated user', 'error');
+            });
+    };
+
+
+    const EditClient = () => {
+        console.log("clientEditForm", clientEditUser);
+
+        AxiosInstance.patch(`/users/client-profile/${clientEditUser.id}`, data = {
+            name: clientEditUser.name,
+            email: clientEditUser.email,
+            phone_numbers: clientEditUser.phone_numbers,
+            address_line: clientEditUser.address_line,
+        })
+            .then((response) => {
+                console.log("User updated successfully", response.data.data);
+                showAlert('User updated successfully', 'success');
+                GetClients();
+                setClientEditUser(null);
+            })
+            .catch((error) => {
+                console.error("Error updating user:", error);
+                showAlert('Error updated user', 'error');
+            });
+    };
 
     const driversPaginate = (pageNumber) => setDriverCurrentPage(pageNumber);
     const clientsPaginate = (pageNumber) => setClientCurrentPage(pageNumber);
@@ -224,194 +208,249 @@ function UsersInDashboard() {
                 <br />
                 <br />
 
-                {!isFormVisible && (
-                    <div>
-                        {
-                            userType === 'driver' ? (
-                                <>
-                                    <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
-                                        <thead className="bg-gray-100">
-                                            <tr>
-                                                <th className="border-b px-4 py-2 text-left text-lg font-medium text-gray-700 uppercase tracking-wider">Name</th>
-                                                <th className="border-b px-4 py-2 text-left text-lg font-medium text-gray-700 uppercase tracking-wider">Email</th>
-                                                <th className="border-b px-4 py-2 text-left text-lg font-medium text-gray-700 uppercase tracking-wider">Mobile</th>
-                                                <th className="border-b px-4 py-2 text-left text-lg font-medium text-gray-700 uppercase tracking-wider">Government</th>
-                                                <th className="border-b px-4 py-2 text-left text-lg font-medium text-gray-700 uppercase tracking-wider">City</th>
-                                                <th className="border-b px-4 py-2 text-left text-lg font-medium text-gray-700 uppercase tracking-wider">Address Line</th>
-                                                <th className="border-b px-4 py-2 text-left text-lg font-medium text-gray-700 uppercase tracking-wider">Rating</th>
-                                                <th className="border-b px-4 py-2 text-left text-lg font-medium text-gray-700 uppercase tracking-wider">Action</th>
+                <div>
+                    {
+                        userType === 'driver' ? (
+                            <>
+                                <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+                                    <thead className="bg-gray-100">
+                                        <tr>
+                                            <th className="border-b px-4 py-2 text-left text-lg font-medium text-gray-700 uppercase tracking-wider">Name</th>
+                                            <th className="border-b px-4 py-2 text-left text-lg font-medium text-gray-700 uppercase tracking-wider">Email</th>
+                                            <th className="border-b px-4 py-2 text-left text-lg font-medium text-gray-700 uppercase tracking-wider">Mobile</th>
+                                            <th className="border-b px-4 py-2 text-left text-lg font-medium text-gray-700 uppercase tracking-wider">Government</th>
+                                            <th className="border-b px-4 py-2 text-left text-lg font-medium text-gray-700 uppercase tracking-wider">City</th>
+                                            <th className="border-b px-4 py-2 text-left text-lg font-medium text-gray-700 uppercase tracking-wider">Address Line</th>
+                                            <th className="border-b px-4 py-2 text-left text-lg font-medium text-gray-700 uppercase tracking-wider">Rating</th>
+                                            <th className="border-b px-4 py-2 text-left text-lg font-medium text-gray-700 uppercase tracking-wider">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-gray-200">
+                                        {drivers.map(user => (
+                                            <tr key={user.id} className='cursor-pointer'>
+                                                <td className="px-4 py-2 text-sm text-gray-800">{user.name}</td>
+                                                <td className="px-4 py-2 text-sm text-gray-800">{user.email}</td>
+                                                <td className="px-4 py-2 text-lg text-gray-800">{user.phone_numbers.map(phone => extractPhoneNumber(phone.phone_number)).join(', ')}</td>
+                                                <td className="px-4 py-2 text-sm text-gray-800">{user.city_ids[0].government.name}</td>
+                                                <td className="px-4 py-2 text-sm text-gray-800">{user.city_ids[0].name}</td>
+                                                <td className="px-4 py-2 text-sm text-gray-800">{user.address_line}</td>
+                                                <td className="px-4 py-2 text-sm text-gray-800">{user.average_rating}</td>
+
+                                                <td className="px-4 py-2 text-sm text-gray-800 flex space-x-2">
+                                                    <button className="text-white px-2 py-1 rounded-md bg-yellow-500" onClick={() => setDriverEditUser(user)}>Edit</button>
+                                                    <button className="bg-red-500 text-white px-2 py-1 rounded-md" onClick={() => DeleteDriver(user)}>Delete</button>
+                                                </td>
                                             </tr>
-                                        </thead>
-                                        <tbody className="divide-y divide-gray-200">
-                                            {drivers.map(user => (
-                                                <tr key={user.id} className='cursor-pointer'>
-                                                    <td className="px-4 py-2 text-sm text-gray-800">{user.name}</td>
-                                                    <td className="px-4 py-2 text-sm text-gray-800">{user.email}</td>
-                                                    <td className="px-4 py-2 text-lg text-gray-800">{user.phone_numbers.map(phone => extractPhoneNumber(phone.phone_number)).join(', ')}</td>
-                                                    <td className="px-4 py-2 text-sm text-gray-800">{user.city_ids[0].government.name}</td>
-                                                    <td className="px-4 py-2 text-sm text-gray-800">{user.city_ids[0].name}</td>
-                                                    <td className="px-4 py-2 text-sm text-gray-800">{user.address_line}</td>
-                                                    <td className="px-4 py-2 text-sm text-gray-800">{user.average_rating}</td>
-
-                                                    <td className="px-4 py-2 text-sm text-gray-800 flex space-x-2">
-                                                        <button className="text-white px-2 py-1 rounded-md bg-yellow-500" onClick={() => handleEdit(user)}>Edit</button>
-                                                        <button className="bg-red-500 text-white px-2 py-1 rounded-md" onClick={() => DeleteDriver(user)}>Delete</button>
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                    <div className="mt-4 flex justify-center">
-                                        <button
-                                            onClick={() => driversPaginate(driverCurrentPage - 1)}
-                                            disabled={driverCurrentPage === 1}
-                                            className="py-1 px-3 mx-1 bg-gray-200 text-gray-700 rounded-md"
-                                        >
-                                            Prev
-                                        </button>
-                                        {[...Array(driversTotalPages).keys()].map(pageNumber => (
-                                            <button
-                                                key={pageNumber + 1}
-                                                onClick={() => driversPaginate(pageNumber + 1)}
-                                                className={`py-1 px-3 mx-1 ${driverCurrentPage === pageNumber + 1 ? 'bg-black text-white' : 'bg-gray-200 text-gray-700'} rounded-md`}
-                                            >
-                                                {pageNumber + 1}
-                                            </button>
                                         ))}
+                                    </tbody>
+                                </table>
+                                <div className="mt-4 flex justify-center">
+                                    <button
+                                        onClick={() => driversPaginate(driverCurrentPage - 1)}
+                                        disabled={driverCurrentPage === 1}
+                                        className="py-1 px-3 mx-1 bg-gray-200 text-gray-700 rounded-md"
+                                    >
+                                        Prev
+                                    </button>
+                                    {[...Array(driversTotalPages).keys()].map(pageNumber => (
                                         <button
-                                            onClick={() => driversPaginate(driverCurrentPage + 1)}
-                                            disabled={driverCurrentPage === driversTotalPages}
-                                            className="py-1 px-3 mx-1 bg-gray-200 text-gray-700 rounded-md"
+                                            key={pageNumber + 1}
+                                            onClick={() => driversPaginate(pageNumber + 1)}
+                                            className={`py-1 px-3 mx-1 ${driverCurrentPage === pageNumber + 1 ? 'bg-black text-white' : 'bg-gray-200 text-gray-700'} rounded-md`}
                                         >
-                                            Next
+                                            {pageNumber + 1}
                                         </button>
-                                    </div>
-                                </>
-                            ) : (
-                                <>
-                                    <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
-                                        <thead className="bg-gray-100">
-                                            <tr>
-                                                <th className="border-b px-4 py-2 text-left text-lg font-medium text-gray-700 uppercase tracking-wider">Name</th>
-                                                <th className="border-b px-4 py-2 text-left text-lg font-medium text-gray-700 uppercase tracking-wider">Email</th>
-                                                <th className="border-b px-4 py-2 text-left text-lg font-medium text-gray-700 uppercase tracking-wider">Mobile</th>
-                                                <th className="border-b px-4 py-2 text-left text-lg font-medium text-gray-700 uppercase tracking-wider">Government</th>
-                                                <th className="border-b px-4 py-2 text-left text-lg font-medium text-gray-700 uppercase tracking-wider">City</th>
-                                                <th className="border-b px-4 py-2 text-left text-lg font-medium text-gray-700 uppercase tracking-wider">Address Line</th>
-                                                <th className="border-b px-4 py-2 text-left text-lg font-medium text-gray-700 uppercase tracking-wider">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody className="divide-y divide-gray-200">
-                                            {clients.map(user => (
-                                                <tr key={user.id} className='cursor-pointer'>
-                                                    <td className="px-4 py-2 text-lg text-gray-800">{user.name}</td>
-                                                    <td className="px-4 py-2 text-lg text-gray-800">{user.email}</td>
-                                                    <td className="px-4 py-2 text-lg text-gray-800">{user.phone_numbers.map(phone => extractPhoneNumber(phone.phone_number)).join(', ')}</td>
-                                                    <td className="px-4 py-2 text-lg text-gray-800">{user.city_ids[0].government.name}</td>
-                                                    <td className="px-4 py-2 text-lg text-gray-800">{user.city_ids[0].name}</td>
-                                                    <td className="px-4 py-2 text-lg text-gray-800">{user.address_line}</td>
-                                                    <td className="px-4 py-2 text-sm text-gray-800 flex space-x-2">
-                                                        <button className="text-white px-2 py-1 rounded-md bg-yellow-500" onClick={() => handleEdit(user)}>Edit</button>
-                                                        <button className="bg-red-500 text-white px-2 py-1 rounded-md" onClick={() => DeleteClient(user)}>Delete</button>
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-
-                                    <div className="mt-4 flex justify-center">
-                                        <button
-                                            onClick={() => clientsPaginate(clientCurrentPage - 1)}
-                                            disabled={clientCurrentPage === 1}
-                                            className="py-1 px-3 mx-1 bg-gray-200 text-gray-700 rounded-md"
-                                        >
-                                            Prev
-                                        </button>
-                                        {[...Array(clientsTotalPages).keys()].map(pageNumber => (
-                                            <button
-                                                key={pageNumber + 1}
-                                                onClick={() => clientsPaginate(pageNumber + 1)}
-                                                className={`py-1 px-3 mx-1 ${clientCurrentPage === pageNumber + 1 ? 'bg-black text-white' : 'bg-gray-200 text-gray-700'} rounded-md`}
-                                            >
-                                                {pageNumber + 1}
-                                            </button>
-                                        ))}
-                                        <button
-                                            onClick={() => clientsPaginate(clientCurrentPage + 1)}
-                                            disabled={clientCurrentPage === clientsTotalPages}
-                                            className="py-1 px-3 mx-1 bg-gray-200 text-gray-700 rounded-md"
-                                        >
-                                            Next
-                                        </button>
-                                    </div>
-                                </>
-                            )
-                        }
-                    </div>
-                )}
-
-                {/* Modal for Editing */}
-                {isModalVisible && (
-                    <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-                        <div className="bg-white rounded-lg p-6 w-1/3">
-                            <h2 className="text-3xl mb-4 items-center"><center><strong>Edit User</strong></center></h2>
-                            <form onSubmit={handleFormSubmit}>
-                                <input
-                                    type="text"
-                                    name="name"
-                                    value={form.name}
-                                    onChange={handleFormChange}
-                                    placeholder="Name"
-                                    className="border p-2 w-full mb-2"
-                                />
-                                <input
-                                    type="text"
-                                    name="first_name"
-                                    value={form.first_name}
-                                    onChange={handleFormChange}
-                                    placeholder="First Name"
-                                    className="border p-2 w-full mb-2"
-                                />
-                                <input
-                                    type="text"
-                                    name="last_name"
-                                    value={form.last_name}
-                                    onChange={handleFormChange}
-                                    placeholder="Last Name"
-                                    className="border p-2 w-full mb-2"
-                                />
-                                <input
-                                    type="email"
-                                    name="email"
-                                    value={form.email}
-                                    onChange={handleFormChange}
-                                    placeholder="Email"
-                                    className="border p-2 w-full mb-2"
-                                />
-                                <input
-                                    type="text"
-                                    name="phone_numbers"
-                                    value={form.phone_numbers}
-                                    onChange={handleFormChange}
-                                    placeholder="Phone Numbers"
-                                    className="border p-2 w-full mb-2"
-                                />
-                                {/* {form.user_type =='DRIVER' &&(<input
-                                type="text"
-                                name="average_rating"
-                                value={form.average_rating}
-                                onChange={handleFormChange}
-                                placeholder="Average Rating"
-                                className="border p-2 w-full mb-2"
-                            />)} */}
-                                <div className="flex justify-between items-center space-x-2">
-                                    <button type="submit" className="bg-green-500 text-white py-2 px-4 rounded-lg">Save</button>
-                                    <button type="button" className="bg-gray-500 text-white py-2 px-4 rounded-lg" onClick={() => setIsModalVisible(false)}>Cancel</button>
+                                    ))}
+                                    <button
+                                        onClick={() => driversPaginate(driverCurrentPage + 1)}
+                                        disabled={driverCurrentPage === driversTotalPages}
+                                        className="py-1 px-3 mx-1 bg-gray-200 text-gray-700 rounded-md"
+                                    >
+                                        Next
+                                    </button>
                                 </div>
-                            </form>
-                        </div>
-                    </div>
-                )}
+
+                                <br />
+                                <br />
+
+                                {
+                                    driverEditUser && (
+                                        <>
+                                            <h3 className="text-2xl font-bold mb-4">
+                                                Edit Driver
+                                            </h3>
+                                            <form>
+                                                <label className="block text-gray-700 mb-2">Name</label>
+                                                <input
+                                                    type="text"
+                                                    value={driverEditUser.name}
+                                                    placeholder='Enter Name'
+                                                    onChange={(e) => setDriverEditUser({ ...driverEditUser, name: e.target.value })}
+                                                    className="border rounded-lg py-2 px-4 w-full mb-4"
+                                                />
+
+                                                <label className="block text-gray-700 mb-2">Email</label>
+                                                <input
+                                                    type="email"
+                                                    value={driverEditUser.email}
+                                                    placeholder='Enter Email'
+                                                    onChange={(e) => setDriverEditUser({ ...driverEditUser, email: e.target.value })}
+                                                    className="border rounded-lg py-2 px-4 w-full mb-4"
+                                                />
+
+                                                <label className="block text-gray-700 mb-2">Mobile</label>
+                                                <input
+                                                    type="text"
+                                                    value={driverEditUser.phone_numbers[0].phone_number}
+                                                    placeholder='Enter Mobile'
+                                                    onChange={(e) => setDriverEditUser({ ...driverEditUser, phone_numbers: [{ phone_number: e.target.value }] })}
+                                                    className="border rounded-lg py-2 px-4 w-full mb-4"
+                                                />
+
+
+                                                <label className="block text-gray-700 mb-2">Address Line</label>
+                                                <input
+                                                    type="text"
+                                                    value={driverEditUser.address_line}
+                                                    placeholder='Enter Address Line'
+                                                    onChange={(e) => setDriverEditUser({ ...driverEditUser, address: e.target.value })}
+                                                    className="border rounded-lg py-2 px-4 w-full mb-4"
+                                                />
+
+                                                <label className="block text-gray-700 mb-2">Rating</label>
+                                                <input
+                                                    type="number"
+                                                    value={driverEditUser.average_rating}
+                                                    placeholder='Enter Rating'
+                                                    onChange={(e) => setDriverEditUser({ ...driverEditUser, average_rating: e.target.value })}
+                                                    className="border rounded-lg py-2 px-4 w-full mb-8"
+                                                />
+
+                                                <button className="bg-blue-950 hover:bg-blue-700 text-white font-bold py-2 px-4 me-2 rounded" onClick={EditDriver}>Save</button>
+                                                <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onClick={() => setDriverEditUser(null)}>Cancel</button>
+
+                                            </form>
+                                        </>
+                                    )
+                                }
+                            </>
+                        ) : (
+                            <>
+                                <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+                                    <thead className="bg-gray-100">
+                                        <tr>
+                                            <th className="border-b px-4 py-2 text-left text-lg font-medium text-gray-700 uppercase tracking-wider">Name</th>
+                                            <th className="border-b px-4 py-2 text-left text-lg font-medium text-gray-700 uppercase tracking-wider">Email</th>
+                                            <th className="border-b px-4 py-2 text-left text-lg font-medium text-gray-700 uppercase tracking-wider">Mobile</th>
+                                            <th className="border-b px-4 py-2 text-left text-lg font-medium text-gray-700 uppercase tracking-wider">Government</th>
+                                            <th className="border-b px-4 py-2 text-left text-lg font-medium text-gray-700 uppercase tracking-wider">City</th>
+                                            <th className="border-b px-4 py-2 text-left text-lg font-medium text-gray-700 uppercase tracking-wider">Address Line</th>
+                                            <th className="border-b px-4 py-2 text-left text-lg font-medium text-gray-700 uppercase tracking-wider">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-gray-200">
+                                        {clients.map(user => (
+                                            <tr key={user.id} className='cursor-pointer'>
+                                                <td className="px-4 py-2 text-lg text-gray-800">{user.name}</td>
+                                                <td className="px-4 py-2 text-lg text-gray-800">{user.email}</td>
+                                                <td className="px-4 py-2 text-lg text-gray-800">{user.phone_numbers.map(phone => extractPhoneNumber(phone.phone_number)).join(', ')}</td>
+                                                <td className="px-4 py-2 text-lg text-gray-800">{user.city_ids[0].government.name}</td>
+                                                <td className="px-4 py-2 text-lg text-gray-800">{user.city_ids[0].name}</td>
+                                                <td className="px-4 py-2 text-lg text-gray-800">{user.address_line}</td>
+                                                <td className="px-4 py-2 text-sm text-gray-800 flex space-x-2">
+                                                    <button className="text-white px-2 py-1 rounded-md bg-yellow-500" onClick={() => setClientEditUser(user)}>Edit</button>
+                                                    <button className="bg-red-500 text-white px-2 py-1 rounded-md" onClick={() => DeleteClient(user)}>Delete</button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+
+                                <div className="mt-4 flex justify-center">
+                                    <button
+                                        onClick={() => clientsPaginate(clientCurrentPage - 1)}
+                                        disabled={clientCurrentPage === 1}
+                                        className="py-1 px-3 mx-1 bg-gray-200 text-gray-700 rounded-md"
+                                    >
+                                        Prev
+                                    </button>
+                                    {[...Array(clientsTotalPages).keys()].map(pageNumber => (
+                                        <button
+                                            key={pageNumber + 1}
+                                            onClick={() => clientsPaginate(pageNumber + 1)}
+                                            className={`py-1 px-3 mx-1 ${clientCurrentPage === pageNumber + 1 ? 'bg-black text-white' : 'bg-gray-200 text-gray-700'} rounded-md`}
+                                        >
+                                            {pageNumber + 1}
+                                        </button>
+                                    ))}
+                                    <button
+                                        onClick={() => clientsPaginate(clientCurrentPage + 1)}
+                                        disabled={clientCurrentPage === clientsTotalPages}
+                                        className="py-1 px-3 mx-1 bg-gray-200 text-gray-700 rounded-md"
+                                    >
+                                        Next
+                                    </button>
+                                </div>
+                                <br />
+                                <br />
+
+                                {
+                                    clientEditUser && (
+                                        <>
+                                            <h3 className="text-2xl font-bold mb-4">
+                                                Edit Client
+                                            </h3>
+                                            <form>
+                                                <label className="block text-gray-700 mb-2">Name</label>
+                                                <input
+                                                    type="text"
+                                                    value={clientEditUser.name}
+                                                    placeholder='Enter Name'
+                                                    onChange={(e) => setClientEditUser({ ...clientEditUser, name: e.target.value })}
+                                                    className="border rounded-lg py-2 px-4 w-full mb-4"
+                                                />
+
+                                                <label className="block text-gray-700 mb-2">Email</label>
+                                                <input
+                                                    type="email"
+                                                    value={clientEditUser.email}
+                                                    placeholder='Enter Email'
+                                                    onChange={(e) => setClientEditUser({ ...clientEditUser, email: e.target.value })}
+                                                    className="border rounded-lg py-2 px-4 w-full mb-4"
+                                                />
+
+                                                <label className="block text-gray-700 mb-2">Mobile</label>
+                                                <input
+                                                    type="text"
+                                                    value={clientEditUser.phone_numbers[0].phone_number}
+                                                    placeholder='Enter Mobile'
+                                                    onChange={(e) => setClientEditUser({ ...clientEditUser, phone_numbers: [{ phone_number: e.target.value }] })}
+                                                    className="border rounded-lg py-2 px-4 w-full mb-4"
+                                                />
+
+
+                                                <label className="block text-gray-700 mb-2">Address Line</label>
+                                                <input
+                                                    type="text"
+                                                    value={clientEditUser.address_line}
+                                                    placeholder='Enter Address Line'
+                                                    onChange={(e) => setClientEditUser({ ...clientEditUser, address: e.target.value })}
+                                                    className="border rounded-lg py-2 px-4 w-full mb-4"
+                                                />
+
+
+                                                <button className="bg-blue-950 hover:bg-blue-700 text-white font-bold py-2 px-4 me-2 rounded" onClick={EditClient}>Save</button>
+                                                <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onClick={() => setClientEditUser(null)}>Cancel</button>
+
+                                            </form>
+                                        </>
+                                    )
+                                }
+                            </>
+                        )
+                    }
+                </div>
+
                 {/* Modal for deleting */}
                 {isDeleteModalVisible && (
                     <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
