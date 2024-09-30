@@ -362,9 +362,17 @@ function PostDetailsPage(props) {
 
                                     <button
                                         onClick={() => handleRequest()}
-                                        className={"w-full py-4 bg-black text-white font-semibold text-2xl rounded-2xl shadow-lg hover:bg-black hover:bg-opacity-85"}>
+                                        className={"w-full py-4 bg-black text-white font-semibold text-2xl rounded-2xl shadow-lg hover:bg-black hover:bg-opacity-85 disabled:bg-gray-500"}
+                                        disabled={!localStorage.getItem('token')}
+                                    >
                                         {t("postPage.RequestDelivery")}
                                     </button>
+                                    {
+                                        !localStorage.getItem('token') &&
+                                      <div className='w-full pt-4 text-red-500 font-semibold text-center'>
+                                          <p>Login Required</p>
+                                      </div>
+                                    }
                                 </div>
                             </>
                         )

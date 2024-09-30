@@ -1,6 +1,6 @@
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import { Link, useNavigate } from 'react-router-dom';
+import {Link, Navigate, NavLink, useNavigate} from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -44,9 +44,11 @@ export default function NavBarComp({ isLoggedIn, onLogout }) {
                         </DisclosureButton>
                     </div>
                     <div className="flex flex-1 items-center justify-center md:items-stretch md:justify-start">
-                        <div className="flex flex-shrink-0 items-center">
-                            <h1 className="text-2xl text-white">{t('navbar.shantaShare')}</h1>
-                        </div>
+                        <NavLink to={'/'}>
+                            <div className="flex flex-shrink-0 items-center">
+                                <h1 className="text-2xl text-white">{t('navbar.shantaShare')}</h1>
+                            </div>
+                        </NavLink>
                         <div className="hidden sm:ms-6 md:block">
                             <div className="flex space-x-4">
                                 {navigation.map((item) => (
@@ -77,7 +79,7 @@ export default function NavBarComp({ isLoggedIn, onLogout }) {
                         ) : (
                             <>
                                 <Link
-                                    to={`${user_type === 'DRIVER' ? '/myaccount' : user_type === 'CLIENT' ? '/ordershistory' : '/dashboard'}`}
+                                    to={`${user_type === 'DRIVER' ? '/driver-dashboard' : user_type === 'CLIENT' ? '/client-dashboard' : '/dashboard'}`}
                                     className="text-white font-semibold">
                                     <div className='h-12 w-12 bg-white rounded-full'>
                                         {

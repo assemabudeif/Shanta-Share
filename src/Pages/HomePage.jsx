@@ -1,8 +1,9 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { Link } from "react-router-dom";
 
 function HomePage() {
 
+  const [allLocations, setAllLocations] = useState([]);
   const [locationsList, setLocationsList] = useState([
     'Maadi, Kornaish Al-Nile, Cairo.',
     'Madinaty, New Cairo, Cairo gov.',
@@ -14,6 +15,39 @@ function HomePage() {
     'Madinaty, New Cairo, Cairo gov.',
     ' Manshiat Nasser, Cairo gov.'
   ]);
+
+  const handelLocationInputChange = (e) => {
+    setLocationsList(
+      allLocations.filter((location) => {
+        return location?.name?.includes(e.target.value)
+      })
+    );
+  }
+
+  const handelDestinationInputChange = (e) => {
+    setDestinationsList(
+      allLocations.filter((location) => {
+        return location?.name?.includes(e.target.value)
+      })
+    );
+  }
+
+  const fetchGovernments = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/governments/');
+      const data = await response.json();
+      setAllLocations(data);
+      setDestinationsList(data);
+      setLocationsList(data);
+    } catch (error) {
+      console.error('Error fetching governments:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchGovernments();
+  }, []);
+
   const [destinationsListVisible, setDestinationsListVisible] = useState(false);
   return (
     <>
@@ -75,8 +109,8 @@ function HomePage() {
                   }}
                   onBlur={() => {
                     setLocationsListVisible(() => false)
-
                   }}
+                  onChange={handelLocationInputChange}
                   className='
                   block w-3/4 rounded-md
                   border-0 py-3 pl-7 pr-20
@@ -93,7 +127,7 @@ function HomePage() {
                       {locationsList.map((location) =>
                         <li
                           className="p-4 border-b-2 border-gray-100 relative cursor-pointer hover:bg-gray-100 hover:text-gray-900">
-                          {location}
+                          {location?.name}
                         </li>
                       )}
                     </ul>
@@ -113,6 +147,7 @@ function HomePage() {
                     setDestinationsListVisible(() => false)
 
                   }}
+                  onChange={handelDestinationInputChange}
                   className='
                   block w-3/4 rounded-md
                   border-0 py-3 pl-7 pr-20
@@ -129,7 +164,7 @@ function HomePage() {
                       {destinationsList.map((location) =>
                         <li
                           className="p-4 border-b-2 border-gray-100 relative cursor-pointer hover:bg-gray-100 hover:text-gray-900">
-                          {location}
+                          <p>{location?.name}</p>
                         </li>
                       )}
                     </ul>

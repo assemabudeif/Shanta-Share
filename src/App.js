@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 // import DriverProfile from './components/driverProfile';
 import CustomerViewProfile from './Components/customerViewProfile';
 // import DriverViewProfile from './Components/driverVeiwProfile';
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
 import HomePage from "./Pages/HomePage";
 import PostDetailsPage from "./Pages/PostDetailsPage";
 import PageNotFound from "./Pages/PageNotFound";
@@ -96,10 +96,11 @@ function App() {
                         <Route path="/" element={user_type === 'DRIVER' ? <DriverHomePage /> : user_type === 'ADMIN' ?
                             <Dashboard /> : <HomePage />} />
                         <Route path={'/about'} element={<AboutUs />} />
-
                         <Route path="/search" element={<SearchPage />} />
-                        <Route path='/register' element={<RegistrationForm />} />
-                        <Route path='/login' element={<Login />} />
+
+                        <Route path='/register' element={localStorage.getItem('token') ? <Navigate to={'/'} /> : <RegistrationForm />} />
+                        <Route path='/login' element={localStorage.getItem('token') ? <Navigate to={'/'} /> : <Login />} />
+
                         {/*<Route path='/loginStep2'*/}
                         {/*       element={<LoginStep2/>}/>/!* <Route path="/reviewCard" element={<ReviewCard />} /> *!/*/}
                         <Route path="/reviewList" element={<ReviewsList/>}/>
