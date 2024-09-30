@@ -202,8 +202,44 @@
           "Prev":"Prev",
           "Next":"Next",
           "Price":"Price",
-          "Destination":"Destination" 
+          "Destination":"Destination"
+        },
+    
+           "shipping_all_over_egypt": "Shipping All Over Egypt",
+            "request_ride": "Request a Ride",
+            "enter_location": "Enter Location",
+            "enter_destination": "Enter Destination",
+            "see_prices": "See Prices",
+            "our_services": "Our Services",
+            "for_clients": "For Clients",
+            "for_drivers": "For Drivers",
+            "for_companies": "For Companies",
+            "ship_anything": "Ship anything, anytime.",
+            "increase_income": "Increase your income.",
+            "ship_products": "Ship your products quickly.",
+            "deliver_when_you_want": "Deliver When You Want",
+            "connect_with_clients": "Connect with clients instantly",
+            "start_now": "Start Now",
+
+            "footer_title": "Shanta Share",
+            "footer_copyright": "Shanta Share, All Rights Reserved",
+            "footer_home": "Home",
+            "footer_about": "About Us",
+
+
+            "about_us_title": "About Us",
+            "about_us_description": "Shanta Share is a platform that connects drivers with clients to facilitate the delivery of products from city to city across Egypt. Our mission is to provide fast, reliable, and affordable transportation services that make it easier for people to send and receive goods safely.",
+            "about_us_mission_title": "Our Mission",
+            "about_us_mission_description": "We reimagine the way products move across cities. Our goal is to provide a seamless experience for clients looking to transport goods while empowering drivers with more opportunities to earn.",
+            "about_us_values_title": "Our Values",
+            "about_us_value_reliability": "Reliability: We ensure timely and dependable deliveries.",
+            "about_us_value_safety": "Safety: Both our drivers and clients' products are our top priority.",
+            "about_us_value_efficiency": "Efficiency: We make city-to-city deliveries more accessible and cost-effective.",
+            "about_us_value_sustainability": "Sustainability: We aim to make our operations environmentally friendly by optimizing routes and promoting fuel efficiency.",
+            "about_us_services_title": "What We Offer",
+            "about_us_services_description": "We connect clients with drivers for the delivery of products across Egypt, helping bridge the gap between supply and demand, whether it’s personal deliveries or commercial transport needs."
           }
-  
-}
+
+
+      
   
