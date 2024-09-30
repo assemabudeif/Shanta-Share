@@ -5,6 +5,7 @@ import ReviewCard from './reviewCard';
 // import AddReview from './addReview';
 import '../../CSS/reviewCard.css';
 import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/20/solid';
+import { AxiosInstance } from '../../Network/AxiosInstance';
 
 const ReviewsList = () => {
   const [reviews, setReviews] = useState([]);
@@ -13,22 +14,17 @@ const ReviewsList = () => {
   // useEffect(() => {
   //   setReviews(Data.reviews);
   // }, []);
-  useEffect(() => {
-    const token = localStorage.getItem("token"); 
+  // useEffect(() => {
+  //   AxiosInstance.get("/reviews/reviews/")
+  //     .then((response) => {
+  //       console.log(response.data);
+  //       setReviews(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching data:", error);
+  //     });
+  // }, []);
 
-    axios.get("http://localhost:8000/reviews/reviews/", {
-      headers: {
-        Authorization: `Bearer ${token}`, 
-      }
-    })
-    .then((response) => {
-      console.log(response.data);
-      setReviews(response.data);
-    })
-    .catch((error) => {
-      console.error("Error fetching data:", error);
-    });
-  }, []);
   const handleScrollLeft = () => {
     if (sliderRef.current) {
       sliderRef.current.scrollBy({ left: -300, behavior: 'smooth' });
