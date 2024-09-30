@@ -7,23 +7,33 @@ import '../../CSS/reviewCard.css';
 import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/20/solid';
 import { AxiosInstance } from '../../Network/AxiosInstance';
 
-const ReviewsList = () => {
+const ReviewsList = ({ driver_id }) => {
   const [reviews, setReviews] = useState([]);
   const sliderRef = useRef(null);
 
   // useEffect(() => {
   //   setReviews(Data.reviews);
   // }, []);
-  // useEffect(() => {
-  //   AxiosInstance.get("/reviews/reviews/")
-  //     .then((response) => {
-  //       console.log(response.data);
-  //       setReviews(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error fetching data:", error);
-  //     });
-  // }, []);
+
+  const GetReviews = () => {
+    axios.get("http://127.0.0.1:8000/reviews/reviews/", {
+      params: {
+        driver_id: driver_id
+      },
+    })
+      .then((response) => {
+        console.log(response.data);
+        setReviews(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }
+
+  useEffect(() => {
+    GetReviews();
+  }, []);
+
 
   const handleScrollLeft = () => {
     if (sliderRef.current) {

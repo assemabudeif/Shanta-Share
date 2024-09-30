@@ -19,8 +19,11 @@ function UsersInDashboard() {
     const [driverEditUser, setDriverEditUser] = useState(null);
     const [clientEditUser, setClientEditUser] = useState(null);
     const loader = useSelector(state => state.loader.loader);
+    const [loading, setLoading] = useState(false);
+
 
     const GetDrivers = () => {
+        setLoading(true);
         AxiosInstance.get("/users/driver-profile/list", {
             params: {
                 page: driverCurrentPage
@@ -40,11 +43,12 @@ function UsersInDashboard() {
             })
             .catch((error) => {
                 console.error("Error fetching data:", error);
-            });
+            }).finally(() => setLoading(false));
     }
 
 
     const GetClients = () => {
+        setLoading(true);
         AxiosInstance.get("/users/client-profile/list", {
             params: {
                 page: clientCurrentPage
@@ -64,7 +68,7 @@ function UsersInDashboard() {
             })
             .catch((error) => {
                 console.error("Error fetching data:", error);
-            });
+            }).finally(() => setLoading(false));
     }
 
 
@@ -174,7 +178,7 @@ function UsersInDashboard() {
         return match ? match[1] : phoneStr;
     };
 
-    if (loader) {
+    if (loader || loading) {
         return (
             <LoadingComp />
         )

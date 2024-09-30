@@ -49,7 +49,7 @@ function DriverProfile() {
       <CustomerViewProfile driverData={driverData} carData={carData} />
       {/* <AddReview/> */}
       <h1 className="mt-20 mb-10 text-black reviewTitle">{t("driverProfile.Reviews")}</h1>
-      <ReviewsList />
+      <ReviewsList driver_id={params.id} />
     </main>
   );
 } export default DriverProfile

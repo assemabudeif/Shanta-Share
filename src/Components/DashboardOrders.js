@@ -17,8 +17,10 @@ function DashBoardOrders() {
     const [orderIdToDelete, setOrderIdToDelete] = useState(null);
     const token = localStorage.getItem("token");
     const loader = useSelector(state => state.loader.loader);
+    const [loading, setLoading] = useState(false);
 
     const fetchOrders = () => {
+        setLoading(true);
         AxiosInstance.get('/orders/admin/orders', {
             params: {
                 page: currentPage
@@ -42,7 +44,9 @@ function DashBoardOrders() {
             .catch(error => {
                 console.error('Error fetching orders:', error);
                 setOrders([]);
-            })
+            }).finally(() => {
+                setLoading(false);
+            });
     };
 
     useEffect(() => {
@@ -59,22 +63,13 @@ function DashBoardOrders() {
     // ========== Handling Delete ==========
 
     const handleDelete = () => {
-        fetch(`/orders/admin/?order_id=${orderIdToDelete}`, {
-            method: 'DELETE',
-            headers: {
-                Authorization: `Bearer ${token}`,
-            }
-        })
+        AxiosInstance.delete(`/orders/admin/?order_id=${orderIdToDelete}`)
             .then(response => {
-                if (response.ok) {
-                    setAlert({ message: 'Order deleted successfully', type: 'success' });
-                    setTimeout(() => {
-                        setAlert({ message: '', type: '' });
-                    }, 3000);
-                    fetchOrders();
-                } else {
-                    setAlert({ message: 'Failed to delete order', type: 'error' });
-                }
+                setAlert({ message: 'Order deleted successfully', type: 'success' });
+                setTimeout(() => {
+                    setAlert({ message: '', type: '' });
+                }, 3000);
+                fetchOrders();
             })
             .catch(error => {
                 console.error('Error deleting order:', error);
@@ -138,7 +133,7 @@ function DashBoardOrders() {
             });
     };
 
-    if (loader) {
+    if (loader || loading) {
         return (
             <>
                 {alert.message && (

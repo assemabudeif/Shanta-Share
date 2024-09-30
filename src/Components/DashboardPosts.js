@@ -17,10 +17,13 @@ function DashBoardPosts() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [postIdToDelete, setPostIdToDelete] = useState(null);
     const loader = useSelector(state => state.loader.loader);
+    const [loading, setLoading] = useState(false);
 
 
     const FetchPosts = () => {
         console.log("Current Page: ", currentPage);
+
+        setLoading(true);
 
         AxiosInstance.get('/posts/', {
             params: {
@@ -33,7 +36,7 @@ function DashBoardPosts() {
                 setTotalPages(data.page_count);
                 setCurrentPage(data.current_page);
             })
-            .catch(error => console.error('Error fetching data:', error))
+            .catch(error => console.error('Error fetching data:', error)).finally(() => setLoading(false));
     };
 
     //====== Search & paginatation =====
@@ -152,7 +155,7 @@ function DashBoardPosts() {
         FetchPosts();
     }, []);
 
-    if (loader) {
+    if (loader || loading) {
         return (<LoadingComp />)
     }
 

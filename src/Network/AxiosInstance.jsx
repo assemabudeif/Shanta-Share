@@ -2,7 +2,7 @@ import axios from "axios";
 import Store from "../Store/Store";
 import { setLoader } from "../Store/Actions/LoaderAction ";
 
-const auth_headers = localStorage.getItem("token") ? {Authorization: `Bearer ${localStorage.getItem("token")}`} : {};
+const auth_headers = localStorage.getItem("token") ? { Authorization: `Bearer ${localStorage.getItem("token")}` } : {};
 
 export const AxiosInstance = axios.create({
     baseURL: "http://127.0.0.1:8000",
@@ -18,10 +18,12 @@ AxiosInstance.interceptors.request.use(function (config) {
     Store.dispatch(setLoader(true))
     return config;
 }, function (error) {
+
+    Store.dispatch(setLoader(false))
     return Promise.reject(error);
 });
 
-// Add a response interceptor
+// // Add a response interceptor
 AxiosInstance.interceptors.response.use(function (response) {
 
     Store.dispatch(setLoader(false));
