@@ -132,7 +132,7 @@ const RegistrationForm = () => {
                     if (!value) {
                         error = t('Mobile number is required.');
                     } else if (!regex.mobile.test(value)) {
-                        error = t('Government name is not valid.');
+                        error = t('Mobile number is not valid.');
                     }
                     break;
                 case 'government':
