@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 function HomePage() {
 
@@ -49,6 +50,7 @@ function HomePage() {
   }, []);
 
   const [destinationsListVisible, setDestinationsListVisible] = useState(false);
+  const { t } = useTranslation()
   return (
     <>
       {/*<------->*<------> Navbar <------->*<------>*/}
@@ -93,17 +95,15 @@ function HomePage() {
       <div className="bg-black flex justify-center">
         <div className='p-12 max-w-[1280px] gap-3 w-full h-screen grid md:grid-cols-1 lg:grid-cols-2'>
           <div className='w-full h-full px-6 bg-transparent flex flex-col justify-center items-start'>
-            <h1 className='my-3 text-5xl leading-tight font-bold  text-white'>
-              Shipping All Over The Egyptian Board
-            </h1>
-            <span className='text-white text-xl'>Request a ride, hop in, and go.</span>
+            <h1 className='my-3 text-5xl leading-tight font-bold  text-white'>{t('shipping_all_over_egypt')}</h1>
+            <span className='text-white text-xl'>{t('request_ride')}</span>
             <div className='py-3 w-full flex flex-col items-start justify-center'>
               <div className='w-full mb-4'>
                 <input
                   id="location"
                   name="location"
                   type="text"
-                  placeholder="Enter Location"
+                  placeholder={t('enter_location')}
                   onFocus={() => {
                     setLocationsListVisible(() => true)
                   }}
@@ -139,7 +139,7 @@ function HomePage() {
                   id="location"
                   name="location"
                   type="text"
-                  placeholder="Enter Location"
+                  placeholder={t('enter_destination')}
                   onFocus={() => {
                     setDestinationsListVisible(() => true)
                   }}
@@ -172,8 +172,7 @@ function HomePage() {
                 </div>
               </div>
               <Link to={"/search"} className={"bg-white flex justify-center w-1/2 rounded-md border-0 py-3 text-gray-900 ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6 font-semibold text-xl hover:bg-gray-1000"}>
-                See Prices
-              </Link>
+              {t('see_prices')}</Link>
             </div>
           </div>
           <div className='w-full justify-end sm:hidden lg:flex'>
@@ -190,13 +189,13 @@ function HomePage() {
       <div className="flex justify-center">
         <div className='p-12 max-w-[1280px] w-full'>
           <h1 className='text-3xl font-bold'>
-            Our Services
+          {t('our_services')}
           </h1>
           <div className='p-6 gap-3 w-full grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
             <div className='p-4 bg-gray-100 rounded-lg flex'>
               <div className='w-3/4 flex flex-col justify-between'>
-                <span className='text-xl font-bold mb-2'>For Clients</span>
-                <span>Ship ..anything any where with our riders fast and secure </span>
+                <span className='text-xl font-bold mb-2'>{t('for_clients')}</span>
+                <span>{t('ship_anything')}</span>
 
               </div>
               <div className=''>
@@ -206,8 +205,8 @@ function HomePage() {
             </div>
             <div className='p-4 bg-gray-100 rounded-lg flex'>
               <div className='w-3/4 flex flex-col justify-between'>
-                <span className='text-xl font-bold mb-2'>For Drivers</span>
-                <span> Increase you income by working with us </span>
+                <span className='text-xl font-bold mb-2'>{t('for_drivers')}</span>
+                <span>{t('increase_income')}</span>
 
               </div>
               <div className=''>
@@ -217,8 +216,8 @@ function HomePage() {
             </div>
             <div className='p-4 bg-gray-100 rounded-lg flex'>
               <div className='w-3/4 flex flex-col justify-between'>
-                <span className='text-xl font-bold mb-2'>For Campanies</span>
-                <span> Ship your products any where with less cost </span>
+                <span className='text-xl font-bold mb-2'>{t('for_companies')}</span>
+                <span>{t('ship_products')} </span>
 
               </div>
               <div className=''>
@@ -241,13 +240,12 @@ function HomePage() {
           </div>
           <div className='w-full h-full px-6 bg-transparent flex flex-col justify-center items-start'>
             <h1 className='my-3 text-5xl leading-tight font-bold'>
-              Deliver When You Want, Earn What You Need
+            {t('deliver_when_you_want')}
             </h1>
-            <span className='text-xl'>Connect with clients and transport goods between cities using your own vehicle. Start earning today!</span>
+            <span className='text-xl'>{t('connect_with_clients')}</span>
             <div className='py-3 w-full flex flex-col items-start justify-center'>
               <div className='px-4 py-2 bg-black rounded-lg'>
-                <Link to="/register" className="text-white">Start Now</Link>
-
+                <Link to="/register" className="text-white">{t('start_now')}</Link>
               </div>
             </div>
           </div>
