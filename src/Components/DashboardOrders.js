@@ -6,7 +6,6 @@ import { useSelector } from 'react-redux';
 import { data } from 'autoprefixer';
 
 function DashBoardOrders() {
-    const navigate = useNavigate();
 
     const [orders, setOrders] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -16,66 +15,39 @@ function DashBoardOrders() {
     const [alert, setAlert] = useState({ message: '', type: '' });
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [orderIdToDelete, setOrderIdToDelete] = useState(null);
-    const ordersPerPage = 5;
     const token = localStorage.getItem("token");
     const loader = useSelector(state => state.loader.loader);
-    const [loading, setLoading] = useState(true);
-    const [governments, setGovernments] = useState([]);
-    const [cities, setCities] = useState([]);
-
-    const fetchGovernments = async () => {
-        try {
-            const response = await AxiosInstance.get('/governments/');
-            const data = await response.json();
-            setGovernments(data);
-            console.log(data)
-        } catch (error) {
-            console.error('Error fetching governments:', error);
-        }
-    };
-
-    useEffect(() => {
-        fetchGovernments();
-    }, []);
-
-    useEffect(() => {
-        if (form.government) {
-            // Fetch cities based on the selected government
-            AxiosInstance.get(`/cities?government_id=${form.government}`)
-                .then(response => response.json())
-                .then(data => setCities(data))
-                .catch(error => console.error('Error fetching cities:', error));
-        }
-    }, [form.government]);
 
     const fetchOrders = () => {
-        setLoading(true);
-        AxiosInstance.get('http://127.0.0.1:8000/orders/admin/', {
+        AxiosInstance.get('/orders/admin/orders', {
+            params: {
+                page: currentPage
+            },
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         })
             .then(response => {
                 const data = response.data;
-                setOrders(data.data);
-                setTotalPages(Math.ceil(data.data.length / ordersPerPage));
+                setOrders(data.results);
+                setTotalPages(data.page_count);
+                setCurrentPage(data.current_page);
+                if (alert.message) {
+                    setTimeout(() => {
+                        setAlert({ message: '', type: '' });
+
+                    }, 3000)
+                }
             })
             .catch(error => {
                 console.error('Error fetching orders:', error);
                 setOrders([]);
             })
-            .finally(() => {
-                setLoading(false);
-            });
     };
 
     useEffect(() => {
         fetchOrders();
     }, [currentPage]);
-
-    if (loading) {
-        return <LoadingComp />;
-    }
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -87,7 +59,7 @@ function DashBoardOrders() {
     // ========== Handling Delete ==========
 
     const handleDelete = () => {
-        fetch(`http://127.0.0.1:8000/orders/admin/?order_id=${orderIdToDelete}`, {
+        fetch(`/orders/admin/?order_id=${orderIdToDelete}`, {
             method: 'DELETE',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -96,10 +68,10 @@ function DashBoardOrders() {
             .then(response => {
                 if (response.ok) {
                     setAlert({ message: 'Order deleted successfully', type: 'success' });
-
                     setTimeout(() => {
                         setAlert({ message: '', type: '' });
-                    }, 5000);
+                    }, 3000);
+                    fetchOrders();
                 } else {
                     setAlert({ message: 'Failed to delete order', type: 'error' });
                 }
@@ -126,11 +98,11 @@ function DashBoardOrders() {
         setEditingOrder(order);
         setForm({
             id: order.id,
-            created_by: order.client?.name || 'Unknown',
-            from_city: order.post?.from_city || 'Unknown',
-            to_city: order.post?.to_city || 'Unknown',
             pickup_time: order.pickup_time || '',
-            status: order.status,
+            status: order.status || '',
+            pickup_address_line: order.pickup_address_line || '',
+            arrival_time: order.arrival_time || '',
+            delivery_address_line: order.delivery_address_line || '',
         });
     };
 
@@ -145,23 +117,20 @@ function DashBoardOrders() {
     const handleFormSubmit = (e) => {
         e.preventDefault();
 
-        AxiosInstance.patch(`/orders/admin/?order_id=${form.id}`,
-            data = {
-                // created_by: form.client?.name || 'Unknown',
-                // from_city: form.post?.from_city?.name || 'Unknown',
-                // to_city: form.post?.to_city?.name || 'Unknown',
-                // pickup_time: form.pickup_time || '',
-                status: form.status,
-            },)
+        AxiosInstance.patch(`/orders/admin/?order_id=${form.id}`, data = {
+            pickup_time: form.pickup_time,
+            status: form.status,
+            pickup_address_line: form.pickup_address_line,
+            arrival_time: form.arrival_time,
+            delivery_address_line: form.delivery_address_line
+        },
+        )
             .then(response => {
                 if (!response.ok) {
-                    return response.json().then(errorData => {
-                        throw new Error(errorData.detail || 'Failed to update order');
-                    });
+                    setAlert({ message: 'Order updated successfully', type: 'success' });
+                    setEditingOrder(null);
+                    fetchOrders();
                 }
-                setAlert({ message: 'Order updated successfully', type: 'success' });
-                fetchOrders();
-                setEditingOrder(null);
             })
             .catch(error => {
                 console.error('Error updating order:', error);
@@ -170,14 +139,28 @@ function DashBoardOrders() {
     };
 
     if (loader) {
-        return <LoadingComp />;
+        return (
+            <>
+                {alert.message && (
+                    <div
+                        className={`p-4 mb-4 text-sm text-white ${alert.type === 'success' ? 'bg-green-500' : 'bg-red-500'} rounded`}
+                        role="alert">
+                        {alert.message}
+                    </div>
+
+                )}
+                <LoadingComp />
+            </>
+        );
     }
 
 
     return (
         <div className="p-4 text-sm">
             {alert.message && (
-                <div className={`p-4 mb-4 text-sm text-white ${alert.type === 'success' ? 'bg-green-500' : 'bg-red-500'} rounded`} role="alert">
+                <div
+                    className={`p-4 mb-4 text-sm text-white ${alert.type === 'success' ? 'bg-green-500' : 'bg-red-500'} rounded`}
+                    role="alert">
                     {alert.message}
                 </div>
             )}
@@ -187,11 +170,13 @@ function DashBoardOrders() {
                         <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
                             <thead className="bg-gray-100">
                                 <tr>
-                                    <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">ID</th>
+                                    {/* <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">ID</th> */}
                                     <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Client Name</th>
                                     <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">From</th>
                                     <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">To</th>
                                     <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Pickup Time</th>
+                                    <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Arrival Time</th>
+                                    <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Delivery Fee</th>
                                     <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Status</th>
                                     <th className="border-b px-4 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Actions</th>
                                 </tr>
@@ -199,11 +184,13 @@ function DashBoardOrders() {
                             <tbody className="divide-y divide-gray-200">
                                 {orders.map(order => (
                                     <tr key={order.id}>
-                                        <td className="px-4 py-2 text-sm text-gray-800">{order.id}</td>
+                                        {/* <td className="px-4 py-2 text-sm text-gray-800">{order.id}</td> */}
                                         <td className="px-4 py-2 text-sm text-gray-800">{order.client?.name || 'Unknown'}</td>
                                         <td className="px-4 py-2 text-sm text-gray-800">{order.post?.from_city?.name || 'Unknown'}</td>
                                         <td className="px-4 py-2 text-sm text-gray-800">{order.post?.to_city?.name || 'Unknown'}</td>
                                         <td className="px-4 py-2 text-sm text-gray-800">{new Date(order.pickup_time).toLocaleString()}</td>
+                                        <td className="px-4 py-2 text-sm text-gray-80">{new Date(order.arrival_time).toLocaleString()}</td>
+                                        <td className="px-4 py-2 text-sm text-gray-80">{Math.round(order.post.delivery_fee)} EGP</td>
                                         <td className="px-4 py-2 text-sm text-gray-800">{order.status}</td>
                                         <td className="px-4 py-2 text-sm text-gray-800 flex space-x-2">
                                             <button
@@ -233,37 +220,8 @@ function DashBoardOrders() {
                         {editingOrder && (
                             <form onSubmit={handleFormSubmit} className="mt-4 bg-gray-100 p-4 rounded-md">
                                 <h2 className="text-lg font-semibold mb-2">Edit Order</h2>
-                                {/* <input
-                                    type="text"
-                                    name="id"
-                                    value={form.id}
-                                    readOnly
-                                    className="border p-2 mb-2 rounded-md w-full"
-                                /> */}
-                                <input
-                                    type="text"
-                                    name="client_name"
-                                    placeholder='Client Name'
-                                    value={form.client_name}
-                                    readOnly
-                                    className="border p-2 mb-2 rounded-md w-full"
-                                />
-                                {/* <input
-                                    type="text"
-                                    name="from_city"
-                                    value={form.from_city}
-                                    onChange={handleFormChange}
-                                    placeholder="From City"
-                                    className="border p-2 mb-2 rounded-md w-full"
-                                />
-                                <input
-                                    type="text"
-                                    name="to_city"
-                                    value={form.to_city}
-                                    onChange={handleFormChange}
-                                    placeholder="To City"
-                                    className="border p-2 mb-2 rounded-md w-full"
-                                /> */}
+
+                                <label className="block mb-2">Pickup Time</label>
                                 <input
                                     type="datetime-local"
                                     name="pickup_time"
@@ -272,7 +230,31 @@ function DashBoardOrders() {
                                     onChange={handleFormChange}
                                     className="border p-2 mb-2 rounded-md w-full"
                                 />
-
+                                <input
+                                    type="text"
+                                    name="pickup_address_line"
+                                    placeholder="Pickup Address Line"
+                                    value={form.pickup_address_line}
+                                    onChange={handleFormChange}
+                                    className="border p-2 mb-2 rounded-md w-full"
+                                />
+                                <label className="block mb-2">Arrival Time</label>
+                                <input
+                                    type="datetime-local"
+                                    name="arrival_time"
+                                    placeholder="Arrival Time"
+                                    value={form.arrival_time}
+                                    onChange={handleFormChange}
+                                    className="border p-2 mb-2 rounded-md w-full"
+                                />
+                                <input
+                                    type="text"
+                                    name="delivery_address_line"
+                                    placeholder="Delivery Address Line"
+                                    value={form.delivery_address_line}
+                                    onChange={handleFormChange}
+                                    className="border p-2 mb-2 rounded-md w-full"
+                                />
                                 <select
                                     name="status"
                                     value={form.status}
@@ -287,10 +269,11 @@ function DashBoardOrders() {
                                     <option value="completed">Completed</option>
                                     <option value="cancelled">Cancelled</option>
                                 </select>
-                                <button type="submit" className="bg-black text-white px-4 py-2 rounded-md">
+                                <button type="submit" className="bg-blue-950 text-white px-4 py-2 rounded-md">
                                     Save Changes
                                 </button>
-                                <button type="button" onClick={() => setEditingOrder(null)} className="bg-red-500 text-white px-4 py-2 rounded-md ml-2">
+                                <button type="button" onClick={() => setEditingOrder(null)}
+                                    className="bg-red-500 text-white px-4 py-2 rounded-md ml-2">
                                     Cancel
                                 </button>
                             </form>
@@ -331,13 +314,16 @@ function DashBoardOrders() {
             {isModalOpen && (
                 <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
                     <div className="bg-white rounded-lg p-6 w-1/3">
-                    <h2 className="text-2xl mb-4 mb-10"><center><strong>Confirm Deletion</strong></center></h2>
-                    <p className="mb-4 text-xl">Are you sure you want to delete this order?</p>
+                        <h2 className="text-2xl mb-4 mb-10">
+                            <center><strong>Confirm Deletion</strong></center>
+                        </h2>
+                        <p className="mb-4 text-xl">Are you sure you want to delete this order?</p>
                         <div className="flex justify-between items-center space-x-2 mt-10">
                             <button onClick={handleDelete} className="bg-red-500 text-white py-2 px-4 rounded-lg">
                                 Delete
                             </button>
-                            <button onClick={() => setIsModalOpen(false)} className="bg-gray-500 text-white py-2 px-4 rounded-lg">
+                            <button onClick={() => setIsModalOpen(false)}
+                                className="bg-gray-500 text-white py-2 px-4 rounded-lg">
                                 Cancel
                             </button>
                         </div>
@@ -349,4 +335,3 @@ function DashBoardOrders() {
 }
 
 export default DashBoardOrders;
- 

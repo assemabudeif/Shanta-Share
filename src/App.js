@@ -34,8 +34,8 @@ import OrdersPage from "./Pages/DriverDashboardPages/OrdersPage";
 import PostsPage from "./Pages/DriverDashboardPages/PostsPage";
 import ClientDashboardOrders from "./Pages/ClientDashboardPages/ClientDashboardOrders";
 import CreatePostPage2 from "./Pages/DriverDashboardPages/CreatPost/createPostPage";
-
-
+import AboutUs from './Pages/about';
+import Footer from './Components/Footer';
 const handleSave = (updatedDriver) => {
     console.log('Saved Driver Data:', updatedDriver);
 };
@@ -93,11 +93,13 @@ function App() {
                         </>
                     }
                     <Routes>
-                        <Route path="/" element={user_type === 'DRIVER' ? <DriverHomePage/> : user_type === 'ADMIN' ?
-                            <Dashboard/> : <HomePage/>}/>
-                        <Route path="/search" element={<SearchPage/>}/>
-                        <Route path='/register' element={<RegistrationForm/>}/>
-                        <Route path='/login' element={<Login/>}/>
+                        <Route path="/" element={user_type === 'DRIVER' ? <DriverHomePage /> : user_type === 'ADMIN' ?
+                            <Dashboard /> : <HomePage />} />
+                        <Route path={'/about'} element={<AboutUs />} />
+
+                        <Route path="/search" element={<SearchPage />} />
+                        <Route path='/register' element={<RegistrationForm />} />
+                        <Route path='/login' element={<Login />} />
                         {/*<Route path='/loginStep2'*/}
                         {/*       element={<LoginStep2/>}/>/!* <Route path="/reviewCard" element={<ReviewCard />} /> *!/*/}
                         <Route path="/reviewList" element={<ReviewsList/>}/>
@@ -111,12 +113,12 @@ function App() {
                         {/* <Route path="/driverViewProfile" element={<DriverViewProfile onSave={handleSave}/>}/> */}
                         <Route path={"/post/:id"} element={<PostDetailsPage/>}/>
                         {/*<Route path="/ordershistory" element={<OrdersHistory/>}/>*/}
-                        <Route path="/dashboard" element={<Dashboard/>}/>
-                        <Route path='' element={<PrivateRoutes/>} >
-                            {/*<Route path="/driver_home" element={<DriverHomePage onSave={handleSave}/>}/>*/}
-                            <Route path="/driver-dashboard" element={<DashboardBase pages={DriverDashboardRoutes} pathName={'/dashboard'}/>}>
+                        <Route path="/dashboard" element={<Dashboard />} />
+                        <Route path='' element={<PrivateRoutes />} >
+                            <Route path="/driver_home" element={<DriverHomePage onSave={handleSave} />} />
+                            <Route path="/driver-dashboard" element={<DashboardBase pages={DriverDashboardRoutes} pathName={'/dashboard'} />}>
 
-                                <Route path={''} element={<DriverHomePage onSave={handleSave}/>} />
+                                <Route path={''} element={<div>Initial</div>} />
                                 {/*<Route path={'summary'} element={<div>Summary</div>}/>*/}
                                 <Route path={"posts"} element={<PostsPage/>} />
                                 {/*<Route path={"posts/:id"} element={<PostDetailsPage/>}/>*/}
@@ -132,6 +134,8 @@ function App() {
                         </Route>
                         <Route path="*" element={<PageNotFound/>}/>
                     </Routes>
+                    <Footer />
+
                 </BrowserRouter>
             </Provider>
 

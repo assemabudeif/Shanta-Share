@@ -1,5 +1,5 @@
-import {useState} from "react";
-import {Link} from "react-router-dom";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
 function HomePage() {
 
@@ -144,7 +144,7 @@ function HomePage() {
           <div className='w-full justify-end sm:hidden lg:flex'>
             <img
               className='w-auto h-full object-contain'
-              src={require(`../assets/images/bg_home_hero.png`)}/>
+              src={require(`../assets/images/bg_home_hero.png`)} />
           </div>
         </div>
 
@@ -160,46 +160,34 @@ function HomePage() {
           <div className='p-6 gap-3 w-full grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
             <div className='p-4 bg-gray-100 rounded-lg flex'>
               <div className='w-3/4 flex flex-col justify-between'>
-                <span className='text-xl font-bold mb-2'>Ride</span>
-                <span>Go any where ..Go any where with our riders fast and... </span>
-                <div className='px-4 py-2 my-2 w-fit bg-white rounded-lg'>
-                <span className=''>
-                  Details
-                </span>
-                </div>
+                <span className='text-xl font-bold mb-2'>For Clients</span>
+                <span>Ship ..anything any where with our riders fast and secure </span>
+
               </div>
               <div className=''>
-                <img className='' src={require('../assets/images/icon_car.png')}/>
+                <img className='' src={require('../assets/images/icon_car.png')} />
               </div>
 
             </div>
             <div className='p-4 bg-gray-100 rounded-lg flex'>
               <div className='w-3/4 flex flex-col justify-between'>
-                <span className='text-xl font-bold mb-2'>Ride</span>
-                <span>Go any where with our riders fast and...Go any where with our riders fast and... </span>
-                <div className='px-4 py-2 my-2 w-fit bg-white rounded-lg'>
-                <span className=''>
-                  Details
-                </span>
-                </div>
+                <span className='text-xl font-bold mb-2'>For Drivers</span>
+                <span> Increase you income by working with us </span>
+
               </div>
               <div className=''>
-                <img className='' src={require('../assets/images/icon_car.png')}/>
+                <img className='' src={require('../assets/images/icon_car.png')} />
               </div>
 
             </div>
             <div className='p-4 bg-gray-100 rounded-lg flex'>
               <div className='w-3/4 flex flex-col justify-between'>
-                <span className='text-xl font-bold mb-2'>Ride</span>
-                <span>Go any where with our riders fast and...Go any where with our riders fast and... </span>
-                <div className='px-4 py-2 my-2 w-fit bg-white rounded-lg'>
-                <span className=''>
-                  Details
-                </span>
-                </div>
+                <span className='text-xl font-bold mb-2'>For Campanies</span>
+                <span> Ship your products any where with less cost </span>
+
               </div>
               <div className=''>
-                <img className='' src={require('../assets/images/icon_car.png')}/>
+                <img className='' src={require('../assets/images/icon_car.png')} />
               </div>
 
             </div>
@@ -214,47 +202,19 @@ function HomePage() {
           <div className='w-full justify-start sm:hidden lg:flex'>
             <img
               className='w-auto h-full object-contain'
-              src={require(`../assets/images/bg_home_hero.png`)}/>
+              src={require(`../assets/images/bg_home_hero.png`)} />
           </div>
           <div className='w-full h-full px-6 bg-transparent flex flex-col justify-center items-start'>
             <h1 className='my-3 text-5xl leading-tight font-bold'>
-              Drive when you want, make what you need
+              Deliver When You Want, Earn What You Need
             </h1>
-            <span className='text-xl'>Make money on your schedule with deliveries or rides—or both. You can use your own car or choose a rental through Uber.Get started</span>
+            <span className='text-xl'>Connect with clients and transport goods between cities using your own vehicle. Start earning today!</span>
             <div className='py-3 w-full flex flex-col items-start justify-center'>
               <div className='px-4 py-2 bg-black rounded-lg'>
-                <span className='text-white'>
-                  Get Started
-                </span>
+                <Link to="/register" className="text-white">Start Now</Link>
+
               </div>
             </div>
-          </div>
-
-        </div>
-
-      </div>
-
-      <div className="flex justify-center">
-        <div className='p-12 max-w-[1280px] gap-3 w-full h-screen grid md:grid-cols-1 lg:grid-cols-2'>
-
-          <div className='w-full h-full px-6 bg-transparent flex flex-col justify-center items-start'>
-            <h1 className='my-3 text-5xl leading-tight font-bold'>
-              Drive when you want, make what you need
-            </h1>
-            <span className='text-xl'>Make money on your schedule with deliveries or rides—or both. You can use your own car or choose a rental through Uber.Get started</span>
-            <div className='py-3 w-full flex flex-col items-start justify-center'>
-              <div className='px-4 py-2 bg-black rounded-lg'>
-                <span className='text-white'>
-                  Get Started
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div className='w-full justify-end sm:hidden lg:flex'>
-            <img
-              className='w-auto h-full object-contain'
-              src={require(`../assets/images/bg_home_hero.png`)}/>
           </div>
 
         </div>
