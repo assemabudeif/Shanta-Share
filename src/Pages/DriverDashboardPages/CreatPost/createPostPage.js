@@ -126,7 +126,7 @@ function CreatePostPage2() {
     )
     .then(response => {
       //TODO: navigate to post preview
-      navigate(`/dashboard/posts/${response.data.data.id}`)
+      navigate(`/driver-dashboard/posts/${response.data.data.id}`)
       setConfirmLoading(false);
     })
     .catch((e) => {

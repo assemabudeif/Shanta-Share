@@ -110,7 +110,7 @@ function OrdersPage() {
     <>
           <div className="flex space-x-8 p-8">
             <div className="flex-1 flex flex-col">
-              <div className="w-full py-4 bg-pink-300">
+              <div className="w-full py-4 ">
                 <h1 className="mb-2 text-4xl font-semibold ">Post Details</h1>
                 <h1 className="text-2xl">Proposals</h1>
               </div>

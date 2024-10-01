@@ -17,10 +17,8 @@ function DashBoardOrders() {
     const [orderIdToDelete, setOrderIdToDelete] = useState(null);
     const token = localStorage.getItem("token");
     const loader = useSelector(state => state.loader.loader);
-    const [loading, setLoading] = useState(false);
 
     const fetchOrders = () => {
-        setLoading(true);
         AxiosInstance.get('/orders/admin/orders', {
             params: {
                 page: currentPage
@@ -35,15 +33,17 @@ function DashBoardOrders() {
                 setTotalPages(data.page_count);
                 setCurrentPage(data.current_page);
                 if (alert.message) {
-                    setTimeout(() => {
-                        setAlert({ message: '', type: '' });
-
-                    }, 3000)
+                    // setTimeout(() => {
+                    //     setAlert({ message: '', type: '' });
+                    //
+                    // }, 3000)
                 }
+                setLoader(false);
             })
             .catch(error => {
                 console.error('Error fetching orders:', error);
-                setOrders([]);
+                setLoader(false);
+                // setOrders([]);
             }).finally(() => {
                 setLoading(false);
             });
