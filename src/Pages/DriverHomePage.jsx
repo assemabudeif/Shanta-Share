@@ -11,6 +11,7 @@ import {useTranslation} from 'react-i18next';
 import Chart from "react-apexcharts";
 import {useSelector} from "react-redux";
 import LoadingComp from "../Components/LoadingComp";
+import LoadingProgressCircular from "../Components/LoadingProgressCircular";
 
 function DiverHomePage() {
     const [posts, setPosts] = useState([]);
@@ -18,26 +19,41 @@ function DiverHomePage() {
     const [postError, setPostError] = useState("");
     const [orderError, setOrderError] = useState("");
     const loading = useSelector(state => state.loader.loader);
+
+    const [orderLoading, setOrderLoading] = useState(false);
+    const [postsLoading, setPostsLoading] = useState(false);
+
     const {t, i18n} = useTranslation();
 
     const GetPosts = () => {
-        AxiosInstance.get("/posts/driver-posts/").then((response) => {
-            console.log(response.data);
-            setPosts(response.data.results);
-        }).catch((error) => {
-            setPostError(error);
-            console.error("Error fetching data:", error);
-        });
+        setPostsLoading(true);
+        AxiosInstance.get("/posts/driver-posts/")
+          .then((response) => {
+              // console.log(response.data);
+              setPosts(response.data.results);
+              setPostsLoading(false);
+          })
+          .catch((error) => {
+              setPostError(error);
+              setPostsLoading(false);
+              console.error("Error fetching data:", error);
+          });
     }
 
     const GetOrders = () => {
-        AxiosInstance.get("/orders/driver-orders/").then((response) => {
-            console.log(response.data);
-            setOrders(response.data.results);
-        }).catch((error) => {
-            setOrderError(error);
-            console.error("Error fetching data:", error);
-        });
+        setOrderLoading(true);
+        AxiosInstance.get("/orders/driver-orders/")
+          .then((response) => {
+              // console.log(response.data);
+              const orders = response.data.results?.filter((order) => order.status === 'in_progress' || order.status === 'accepted');
+              setOrders(orders);
+              setOrderLoading(false);
+          })
+          .catch((error) => {
+              setOrderError(error);
+              setOrderLoading(false);
+              console.error("Error fetching data:", error);
+          });
     }
 
     useEffect(() => {
@@ -46,9 +62,9 @@ function DiverHomePage() {
 
     }, []);
 
-    if (loading) {
-        return (<LoadingComp/>);
-    }
+    // if (true) {
+    //     return (<LoadingComp/>);
+    // }
 
     return (
         <>
@@ -82,13 +98,21 @@ function DiverHomePage() {
                         {SectionHeader({title: t("driverHomePage.TodaysOrders"), link: '/driver-dashboard/orders'})}
                         <div className="w-3/4 ms-12 p-2 flex items-center flex-col">
 
-                            {orders.map((order, index) => {
-                                return (
-                                    <div className="my-2">
-                                        {OrderItem(order)}
-                                    </div>
-                                )
-                            })}
+                            {
+                                orderLoading
+                                  ? <div className="p-8">
+                                      <LoadingProgressCircular size={12}/>
+                                  </div>
+                                  : orders?.length > 0
+                                    ? orders.map((order, index) => {
+                                        return (
+                                          <div className="my-2">
+                                              {OrderItem(order)}
+                                          </div>
+                                        )
+                                    })
+                                    : <div className='text-xl font-semibold '> No Orders Yet </div>
+                            }
 
                         </div>
                     </div>
@@ -98,13 +122,21 @@ function DiverHomePage() {
                         {SectionHeader({title: t("driverHomePage.YourPosts"), link: '/driver-dashboard/posts'})}
                         <div className="w-3/4 ms-12 p-2 flex items-center flex-col">
 
-                            {posts.map((post, index) => {
-                                return (
-                                    <div className="my-2">
-                                        {PostItem(post)}
-                                    </div>
-                                )
-                            })}
+                            {
+                                postsLoading
+                                  ? <div className="p-8">
+                                      <LoadingProgressCircular size={12}/>
+                                  </div>
+                                  : posts?.length > 0
+                                    ? posts.map((post, index) => {
+                                        return (
+                                          <div className="my-2">
+                                              {PostItem(post)}
+                                          </div>
+                                        )
+                                    })
+                                    : <div className='text-xl font-semibold '> No Posts Yet </div>
+                            }
 
                         </div>
                     </div>

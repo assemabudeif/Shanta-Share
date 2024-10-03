@@ -118,42 +118,51 @@ function OrdersPage() {
                 <div className="flex flex-col w-full">
                   {loading
                     ? <LoadingProgress/>
-                    : posts.map((post, index) => {
-                    return (<div className="my-2" key={post.id}>
-                        <OrderItem
-                          post={post}
-                          acceptCallback={handelOrderAccept}
-                          rejectCallback={handelOrderReject}
-                        />
-                      </div>)
-                  })}
+                    : (posts?.length > 0)
+                      ? posts.map((post, index) => {
+                        return (
+                          <div className="my-2" key={post.id}>
+                            <OrderItem
+                              post={post}
+                              acceptCallback={handelOrderAccept}
+                              rejectCallback={handelOrderReject}
+                            />
+                          </div>
+                        )
+                      })
+                      : <div> No Proposals yet.. Please wait for clients proposals </div>
+                  }
                 </div>
               </div>
-              <div className="mt-4 flex justify-center">
-                <button
-                  onClick={() => paginate(currentPage - 1)}
-                  disabled={currentPage === 1}
-                  className="py-1 px-3 mx-1 bg-gray-200 text-gray-700 rounded-md"
-                >
-                  Prev
-                </button>
-                {[...Array(totalPages).keys()].map(pageNumber => (
-                  <button
-                    key={pageNumber + 1}
-                    onClick={() => paginate(pageNumber + 1)}
-                    className={`py-1 px-3 mx-1 ${currentPage === pageNumber + 1 ? 'bg-black text-white' : 'bg-gray-200 text-gray-700'} rounded-md`}
-                  >
-                    {pageNumber + 1}
-                  </button>
-                ))}
-                <button
-                  onClick={() => paginate(currentPage + 1)}
-                  disabled={currentPage === totalPages}
-                  className="py-1 px-3 mx-1 bg-gray-200 text-gray-700 rounded-md"
-                >
-                  Next
-                </button>
-              </div>
+              {
+                (totalPages > 1)
+                  ? <div className="mt-4 flex justify-center">
+                    <button
+                      onClick={() => paginate(currentPage - 1)}
+                      disabled={currentPage === 1}
+                      className="py-1 px-3 mx-1 bg-gray-200 text-gray-700 rounded-md"
+                    >
+                      Prev
+                    </button>
+                    {[...Array(totalPages).keys()].map(pageNumber => (
+                      <button
+                        key={pageNumber + 1}
+                        onClick={() => paginate(pageNumber + 1)}
+                        className={`py-1 px-3 mx-1 ${currentPage === pageNumber + 1 ? 'bg-black text-white' : 'bg-gray-200 text-gray-700'} rounded-md`}
+                      >
+                        {pageNumber + 1}
+                      </button>
+                    ))}
+                    <button
+                      onClick={() => paginate(currentPage + 1)}
+                      disabled={currentPage === totalPages}
+                      className="py-1 px-3 mx-1 bg-gray-200 text-gray-700 rounded-md"
+                    >
+                      Next
+                    </button>
+                  </div>
+                  : <></>
+              }
             </div>
             <div className="w-1/3 h-fit sticky top-24 right-0 z-100 ">
               <div
@@ -163,7 +172,7 @@ function OrdersPage() {
                   detailsLoading
                     ? <div className='h-96 flex justify-center items-center w-full'>
                       <CircularProgress size={12}/>
-                  </div>
+                    </div>
                     : <div className='space-y-4'>
                       <div className="space-y-2">
                         <strong className="block">Pickup</strong>
