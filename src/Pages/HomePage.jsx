@@ -11,31 +11,50 @@ function HomePage() {
     ' Manshiat Nasser, Cairo gov.'
   ]);
   const [locationsListVisible, setLocationsListVisible] = useState(false);
+  const [locationSearchValue, setLocationSearchValue] = useState('');
+  const [selectedLocationId, setSelectedLocationId] = useState(null);
   const [destinationsList, setDestinationsList] = useState([
     'Maadi, Kornaish Al-Nile, Cairo.',
     'Madinaty, New Cairo, Cairo gov.',
     ' Manshiat Nasser, Cairo gov.'
   ]);
+  const [destinationsListVisible, setDestinationsListVisible] = useState(false);
+  const [destinationSearchValue, setDestinationSearchValue] = useState('');
+  const [selectedDestinationId, setSelectedDestinationId] = useState();
 
   const handelLocationInputChange = (e) => {
+    setLocationSearchValue(e.target.value)
     setLocationsList(
       allLocations.filter((location) => {
-        return location?.name?.includes(e.target.value)
+        return location?.name?.toLowerCase()?.includes(e.target.value?.toLowerCase()) || location?.government?.name?.toLowerCase().includes(e.target.value?.toLowerCase());
       })
     );
   }
 
   const handelDestinationInputChange = (e) => {
+    setDestinationSearchValue(e.target.value);
     setDestinationsList(
       allLocations.filter((location) => {
-        return location?.name?.includes(e.target.value)
+        return location?.name?.toLowerCase()?.includes(e.target.value?.toLowerCase()) || location?.government?.name?.toLowerCase().includes(e.target.value?.toLowerCase());
       })
     );
   }
 
+  const handelLocationOptionClicked = (location) => {
+    setSelectedLocationId(location.id);
+    setLocationSearchValue(`${location.name}, ${location.government.name}`);
+    setLocationsList(allLocations);
+  }
+
+  const handelDestinationOptionClicked = (location) => {
+    setSelectedDestinationId(location.id);
+    setDestinationSearchValue(`${location.name}, ${location.government.name}`);
+    setDestinationsList(allLocations);
+  }
+
   const fetchGovernments = async () => {
     try {
-      const response = await fetch('http://localhost:8000/governments/');
+      const response = await fetch('http://localhost:8000/cities/');
       const data = await response.json();
       setAllLocations(data);
       setDestinationsList(data);
@@ -49,7 +68,6 @@ function HomePage() {
     fetchGovernments();
   }, []);
 
-  const [destinationsListVisible, setDestinationsListVisible] = useState(false);
   const { t } = useTranslation()
   return (
     <>
@@ -103,12 +121,15 @@ function HomePage() {
                   id="location"
                   name="location"
                   type="text"
+                  value={locationSearchValue}
                   placeholder={t('enter_location')}
                   onFocus={() => {
                     setLocationsListVisible(() => true)
                   }}
                   onBlur={() => {
-                    setLocationsListVisible(() => false)
+                    setTimeout(()=>{
+                      setLocationsListVisible(false)
+                    }, 300);
                   }}
                   onChange={handelLocationInputChange}
                   className='
@@ -126,8 +147,10 @@ function HomePage() {
                     <ul className="bg-white rounded-md border border-gray-100 w-full mt-2">
                       {locationsList.map((location) =>
                         <li
-                          className="p-4 border-b-2 border-gray-100 relative cursor-pointer hover:bg-gray-100 hover:text-gray-900">
-                          {location?.name}
+                          className="p-4 border-b-2 border-gray-100 relative cursor-pointer hover:bg-gray-100 hover:text-gray-900"
+                          onClick={() => handelLocationOptionClicked(location)}
+                        >
+                          {location?.name}, {location.government?.name}
                         </li>
                       )}
                     </ul>
@@ -139,13 +162,15 @@ function HomePage() {
                   id="location"
                   name="location"
                   type="text"
+                  value={destinationSearchValue}
                   placeholder={t('enter_destination')}
                   onFocus={() => {
-                    setDestinationsListVisible(() => true)
+                    setDestinationsListVisible(true)
                   }}
                   onBlur={() => {
-                    setDestinationsListVisible(() => false)
-
+                    setTimeout(()=>{
+                      setDestinationsListVisible(false)
+                    }, 300)
                   }}
                   onChange={handelDestinationInputChange}
                   className='
@@ -163,15 +188,21 @@ function HomePage() {
                     <ul className="bg-white w-full rounded-md border border-gray-100 w-3/4 mt-2">
                       {destinationsList.map((location) =>
                         <li
-                          className="p-4 border-b-2 border-gray-100 relative cursor-pointer hover:bg-gray-100 hover:text-gray-900">
-                          <p>{location?.name}</p>
+                          key={location.id}
+                          onClick={() => handelDestinationOptionClicked(location)}
+                          className="p-4 border-b-2 border-gray-100 relative cursor-pointer hover:bg-gray-100 hover:text-gray-900"
+                        >
+                          {location?.name}, {location.government?.name}
                         </li>
                       )}
                     </ul>
                   </div>
                 </div>
               </div>
-              <Link to={"/search"} className={"bg-white flex justify-center w-1/2 rounded-md border-0 py-3 text-gray-900 ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6 font-semibold text-xl hover:bg-gray-1000"}>
+              <Link
+                to={`/search?from_id=${selectedLocationId}&to_id=${selectedDestinationId}`}
+                className={"bg-white flex justify-center w-1/2 rounded-md border-0 py-3 text-gray-900 ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6 font-semibold text-xl hover:bg-gray-1000"}
+              >
               {t('see_prices')}</Link>
             </div>
           </div>

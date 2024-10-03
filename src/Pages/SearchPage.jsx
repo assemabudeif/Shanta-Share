@@ -1,13 +1,14 @@
 import React, {useEffect, useState} from "react";
 import motorcycleImage from "../assets/images/motorcycle.png";
-import {Link} from "react-router-dom";
+import {Link, useSearchParams} from "react-router-dom";
 import {AxiosInstance} from "../Network/AxiosInstance";
 import {useSelector} from "react-redux";
 import {format, parseISO} from 'date-fns';
 import { useTranslation } from 'react-i18next';
 
 
-export default function SearchPage() {
+export default function SearchPage(props) {
+  const [searchParams] = useSearchParams();
   const [posts, setPosts] = useState([]);
   const [postError, setPostError] = useState("");
   const loading = useSelector(state => state.loader.loader);
@@ -20,9 +21,19 @@ export default function SearchPage() {
   const { t, i18n } = useTranslation();
 
   const [searchForm, setSearchForm] = useState({
-    to_government: '', to_city: "", from_government: '', from_city: '', max_height: 0, max_width: 0, max_depth: 0,
+    to_government: '',
+    to_city: `${Number.isFinite(Number.parseInt(searchParams.get('to_id'))) ? searchParams.get('to_id') : ''}`,
+    from_government: '',
+    from_city: `${Number.isFinite(Number.parseInt(searchParams.get('from_id'))) ? searchParams.get('from_id') : ''}`,
+    max_height: 0,
+    max_width: 0,
+    max_depth: 0,
 
   });
+
+  console.log(
+    Number.isFinite(Number.parseInt(searchParams.get('to_id'))), Number.isFinite(searchParams.get('from_id')),
+    searchParams.get('to_id'), searchParams.get('from_id'));
 
   const fetchGovernments = async () => {
     try {
@@ -95,7 +106,7 @@ export default function SearchPage() {
 
   useEffect(() => {
     fetchGovernments();
-    GetPosts();
+    GetPosts(searchForm);
   }, []);
   useEffect(() => {
     console.log(posts)
