@@ -39,8 +39,13 @@ function CreatePostPage2() {
     } else if (
       (name === 'from_government' || name === 'to_government' || name === 'from_city' || name === 'to_city') &&
       (!value['id'])
-    )
-      return `select ${name}`
+    ) {
+      error = `select ${name}`
+    } else if (name === 'pickup_time' && new Date(value) < Date.now()) {
+       error = `Date and time must be after the current time`;
+    } else if (name === 'arrival_time' && new Date(value) < new Date(formData.pickup_time)) {
+      error = `Date and time must be after the pickup time`;
+    }
     return error;
   };
 
