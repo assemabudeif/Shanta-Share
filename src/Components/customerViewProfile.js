@@ -30,7 +30,7 @@ function CustomerViewProfile({ driverData, carData }) {
   return (
     <main className="container mx-auto p-4">
       {/*Driver Info*/}
-      <DriverInfoComp travelPost={driverData} hasChat={false} />
+      <DriverInfoComp travelPost={driverData} carData={carData} hasChat={false} />
       <DriverDetailsInfo travelPost={driverData} />
       <div className="flex flex-col lg:flex-row flex-wrap gap-20 mt-10 ml-20">
         <div className="mr-20 w-full lg:w-auto ml-10">

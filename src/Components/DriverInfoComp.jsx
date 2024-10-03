@@ -1,6 +1,8 @@
 import { Disclosure, DisclosureButton } from "@headlessui/react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
+import {MdLocalShipping} from "react-icons/md";
+import {LiaShippingFastSolid} from "react-icons/lia";
 
 function DriverInfoComp(props) {
 
@@ -48,6 +50,11 @@ function DriverInfoComp(props) {
                             fill="#374957" />
                     </svg>
                     <span className="ms-2 text-black-600 font-semibold">{t("driverProfile.verified")}</span>
+                </div>
+                <div className='flex items-center justify-start mt-2'>
+                    <LiaShippingFastSolid size={24} className='me-2'/>
+
+                    {props.carData.carBrand} - {props.carData.carModel} - {props.carData.carYear}
                 </div>
             </div>
             <div className={"flex flex-wrap w-full justify-end"}>

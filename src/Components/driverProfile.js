@@ -22,6 +22,7 @@ function DriverProfile() {
     console.log(params.id);
     AxiosInstance.get("/users/driver-profile/" + params.id)
       .then((response) => {
+        console.log(response.data);
         setDriverData(response.data.data);
         setCarData(
           {

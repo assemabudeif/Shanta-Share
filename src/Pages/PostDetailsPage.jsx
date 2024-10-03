@@ -260,25 +260,25 @@ function PostDetailsPage(props) {
             :
             <main className="container mx-20 lg:mx-auto my-16">
                 {/*Driver Info*/}
-                <DriverInfoComp travelPost={post.created_by} hasChat={true} />
+                <DriverInfoComp travelPost={post.created_by} carData={carData} hasChat={true} />
 
 
                 {/*vehicle Info*/}
-                <div className={"flex flex-wrap "}>
-                    {/*   plate number*/}
-                    <CarPlateNumberComp carData={carData} />
-                    {/*   car image*/}
-                    <div className={"me-auto inline"}></div>
-                    <div className={"bg-[#D9D9D9] w-90 lg:w-64 px-10 me-8 my-8 lg:my-0 rounded-2xl"}>
-                        <img src={motorcycleImage} width={"auto"} alt="car" />
-                    </div>
-                    <div className={"bg-[#D9D9D9] w-90 lg:w-64 px-10 me-8 my-8 lg:my-0 rounded-2xl"}>
-                        <img src={motorcycleImage} width={"auto"} alt="car" />
-                    </div>
-                    <div className={"bg-[#D9D9D9]  w-90 lg:w-64 px-10 me-8 my-8 lg:my-0 rounded-2xl"}>
-                        <img src={motorcycleImage} width={"auto"} alt="car" />
-                    </div>
-                </div>
+                {/*<div className={"flex flex-wrap "}>*/}
+                {/*    /!*   plate number*!/*/}
+                {/*    <CarPlateNumberComp carData={carData} />*/}
+                {/*    /!*   car image*!/*/}
+                {/*    <div className={"me-auto inline"}></div>*/}
+                {/*    <div className={"bg-[#D9D9D9] w-90 lg:w-64 px-10 me-8 my-8 lg:my-0 rounded-2xl"}>*/}
+                {/*        <img src={motorcycleImage} width={"auto"} alt="car" />*/}
+                {/*    </div>*/}
+                {/*    <div className={"bg-[#D9D9D9] w-90 lg:w-64 px-10 me-8 my-8 lg:my-0 rounded-2xl"}>*/}
+                {/*        <img src={motorcycleImage} width={"auto"} alt="car" />*/}
+                {/*    </div>*/}
+                {/*    <div className={"bg-[#D9D9D9]  w-90 lg:w-64 px-10 me-8 my-8 lg:my-0 rounded-2xl"}>*/}
+                {/*        <img src={motorcycleImage} width={"auto"} alt="car" />*/}
+                {/*    </div>*/}
+                {/*</div>*/}
 
                 {/*    Location Info    */}
                 <div className={"border-t-[1.5px] border-b-[1.5px] border-t-[#8B8B8B] border-b-[#8B8B8B] py-16 mt-8"}>
